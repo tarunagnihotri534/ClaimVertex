@@ -1,0 +1,121 @@
+{
+	"components": [
+		{
+			"id": "webhook_1",
+			"provider": "webhook",
+			"config": {
+				"hideForm": true,
+				"mode": "Source",
+				"parameters": {},
+				"type": "webhook"
+			},
+			"ui": {
+				"position": { "x": 20, "y": 200 },
+				"measured": { "width": 150, "height": 66 },
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "parse_1",
+			"provider": "parse",
+			"config": {
+				"parameters": {}
+			},
+			"input": [
+				{ "lane": "tags", "from": "webhook_1" }
+			],
+			"ui": {
+				"position": { "x": 240, "y": 200 },
+				"measured": { "width": 150, "height": 66 },
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "anonymize_1",
+			"provider": "anonymize_text",
+			"config": {
+				"parameters": {}
+			},
+			"input": [
+				{ "lane": "text", "from": "parse_1" }
+			],
+			"ui": {
+				"position": { "x": 460, "y": 200 },
+				"measured": { "width": 150, "height": 66 },
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "preprocessor_1",
+			"provider": "preprocessor_langchain",
+			"config": {
+				"profile": "default",
+				"default": {
+					"mode": "strlen",
+					"splitter": "RecursiveCharacterTextSplitter",
+					"strlen": 512
+				},
+				"parameters": {}
+			},
+			"input": [
+				{ "lane": "text", "from": "anonymize_1" }
+			],
+			"ui": {
+				"position": { "x": 680, "y": 200 },
+				"measured": { "width": 150, "height": 66 },
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+		{
+			"id": "embedding_1",
+			"provider": "embedding_openai",
+			"config": {
+				"profile": "openai-5",
+				"openai-5": {
+					"apikey": "${ROCKETRIDE_OPENAI_KEY}"
+				},
+				"parameters": {}
+			},
+			"input": [
+				{ "lane": "documents", "from": "preprocessor_1" }
+			],
+			"ui": {
+				"position": { "x": 900, "y": 200 },
+				"measured": { "width": 150, "height": 66 },
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		},
+
+		{
+			"id": "qdrant_1",
+			"provider": "qdrant",
+			"config": {
+				"profile": "local",
+				"local": {
+					"host": "${ROCKETRIDE_QDRANT_HOST}",
+					"port": 6333,
+					"collection": "${ROCKETRIDE_COLLECTION_NAME}"
+				},
+				"parameters": {}
+			},
+			"input": [
+				{ "lane": "documents", "from": "embedding_1" }
+			],
+			"ui": {
+				"position": { "x": 1120, "y": 200 },
+				"measured": { "width": 150, "height": 135 },
+				"nodeType": "default",
+				"formDataValid": true
+			}
+		}
+	],
+	"project_id": "e89f1a2b-3c4d-45e6-9f7a-8b9c0d1e2f3a",
+	"viewport": { "x": 0, "y": 0, "zoom": 1 },
+	"version": 1
+}
+

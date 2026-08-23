@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClaimPilot — AI Insurance Claims Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0b0f17;
+      --bg-surface: #111827;
+      --bg-elevated: #1f2937;
+      --border-color: #1e293b;
+      --border-focus: #3b82f6;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --accent-blue: #60a5fa;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-subtle: #6b7280;
+      --status-pass-bg: rgba(16, 185, 129, 0.12);
+      --status-pass-border: rgba(16, 185, 129, 0.3);
+      --status-pass-text: #34d399;
+      --status-escalate-bg: rgba(239, 68, 68, 0.12);
+      --status-escalate-border: rgba(239, 68, 68, 0.3);
+      --status-escalate-text: #fca5a5;
+      --radius: 8px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HEADER */
+    header {
+      padding: 16px 32px;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+    }
+    .brand-mark svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--text-main);
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-subtle);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .env-tag {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      background-color: #22c55e;
+      border-radius: 50%;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 32px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+    }
+
+    /* METRICS BAR */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 2px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    .metric-card:hover {
+      border-top-color: var(--primary);
+    }
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-subtle);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .metric-val {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* TABS NAV */
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-surface);
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      width: fit-content;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .tab-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* GRID & CARDS */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 14px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .pipeline-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-blue);
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    /* PRESET BUTTONS */
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .preset-btn {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .preset-btn:hover {
+      border-color: var(--primary);
+      color: var(--text-main);
+      background: var(--bg-elevated);
+    }
+
+    /* FORM INPUTS */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .form-input {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .form-input:focus {
+      border-color: var(--border-focus);
+    }
+    textarea.form-input {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* RESULT & GAUGE */
+    .result-box {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 160px;
+    }
+
+    .gauge-container {
+      margin-bottom: 14px;
+    }
+    .gauge-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .gauge-bar-bg {
+      height: 6px;
+      background: var(--bg-elevated);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .gauge-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 3px;
+      transition: width 0.4s ease, background-color 0.3s ease;
+    }
+
+    .gate-badge {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .gate-badge.human {
+      background: var(--status-escalate-bg);
+      border: 1px solid var(--status-escalate-border);
+      color: var(--status-escalate-text);
+    }
+    .gate-badge.auto {
+      background: var(--status-pass-bg);
+      border: 1px solid var(--status-pass-border);
+      color: var(--status-pass-text);
+    }
+
+    /* INGESTION & PIPELINE FLOW */
+    .dropzone {
+      border: 1px dashed var(--border-color);
+      border-radius: 6px;
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--bg-base);
+    }
+    .dropzone:hover {
+      border-color: var(--primary);
+    }
+
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .flow-step {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      padding: 6px 10px;
+      border-radius: 4px;
+      color: var(--accent-blue);
+    }
+    .flow-arrow {
+      color: var(--text-subtle);
+      font-size: 12px;
+    }
+
+    /* CHAT BOX */
+    .chat-box {
+      display: flex;
+      flex-direction: column;
+      height: 480px;
+    }
+    .messages-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-right: 6px;
+    }
+    .msg {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .msg.user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .msg.ai {
+      align-self: flex-start;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chips-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .chip {
+      font-size: 12px;
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: var(--text-muted);
+    }
+    .chip:hover {
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    th {
+      color: var(--text-subtle);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    footer {
+      padding: 16px 32px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-subtle);
+      background: var(--bg-surface);
+    }
+
+    /* LOGIN & AUTH STYLES */
+    .auth-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 30%, #1e293b 0%, #0b0f17 80%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .auth-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .auth-card {
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(37, 99, 235, 0.15);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 440px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      animation: authCardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes authCardEntrance {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .auth-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.4px;
+    }
+
+    .auth-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper input, .input-wrapper select {
+      width: 100%;
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--text-main);
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-wrapper input:focus, .input-wrapper select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--text-subtle);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .password-toggle:hover {
+      color: var(--accent-blue);
+    }
+
+    .auth-btn {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .auth-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .auth-btn:active {
+      transform: translateY(0);
+    }
+
+    .auth-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .demo-accounts-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-subtle);
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+
+    .demo-presets {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .preset-btn {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--primary);
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    .preset-role {
+      font-size: 10px;
+      color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* HEADER USER PROFILE */
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px 4px 6px;
+      border-radius: 20px;
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-info-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .user-name-str {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .user-role-str {
+      font-size: 10px;
+      color: var(--text-subtle);
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      margin-left: 4px;
+    }
+
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUTH LOGIN OVERLAY -->
+  <div id="auth-overlay" class="auth-overlay">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div>
+          <div class="auth-title">ClaimPilot</div>
+          <div class="auth-sub">Adjuster & Risk Command Portal</div>
+        </div>
+      </div>
+
+      <div id="auth-error-msg" class="auth-error"></div>
+
+      <form id="login-form" class="auth-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label for="login-email">Adjuster Email / Username</label>
+          <div class="input-wrapper">
+            <input type="email" id="login-email" placeholder="e.g. adjuster@claimpilot.ai" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="login-password" placeholder="••••••••••••" required />
+            <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">Show</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="login-role">Adjuster Role & Jurisdiction</label>
+          <div class="input-wrapper">
+            <select id="login-role">
+              <option value="Senior Claims Adjuster">Senior Claims Adjuster (P&C)</option>
+              <option value="Underwriting Lead">Underwriting Lead (Commercial)</option>
+              <option value="Fraud & Claims Auditor">Fraud & SIU Auditor</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="auth-btn">
+          <span>Sign In to Command Center</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </form>
+
+      <div>
+        <div class="demo-accounts-title">Quick Demo Login Presets</div>
+        <div class="demo-presets">
+          <button class="preset-btn" onclick="selectDemoUser('adjuster@claimpilot.ai', 'password123', 'Senior Claims Adjuster')">
+            <span>🛡️ Sarah Jenkins (Senior Adjuster)</span>
+            <span class="preset-role">ADJUSTER</span>
+          </button>
+          <button class="preset-btn" onclick="selectDemoUser('underwriter@claimpilot.ai', 'password123', 'Underwriting Lead')">
+            <span>⚡ Marcus Vance (Underwriter Lead)</span>
+            <span class="preset-role">UNDERWRITER</span>
+          </button>
+          <button class="preset-btn" onclick="selectDemoUser('auditor@claimpilot.ai', 'password123', 'Fraud & Claims Auditor')">
+            <span>🔍 Elena Rostova (Fraud Auditor)</span>
+            <span class="preset-role">AUDITOR</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      </div>
+      <div>
+        <div class="brand-title">ClaimPilot</div>
+        <div class="brand-sub">Enterprise Insurance Command Center</div>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="env-tag">Engine: RocketRide Core</div>
+      <div class="status-badge">
+        <div class="dot"></div>
+        <span>Server Connected</span>
+      </div>
+
+      <!-- Logged In User Widget -->
+      <div id="user-profile-widget" class="user-profile-badge" style="display: none;">
+        <div class="user-avatar" id="header-user-avatar">SJ</div>
+        <div class="user-info-text">
+          <span class="user-name-str" id="header-user-name">Sarah Jenkins</span>
+          <span class="user-role-str" id="header-user-role">Senior Adjuster</span>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()" title="Log Out">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- METRICS BAR -->
+    <div class="metrics-bar">
+      <div class="metric-card">
+        <div class="metric-label">Total Claims Processed</div>
+        <div class="metric-val" id="stat-total-claims">2</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Automated Approval Rate</div>
+        <div class="metric-val" id="stat-auto-rate">50.0%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Adjuster Escalations</div>
+        <div class="metric-val" id="stat-escalated">1</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Total Volume Evaluated</div>
+        <div class="metric-val" id="stat-total-vol">$150,450</div>
+      </div>
+    </div>
+
+    <!-- TABS NAV -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="showTab('assessment')">Claim Assessment</button>
+      <button class="tab-btn" onclick="showTab('ingestion')">Document Ingestion</button>
+      <button class="tab-btn" onclick="showTab('copilot')">RAG Copilot</button>
+      <button class="tab-btn" onclick="showTab('history')">Audit Trail</button>
+    </div>
+
+    <!-- TAB 1: CLAIM ASSESSMENT -->
+    <div id="tab-assessment" class="dashboard-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Submit Claim Record</div>
+          <div class="pipeline-tag">claim_analysis.pipe</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="font-size: 11px; color: var(--text-subtle); text-transform: uppercase; font-weight:600;">Sample Templates:</div>
+          <div class="preset-row">
+            <button class="preset-btn" onclick="loadPreset('water')">Water Burst ($8,450)</button>
+            <button class="preset-btn" onclick="loadPreset('fire')">Warehouse Fire ($142,000)</button>
+            <button class="preset-btn" onclick="loadPreset('auto')">Auto Hail ($3,200)</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Claimant Name</label>
+          <input type="text" id="claimant" class="form-input" value="Jane Doe" />
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>Policy Number</label>
+            <input type="text" id="policy" class="form-input" value="POL-994821" />
+          </div>
+          <div class="form-group">
+            <label>Claimed Amount ($)</label>
+            <input type="number" id="amount" class="form-input" value="8450.00" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Loss Description & Incident Details</label>
+          <textarea id="description" class="form-input">Water line burst in kitchen causing damage to hardwood floors, base cabinets, and sub-flooring. Plumber invoice attached.</textarea>
+        </div>
+        <button class="btn-primary" onclick="runClaimAnalysis()">Analyze Claim</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Assessment & Audit Evaluation</div>
+          <div id="gate-badge-slot"></div>
+        </div>
+
+        <div id="gauge-box" class="gauge-container" style="display: none;">
+          <div class="gauge-header">
+            <span>Fraud Risk Score</span>
+            <span id="score-val">14 / 100</span>
+          </div>
+          <div class="gauge-bar-bg">
+            <div class="gauge-fill" id="score-bar"></div>
+          </div>
+        </div>
+
+        <div class="result-box" id="analysis-output">
+          <span style="color: var(--text-subtle);">Submit a claim record to trigger real-time AI risk evaluation and adjuster gate verification.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: INGESTION -->
+    <div id="tab-ingestion" class="dashboard-grid" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Document Ingestion & Indexing</div>
+          <div class="pipeline-tag">ingestion.pipe</div>
+        </div>
+        <div class="dropzone" onclick="document.getElementById('file-input').click()">
+          <div style="font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">Upload Claim Evidence & Invoices</div>
+          <div style="font-size: 12px; color: var(--text-subtle);">Supports PDF, PNG, JPG, CSV parsed and vector indexed into Qdrant</div>
+          <input type="file" id="file-input" style="display: none;" onchange="uploadFile(this.files[0])" />
+        </div>
+        <div id="upload-status-box" style="font-size: 12px; color: var(--accent-blue);"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Ingestion Execution Pipeline</div>
+        </div>
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text-muted);">
+          Multi-stage DAG processing sequence:
+          <div class="flow-diagram">
+            <span class="flow-step">webhook</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step">parse</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step">anonymize_text (PII Redaction)</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step">embedding_openai</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step">qdrant (Vector DB)</span>
+          </div>
+        </div>
+        
+        <div style="margin-top: 14px;">
+          <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Indexed Evidence Documents:</div>
+          <table id="docs-table">
+            <thead>
+              <tr><th>Filename</th><th>Size</th><th>Status</th></tr>
+            </thead>
+            <tbody id="docs-list-body">
+              <tr><td>Plumber_Invoice_88412.pdf</td><td>245 KB</td><td><span style="color:var(--status-pass-text)">Complete</span></td></tr>
+              <tr><td>Property_Policy_POL994821.pdf</td><td>1,048 KB</td><td><span style="color:var(--status-pass-text)">Complete</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: COPILOT -->
+    <div id="tab-copilot" style="display: none;">
+      <div class="card chat-box">
+        <div class="card-header">
+          <div class="card-title">Adjuster RAG Assistant</div>
+          <div class="pipeline-tag">claim_chat.pipe</div>
+        </div>
+
+        <div class="chips-row">
+          <div class="chip" onclick="setQuery('What is the total estimated damage amount for policy POL-994821?')">What is total damage for POL-994821?</div>
+          <div class="chip" onclick="setQuery('Does this policy cover water damage from plumbing bursts?')">Is water line burst covered?</div>
+          <div class="chip" onclick="setQuery('Summarize evidence from uploaded invoice documents.')">Summarize invoice evidence</div>
+        </div>
+
+        <div class="messages-list" id="chat-messages">
+          <div class="msg ai">ClaimPilot Assistant online. Query indexed claim files and policy clauses with source verification.</div>
+        </div>
+
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" class="form-input" style="flex: 1;" placeholder="Enter question regarding policy terms or claim evidence..." onkeydown="if(event.key==='Enter') sendChatMessage()" />
+          <button class="btn-primary" onclick="sendChatMessage()">Send Query</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: CLAIMS HISTORY -->
+    <div id="tab-history" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Claims Audit Trail & Decision History</div>
+          <button class="preset-btn" onclick="fetchHistory()">Refresh History</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Claim ID</th>
+              <th>Claimant</th>
+              <th>Policy Number</th>
+              <th>Amount ($)</th>
+              <th>Fraud Risk Score</th>
+              <th>Gate Status</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    ClaimPilot Enterprise Edition &mdash; Powered by RocketRide SDK &amp; FastAPI
+  </footer>
+
+  <script>
+    function showTab(name) {
+      document.getElementById('tab-assessment').style.display = name === 'assessment' ? 'grid' : 'none';
+      document.getElementById('tab-ingestion').style.display = name === 'ingestion' ? 'grid' : 'none';
+      document.getElementById('tab-copilot').style.display = name === 'copilot' ? 'block' : 'none';
+      document.getElementById('tab-history').style.display = name === 'history' ? 'block' : 'none';
+      
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      if (name === 'history') fetchHistory();
+    }
+
+    function loadPreset(type) {
+      if (type === 'water') {
+        document.getElementById('claimant').value = 'Jane Doe';
+        document.getElementById('policy').value = 'POL-994821';
+        document.getElementById('amount').value = '8450.00';
+        document.getElementById('description').value = 'Water line burst in kitchen causing damage to hardwood floors, base cabinets, and sub-flooring. Plumber invoice attached.';
+      } else if (type === 'fire') {
+        document.getElementById('claimant').value = 'Apex Commercial Logistics';
+        document.getElementById('policy').value = 'POL-330192';
+        document.getElementById('amount').value = '142000.00';
+        document.getElementById('description').value = 'Warehouse electrical fire destroying inventory and structural beams. Unattended overnight with suspicious acceleration.';
+      } else if (type === 'auto') {
+        document.getElementById('claimant').value = 'Mark Vance';
+        document.getElementById('policy').value = 'POL-551029';
+        document.getElementById('amount').value = '3200.00';
+        document.getElementById('description').value = 'Vehicle roof and windshield dented by severe hail storm while parked in driveway.';
+      }
+    }
+
+    async function updateStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        document.getElementById('stat-total-claims').innerText = data.total_claims;
+        document.getElementById('stat-auto-rate').innerText = data.auto_approval_rate + '%';
+        document.getElementById('stat-escalated').innerText = data.escalated;
+        document.getElementById('stat-total-vol').innerText = '$' + data.total_amount.toLocaleString();
+      } catch (err) {}
+    }
+
+    async function runClaimAnalysis() {
+      const output = document.getElementById('analysis-output');
+      const badgeSlot = document.getElementById('gate-badge-slot');
+      const gaugeBox = document.getElementById('gauge-box');
+      const scoreVal = document.getElementById('score-val');
+      const scoreBar = document.getElementById('score-bar');
+
+      output.innerHTML = '<span style="color: var(--text-subtle);">Evaluating claim record against AI fraud parameters...</span>';
+      badgeSlot.innerHTML = '';
+      gaugeBox.style.display = 'none';
+
+      const payload = {
+        claimant: document.getElementById('claimant').value,
+        policy_number: document.getElementById('policy').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        description: document.getElementById('description').value,
+        loss_date: new Date().toISOString().split('T')[0]
+      };
+
+      try {
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        // Update score gauge
+        gaugeBox.style.display = 'block';
+        scoreVal.innerText = `${data.fraud_risk_score} / 100`;
+        scoreBar.style.width = `${data.fraud_risk_score}%`;
+        if (data.fraud_risk_score > 60) {
+          scoreBar.style.backgroundColor = '#ef4444';
+        } else if (data.fraud_risk_score > 30) {
+          scoreBar.style.backgroundColor = '#f59e0b';
+        } else {
+          scoreBar.style.backgroundColor = '#3b82f6';
+        }
+
+        output.innerHTML = `
+          <strong>Claim Record ID:</strong> ${data.claim_id}<br/>
+          <strong>Claimant:</strong> ${data.claimant}<br/>
+          <strong>Claim Amount:</strong> $${data.amount.toLocaleString()}<br/>
+          <strong>Recommendation:</strong> ${data.recommendation}<br/><br/>
+          <strong>AI Analysis Summary:</strong><br/>
+          ${data.assessment}
+        `;
+
+        if (data.human_review_required) {
+          badgeSlot.innerHTML = `<div class="gate-badge human">ESCALATED TO ADJUSTER REVIEW</div>`;
+        } else {
+          badgeSlot.innerHTML = `<div class="gate-badge auto">AUTOMATED APPROVAL PASSED</div>`;
+        }
+
+        updateStats();
+      } catch (err) {
+        output.innerHTML = 'Error analyzing claim: ' + err.message;
+      }
+    }
+
+    async function uploadFile(file) {
+      if (!file) return;
+      const statusBox = document.getElementById('upload-status-box');
+      statusBox.innerHTML = `Uploading '${file.name}' to Ingestion Pipeline...`;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const data = await res.json();
+        statusBox.innerHTML = `${data.message}`;
+
+        const tbody = document.getElementById('docs-list-body');
+        tbody.innerHTML = `<tr><td>${data.filename}</td><td>${(data.size_bytes/1024).toFixed(0)} KB</td><td><span style="color:var(--status-pass-text)">Complete</span></td></tr>` + tbody.innerHTML;
+        updateStats();
+      } catch (err) {
+        statusBox.innerHTML = `Upload failed: ` + err.message;
+      }
+    }
+
+    function setQuery(q) {
+      document.getElementById('chat-input').value = q;
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const list = document.getElementById('chat-messages');
+      list.innerHTML += `<div class="msg user">${text}</div>`;
+      input.value = '';
+      list.scrollTop = list.scrollHeight;
+
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg ai';
+      aiMsg.innerHTML = '<span style="color: var(--text-subtle);">Querying policy database...</span>';
+      list.appendChild(aiMsg);
+      list.scrollTop = list.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: text })
+        });
+        const data = await res.json();
+        aiMsg.innerHTML = `${data.answer}<br/><br/><span style="color: var(--accent-blue); font-family: 'JetBrains Mono', monospace; font-size: 11px;">Confidence: ${data.confidence}% | Sources: ${data.sources.join(', ')}</span>`;
+      } catch (err) {
+        aiMsg.innerHTML = 'Error: ' + err.message;
+      }
+      list.scrollTop = list.scrollHeight;
+    }
+
+    async function fetchHistory() {
+      try {
+        const res = await fetch('/api/history');
+        const data = await res.json();
+        const tbody = document.getElementById('history-table-body');
+        tbody.innerHTML = data.claims.map(c => `
+          <tr>
+            <td style="font-family: 'JetBrains Mono', monospace; font-weight:500;">${c.id}</td>
+            <td>${c.claimant}</td>
+            <td>${c.policy_number}</td>
+            <td>$${c.amount.toLocaleString()}</td>
+            <td style="font-weight:600;">${c.fraud_risk_score}/100</td>
+            <td>
+              <span class="gate-badge ${c.human_review_required ? 'human' : 'auto'}" style="padding: 3px 6px; font-size: 11px; margin: 0;">
+                ${c.gate_status}
+              </span>
+            </td>
+            <td style="color: var(--text-subtle);">${c.timestamp}</td>
+          </tr>
+        `).join('');
+      } catch (err) {}
+    }
+
+    let currentSessionToken = localStorage.getItem('claimpilot_session_token') || null;
+
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('login-password');
+      const toggleBtn = document.querySelector('.password-toggle');
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        toggleBtn.textContent = 'Hide';
+      } else {
+        passInput.type = 'password';
+        toggleBtn.textContent = 'Show';
+      }
+    }
+
+    function selectDemoUser(email, pass, role) {
+      document.getElementById('login-email').value = email;
+      document.getElementById('login-password').value = pass;
+      document.getElementById('login-role').value = role;
+      handleLoginSubmit();
+    }
+
+    async function handleLoginSubmit(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const role = document.getElementById('login-role').value;
+      const errBox = document.getElementById('auth-error-msg');
+      const submitBtn = document.getElementById('login-submit-btn');
+
+      errBox.style.display = 'none';
+
+      if (!email || !password) {
+        errBox.textContent = 'Please provide both email/adjuster ID and password.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Authenticating...</span>';
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, role })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.detail || 'Authentication failed.');
+        }
+
+        currentSessionToken = data.token;
+        localStorage.setItem('claimpilot_session_token', data.token);
+        localStorage.setItem('claimpilot_user_profile', JSON.stringify(data.user));
+
+        renderUserProfile(data.user);
+        document.getElementById('auth-overlay').classList.add('hidden');
+      } catch (err) {
+        errBox.textContent = err.message;
+        errBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Sign In to Command Center</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+      }
+    }
+
+    function renderUserProfile(user) {
+      if (!user) return;
+      document.getElementById('header-user-avatar').textContent = user.avatar || 'CP';
+      document.getElementById('header-user-name').textContent = user.name || 'Adjuster';
+      document.getElementById('header-user-role').textContent = user.role || 'Senior Adjuster';
+      document.getElementById('user-profile-widget').style.display = 'flex';
+    }
+
+    async function handleLogout() {
+      try {
+        if (currentSessionToken) {
+          const body = new FormData();
+          body.append('token', currentSessionToken);
+          await fetch('/api/logout', { method: 'POST', body });
+        }
+      } catch (err) {}
+
+      currentSessionToken = null;
+      localStorage.removeItem('claimpilot_session_token');
+      localStorage.removeItem('claimpilot_user_profile');
+
+      document.getElementById('user-profile-widget').style.display = 'none';
+      document.getElementById('auth-overlay').classList.remove('hidden');
+    }
+
+    async function initSession() {
+      const storedProfile = localStorage.getItem('claimpilot_user_profile');
+      if (currentSessionToken && storedProfile) {
+        try {
+          renderUserProfile(JSON.parse(storedProfile));
+          document.getElementById('auth-overlay').classList.add('hidden');
+        } catch (e) {
+          document.getElementById('auth-overlay').classList.remove('hidden');
+        }
+      } else {
+        document.getElementById('auth-overlay').classList.remove('hidden');
+      }
+    }
+
+    updateStats();
+    initSession();
+  </script>
+</body>
+</html>
