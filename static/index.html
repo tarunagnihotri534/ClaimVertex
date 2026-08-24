@@ -3,31 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClaimPilot — AI Insurance Claims Command Center</title>
+  <title>ClaimPilot — Enterprise Insurance Claims & Risk Command Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-base: #0b0f17;
-      --bg-surface: #111827;
-      --bg-elevated: #1f2937;
-      --border-color: #1e293b;
-      --border-focus: #3b82f6;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --accent-blue: #60a5fa;
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --text-subtle: #6b7280;
-      --status-pass-bg: rgba(16, 185, 129, 0.12);
-      --status-pass-border: rgba(16, 185, 129, 0.3);
-      --status-pass-text: #34d399;
-      --status-escalate-bg: rgba(239, 68, 68, 0.12);
-      --status-escalate-border: rgba(239, 68, 68, 0.3);
-      --status-escalate-text: #fca5a5;
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-elevated: #f1f5f9;
+      --border-color: #e2e8f0;
+      --border-focus: #0f172a;
+      --primary: #0f172a;
+      --primary-hover: #1e293b;
+      --accent-blue: #334155;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-subtle: #64748b;
+      --status-pass-bg: #f0fdf4;
+      --status-pass-border: #bbf7d0;
+      --status-pass-text: #15803d;
+      --status-escalate-bg: #fef2f2;
+      --status-escalate-border: #fecaca;
+      --status-escalate-text: #b91c1c;
       --radius: 8px;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,6 +52,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
     }
 
     .brand {
@@ -63,11 +64,12 @@
       width: 36px;
       height: 36px;
       background: var(--primary);
-      border-radius: 6px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .brand-mark svg {
       width: 20px;
@@ -79,7 +81,7 @@
       stroke-linejoin: round;
     }
     .brand-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       letter-spacing: -0.3px;
       color: var(--text-main);
@@ -87,7 +89,7 @@
     .brand-sub {
       font-size: 11px;
       color: var(--text-subtle);
-      font-weight: 500;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -100,28 +102,29 @@
     .env-tag {
       font-size: 12px;
       color: var(--text-muted);
-      background: var(--bg-base);
+      background: var(--bg-elevated);
       border: 1px solid var(--border-color);
       padding: 4px 10px;
-      border-radius: 4px;
+      border-radius: 6px;
       font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
     }
     .status-badge {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(34, 197, 94, 0.08);
-      border: 1px solid rgba(34, 197, 94, 0.2);
-      color: #4ade80;
+      background: var(--status-pass-bg);
+      border: 1px solid var(--status-pass-border);
+      color: var(--status-pass-text);
       padding: 5px 12px;
       border-radius: 20px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
     }
     .dot {
       width: 6px;
       height: 6px;
-      background-color: #22c55e;
+      background-color: #16a34a;
       border-radius: 50%;
     }
 
@@ -129,11 +132,11 @@
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 24px 32px;
+      padding: 28px 32px;
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
       flex: 1;
     }
 
@@ -147,36 +150,37 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: var(--radius);
-      padding: 18px 20px;
+      padding: 20px 22px;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      border-top: 2px solid transparent;
-      transition: border-color 0.2s ease;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .metric-card:hover {
-      border-top-color: var(--primary);
+      border-color: var(--primary);
     }
     .metric-label {
       font-size: 11px;
       color: var(--text-subtle);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
     .metric-val {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       color: var(--text-main);
+      letter-spacing: -0.5px;
     }
 
     /* TABS NAV */
     .nav-tabs {
       display: flex;
       gap: 4px;
-      background: var(--bg-surface);
+      background: var(--bg-elevated);
       padding: 4px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid var(--border-color);
       width: fit-content;
     }
@@ -184,8 +188,8 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 8px 16px;
-      border-radius: 4px;
+      padding: 8px 18px;
+      border-radius: 6px;
       font-family: inherit;
       font-size: 13px;
       font-weight: 500;
@@ -196,47 +200,51 @@
       background: var(--primary);
       color: #ffffff;
       font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .tab-btn:hover:not(.active) {
       color: var(--text-main);
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(0, 0, 0, 0.04);
     }
 
     /* GRID & CARDS */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 24px;
     }
 
     .card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 26px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
+      box-shadow: var(--shadow);
     }
     .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border-color);
-      padding-bottom: 14px;
+      padding-bottom: 16px;
     }
     .card-title {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-main);
+      letter-spacing: -0.2px;
     }
     .pipeline-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      color: var(--accent-blue);
-      background: rgba(37, 99, 235, 0.1);
-      border: 1px solid rgba(37, 99, 235, 0.25);
-      padding: 3px 8px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-elevated);
+      border: 1px solid #cbd5e1;
+      padding: 4px 9px;
       border-radius: 4px;
     }
 
@@ -245,13 +253,14 @@
       display: flex;
       gap: 8px;
       align-items: center;
+      flex-wrap: wrap;
     }
     .preset-btn {
-      background: var(--bg-base);
+      background: #ffffff;
       border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 4px;
+      color: var(--text-main);
+      padding: 7px 13px;
+      border-radius: 6px;
       font-family: inherit;
       font-size: 12px;
       font-weight: 500;
@@ -260,8 +269,7 @@
     }
     .preset-btn:hover {
       border-color: var(--primary);
-      color: var(--text-main);
-      background: var(--bg-elevated);
+      background: var(--bg-base);
     }
 
     /* FORM INPUTS */
@@ -271,43 +279,53 @@
       gap: 6px;
     }
     .form-group label {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 500;
+      font-size: 11px;
+      color: var(--text-subtle);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .form-input {
-      background: var(--bg-base);
-      border: 1px solid var(--border-color);
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 6px;
-      padding: 10px 12px;
+      padding: 10px 14px;
       color: var(--text-main);
       font-family: inherit;
-      font-size: 13px;
+      font-size: 13.5px;
+      font-weight: 500;
       outline: none;
-      transition: border-color 0.15s ease;
+      transition: all 0.15s ease;
     }
     .form-input:focus {
       border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
     }
     textarea.form-input {
       resize: vertical;
-      min-height: 90px;
+      min-height: 95px;
     }
 
     .btn-primary {
       background: var(--primary);
       color: #ffffff;
-      border: none;
-      padding: 11px 18px;
+      border: 1px solid var(--primary);
+      padding: 12px 20px;
       border-radius: 6px;
       font-family: inherit;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 13.5px;
       cursor: pointer;
-      transition: background-color 0.15s ease;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     .btn-primary:hover {
       background: var(--primary-hover);
+      border-color: var(--primary-hover);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
 
     /* RESULT & GAUGE */
@@ -319,6 +337,7 @@
       font-size: 13px;
       line-height: 1.6;
       min-height: 160px;
+      color: var(--text-main);
     }
 
     .gauge-container {
@@ -329,7 +348,7 @@
       justify-content: space-between;
       font-size: 12px;
       margin-bottom: 6px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-muted);
     }
     .gauge-bar-bg {
@@ -346,13 +365,13 @@
     }
 
     .gate-badge {
-      padding: 8px 12px;
+      padding: 6px 12px;
       border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
       display: inline-block;
-      margin-bottom: 12px;
+      text-transform: uppercase;
     }
     .gate-badge.human {
       background: var(--status-escalate-bg);
@@ -367,16 +386,21 @@
 
     /* INGESTION & PIPELINE FLOW */
     .dropzone {
-      border: 1px dashed var(--border-color);
-      border-radius: 6px;
-      padding: 32px 20px;
+      border: 2px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 36px 20px;
       text-align: center;
       cursor: pointer;
       transition: all 0.15s ease;
       background: var(--bg-base);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
     .dropzone:hover {
       border-color: var(--primary);
+      background: #ffffff;
     }
 
     .flow-diagram {
@@ -389,11 +413,12 @@
     .flow-step {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      background: var(--bg-base);
+      font-weight: 600;
+      background: var(--bg-elevated);
       border: 1px solid var(--border-color);
       padding: 6px 10px;
       border-radius: 4px;
-      color: var(--accent-blue);
+      color: var(--text-main);
     }
     .flow-arrow {
       color: var(--text-subtle);
@@ -404,7 +429,7 @@
     .chat-box {
       display: flex;
       flex-direction: column;
-      height: 480px;
+      height: 520px;
     }
     .messages-list {
       flex: 1;
@@ -418,18 +443,20 @@
       max-width: 80%;
       padding: 12px 16px;
       border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 13.5px;
+      line-height: 1.55;
     }
     .msg.user {
       align-self: flex-end;
       background: var(--primary);
       color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
     .msg.ai {
       align-self: flex-start;
       background: var(--bg-elevated);
       border: 1px solid var(--border-color);
+      color: var(--text-main);
     }
 
     .chat-input-row {
@@ -442,14 +469,15 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .chip {
       font-size: 12px;
-      background: var(--bg-base);
+      font-weight: 500;
+      background: #ffffff;
       border: 1px solid var(--border-color);
-      padding: 5px 10px;
-      border-radius: 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.15s ease;
       color: var(--text-muted);
@@ -457,6 +485,7 @@
     .chip:hover {
       border-color: var(--primary);
       color: var(--text-main);
+      background: var(--bg-base);
     }
 
     /* TABLE */
@@ -466,23 +495,31 @@
       font-size: 13px;
     }
     th, td {
-      padding: 10px 12px;
+      padding: 12px 14px;
       text-align: left;
       border-bottom: 1px solid var(--border-color);
     }
     th {
       color: var(--text-subtle);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       font-size: 11px;
       letter-spacing: 0.5px;
+      background: var(--bg-base);
+    }
+    td {
+      color: var(--text-main);
+    }
+    tr:hover td {
+      background: #fafafa;
     }
 
     footer {
-      padding: 16px 32px;
+      padding: 18px 32px;
       border-top: 1px solid var(--border-color);
       text-align: center;
       font-size: 12px;
+      font-weight: 500;
       color: var(--text-subtle);
       background: var(--bg-surface);
     }
@@ -494,7 +531,8 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at 50% 30%, #18181b 0%, #09090b 100%);
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -511,7 +549,7 @@
     .auth-card {
       background: #ffffff;
       border: 1px solid #e4e4e7;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       border-radius: 16px;
       width: 100%;
       max-width: 440px;
@@ -519,8 +557,8 @@
       display: flex;
       flex-direction: column;
       gap: 22px;
-      animation: authCardEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      color: #09090b;
+      animation: authCardEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #0f172a;
     }
 
     @keyframes authCardEntrance {
@@ -536,7 +574,7 @@
     }
 
     .auth-brand .brand-mark {
-      background: #09090b;
+      background: #0f172a;
       color: #ffffff;
       width: 42px;
       height: 42px;
@@ -547,13 +585,13 @@
     .auth-title {
       font-size: 22px;
       font-weight: 800;
-      color: #09090b;
+      color: #0f172a;
       letter-spacing: -0.5px;
     }
 
     .auth-sub {
       font-size: 13px;
-      color: #71717a;
+      color: #64748b;
       font-weight: 500;
       line-height: 1.4;
     }
@@ -573,7 +611,7 @@
     .form-group label {
       font-size: 11px;
       font-weight: 700;
-      color: #3f3f46;
+      color: #475569;
       text-transform: uppercase;
       letter-spacing: 0.6px;
     }
@@ -586,11 +624,11 @@
 
     .input-wrapper input, .input-wrapper select {
       width: 100%;
-      background: #fafafa;
-      border: 1px solid #d4d4d8;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
       padding: 11px 14px;
-      color: #09090b;
+      color: #0f172a;
       font-size: 14px;
       font-family: inherit;
       font-weight: 500;
@@ -600,13 +638,13 @@
     .input-wrapper input:focus, .input-wrapper select:focus {
       outline: none;
       background: #ffffff;
-      border-color: #09090b;
-      box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.12);
+      border-color: #0f172a;
+      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
     }
 
     .input-wrapper select {
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 12px center;
       padding-right: 36px;
@@ -617,7 +655,7 @@
       right: 12px;
       background: none;
       border: none;
-      color: #71717a;
+      color: #64748b;
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
@@ -627,13 +665,13 @@
     }
 
     .password-toggle:hover {
-      color: #09090b;
+      color: #0f172a;
     }
 
     .auth-btn {
-      background: #09090b;
+      background: #0f172a;
       color: #ffffff;
-      border: 1px solid #09090b;
+      border: 1px solid #0f172a;
       padding: 13px;
       border-radius: 8px;
       font-weight: 600;
@@ -649,15 +687,9 @@
     }
 
     .auth-btn:hover {
-      background: #27272a;
-      border-color: #27272a;
+      background: #1e293b;
+      border-color: #1e293b;
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-    }
-
-    .auth-btn:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     }
 
     .auth-error {
@@ -683,7 +715,7 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: #e4e4e7;
+      background: #e2e8f0;
       z-index: 1;
     }
     .demo-accounts-title {
@@ -695,7 +727,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.6px;
-      color: #a1a1aa;
+      color: #94a3b8;
       z-index: 2;
     }
 
@@ -707,10 +739,10 @@
 
     .preset-btn {
       background: #ffffff;
-      border: 1px solid #e4e4e7;
+      border: 1px solid #e2e8f0;
       padding: 10px 14px;
       border-radius: 8px;
-      color: #09090b;
+      color: #0f172a;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
@@ -721,8 +753,8 @@
     }
 
     .preset-btn:hover {
-      border-color: #09090b;
-      background: #fafafa;
+      border-color: #0f172a;
+      background: #f8fafc;
       transform: translateX(2px);
     }
 
@@ -730,7 +762,7 @@
       font-size: 10px;
       font-weight: 700;
       color: #ffffff;
-      background: #09090b;
+      background: #0f172a;
       padding: 3px 8px;
       border-radius: 4px;
       font-family: 'JetBrains Mono', monospace;
@@ -791,9 +823,9 @@
     }
 
     .logout-btn:hover {
-      background: rgba(239, 68, 68, 0.15);
-      color: #fca5a5;
-      border-color: rgba(239, 68, 68, 0.3);
+      background: #fef2f2;
+      color: #b91c1c;
+      border-color: #fecaca;
     }
   </style>
 </head>
@@ -853,15 +885,15 @@
         </div>
         <div class="demo-presets">
           <button class="preset-btn" onclick="selectDemoUser('adjuster@claimpilot.ai', 'password123', 'Senior Claims Adjuster')">
-            <span>🛡️ Sarah Jenkins (Senior Adjuster)</span>
+            <span>Sarah Jenkins (Senior Adjuster)</span>
             <span class="preset-role">ADJUSTER</span>
           </button>
           <button class="preset-btn" onclick="selectDemoUser('underwriter@claimpilot.ai', 'password123', 'Underwriting Lead')">
-            <span>⚡ Marcus Vance (Underwriter Lead)</span>
+            <span>Marcus Vance (Underwriter Lead)</span>
             <span class="preset-role">UNDERWRITER</span>
           </button>
           <button class="preset-btn" onclick="selectDemoUser('auditor@claimpilot.ai', 'password123', 'Fraud & Claims Auditor')">
-            <span>🔍 Elena Rostova (Fraud Auditor)</span>
+            <span>Elena Rostova (Fraud Auditor)</span>
             <span class="preset-role">AUDITOR</span>
           </button>
         </div>
@@ -938,7 +970,7 @@
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 4px;">
-          <div style="font-size: 11px; color: var(--text-subtle); text-transform: uppercase; font-weight:600;">Sample Templates:</div>
+          <div style="font-size: 11px; color: var(--text-subtle); text-transform: uppercase; font-weight:700;">Sample Templates:</div>
           <div class="preset-row">
             <button class="preset-btn" onclick="loadPreset('water')">Water Burst ($8,450)</button>
             <button class="preset-btn" onclick="loadPreset('fire')">Warehouse Fire ($142,000)</button>
@@ -984,7 +1016,7 @@
         </div>
 
         <div class="result-box" id="analysis-output">
-          <span style="color: var(--text-subtle);">Submit a claim record to trigger real-time AI risk evaluation and adjuster gate verification.</span>
+          <span style="color: var(--text-subtle);">Submit a claim record to trigger real-time risk evaluation and adjuster gate verification.</span>
         </div>
       </div>
     </div>
@@ -997,11 +1029,12 @@
           <div class="pipeline-tag">ingestion.pipe</div>
         </div>
         <div class="dropzone" onclick="document.getElementById('file-input').click()">
-          <div style="font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">Upload Claim Evidence & Invoices</div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text-main); margin-top: 4px;">Upload Claim Evidence & Invoices</div>
           <div style="font-size: 12px; color: var(--text-subtle);">Supports PDF, PNG, JPG, CSV parsed and vector indexed into Qdrant</div>
           <input type="file" id="file-input" style="display: none;" onchange="uploadFile(this.files[0])" />
         </div>
-        <div id="upload-status-box" style="font-size: 12px; color: var(--accent-blue);"></div>
+        <div id="upload-status-box" style="font-size: 12px; color: var(--text-muted); font-weight: 500;"></div>
       </div>
 
       <div class="card">
@@ -1030,8 +1063,8 @@
               <tr><th>Filename</th><th>Size</th><th>Status</th></tr>
             </thead>
             <tbody id="docs-list-body">
-              <tr><td>Plumber_Invoice_88412.pdf</td><td>245 KB</td><td><span style="color:var(--status-pass-text)">Complete</span></td></tr>
-              <tr><td>Property_Policy_POL994821.pdf</td><td>1,048 KB</td><td><span style="color:var(--status-pass-text)">Complete</span></td></tr>
+              <tr><td>Plumber_Invoice_88412.pdf</td><td>245 KB</td><td><span style="color:var(--status-pass-text); font-weight:600;">Complete</span></td></tr>
+              <tr><td>Property_Policy_POL994821.pdf</td><td>1,048 KB</td><td><span style="color:var(--status-pass-text); font-weight:600;">Complete</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -1042,7 +1075,7 @@
     <div id="tab-copilot" style="display: none;">
       <div class="card chat-box">
         <div class="card-header">
-          <div class="card-title">Adjuster RAG Assistant</div>
+          <div class="card-title">Adjuster Policy & Evidence Assistant</div>
           <div class="pipeline-tag">claim_chat.pipe</div>
         </div>
 
@@ -1091,7 +1124,7 @@
   </div>
 
   <footer>
-    ClaimPilot Enterprise Edition &mdash; Powered by RocketRide SDK &amp; FastAPI
+    ClaimPilot Enterprise Platform &mdash; Engine Powered by RocketRide SDK &amp; FastAPI
   </footer>
 
   <script>
@@ -1144,7 +1177,7 @@
       const scoreVal = document.getElementById('score-val');
       const scoreBar = document.getElementById('score-bar');
 
-      output.innerHTML = '<span style="color: var(--text-subtle);">Evaluating claim record against AI fraud parameters...</span>';
+      output.innerHTML = '<span style="color: var(--text-subtle);">Evaluating claim record against risk parameters...</span>';
       badgeSlot.innerHTML = '';
       gaugeBox.style.display = 'none';
 
@@ -1169,11 +1202,11 @@
         scoreVal.innerText = `${data.fraud_risk_score} / 100`;
         scoreBar.style.width = `${data.fraud_risk_score}%`;
         if (data.fraud_risk_score > 60) {
-          scoreBar.style.backgroundColor = '#ef4444';
+          scoreBar.style.backgroundColor = '#b91c1c';
         } else if (data.fraud_risk_score > 30) {
-          scoreBar.style.backgroundColor = '#f59e0b';
+          scoreBar.style.backgroundColor = '#d97706';
         } else {
-          scoreBar.style.backgroundColor = '#3b82f6';
+          scoreBar.style.backgroundColor = '#15803d';
         }
 
         output.innerHTML = `
@@ -1181,7 +1214,7 @@
           <strong>Claimant:</strong> ${data.claimant}<br/>
           <strong>Claim Amount:</strong> $${data.amount.toLocaleString()}<br/>
           <strong>Recommendation:</strong> ${data.recommendation}<br/><br/>
-          <strong>AI Analysis Summary:</strong><br/>
+          <strong>Assessment Summary:</strong><br/>
           ${data.assessment}
         `;
 
@@ -1211,7 +1244,7 @@
         statusBox.innerHTML = `${data.message}`;
 
         const tbody = document.getElementById('docs-list-body');
-        tbody.innerHTML = `<tr><td>${data.filename}</td><td>${(data.size_bytes/1024).toFixed(0)} KB</td><td><span style="color:var(--status-pass-text)">Complete</span></td></tr>` + tbody.innerHTML;
+        tbody.innerHTML = `<tr><td>${data.filename}</td><td>${(data.size_bytes/1024).toFixed(0)} KB</td><td><span style="color:var(--status-pass-text); font-weight:600;">Complete</span></td></tr>` + tbody.innerHTML;
         updateStats();
       } catch (err) {
         statusBox.innerHTML = `Upload failed: ` + err.message;
@@ -1245,7 +1278,7 @@
           body: JSON.stringify({ question: text })
         });
         const data = await res.json();
-        aiMsg.innerHTML = `${data.answer}<br/><br/><span style="color: var(--accent-blue); font-family: 'JetBrains Mono', monospace; font-size: 11px;">Confidence: ${data.confidence}% | Sources: ${data.sources.join(', ')}</span>`;
+        aiMsg.innerHTML = `${data.answer}<br/><br/><span style="color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 11px;">Confidence: ${data.confidence}% | Sources: ${data.sources.join(', ')}</span>`;
       } catch (err) {
         aiMsg.innerHTML = 'Error: ' + err.message;
       }
@@ -1259,7 +1292,7 @@
         const tbody = document.getElementById('history-table-body');
         tbody.innerHTML = data.claims.map(c => `
           <tr>
-            <td style="font-family: 'JetBrains Mono', monospace; font-weight:500;">${c.id}</td>
+            <td style="font-family: 'JetBrains Mono', monospace; font-weight:600;">${c.id}</td>
             <td>${c.claimant}</td>
             <td>${c.policy_number}</td>
             <td>$${c.amount.toLocaleString()}</td>
