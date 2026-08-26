@@ -103,19 +103,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
       </main>
 
-      {/* ── DARK BLACK FOOTER BAR (Edge-to-Edge Touching Corners) ── */}
+      {/* ── DARK BLACK FOOTER BAR (Edge-to-Edge Touching Corners, Centered Bright Text) ── */}
       <footer style={styles.footerBar}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Logo size={16} color="rgba(255,255,255,0.85)" />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+          <Logo size={16} color="#ffffff" />
           <span style={styles.footerText}>
-            © {new Date().getFullYear()} ClaimVertex · AI-Powered P&amp;C Claims Intelligence
-          </span>
-        </div>
-        <div style={styles.footerBadges}>
-          <span style={styles.footerPill}>9 AI Pipelines Active</span>
-          <span style={styles.footerOnline}>
-            <span style={styles.dot} className="pulse-indicator" />
-            Core Server Online
+            © {new Date().getFullYear()} ClaimVertex · AI-Powered P&amp;C Claims Intelligence · All Rights Reserved.
           </span>
         </div>
       </footer>
@@ -429,7 +422,7 @@ const styles: Record<string, React.CSSProperties> = {
   // Dark Black Footer Bar (Touching corners 100% full width)
   footerBar: {
     backgroundColor: '#000000',
-    borderTop: '1px solid #1a1a1a',
+    borderTop: '1px solid #111111',
     width: '100%',
     margin: 0,
     padding: '0 40px',
@@ -437,42 +430,17 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: 0,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexShrink: 0,
-    flexWrap: 'wrap',
-    gap: 12,
     boxSizing: 'border-box',
     zIndex: 10,
   },
   footerText: {
-    fontSize: 12.5,
-    color: 'rgba(255,255,255,0.85)',
-  },
-  footerBadges: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-  },
-  footerPill: {
-    background: 'rgba(255,255,255,0.1)',
-    border: '1px solid rgba(255,255,255,0.2)',
-    padding: '3px 10px',
-    borderRadius: 6,
-    fontSize: 11,
-    color: '#93c5fd',
-    fontFamily: 'monospace',
-  },
-  footerOnline: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 6,
-    background: 'rgba(34,197,94,0.18)',
-    border: '1px solid rgba(34,197,94,0.35)',
-    padding: '3px 10px',
-    borderRadius: 20,
-    color: '#86efac',
-    fontSize: 11,
-    fontWeight: 600,
+    fontSize: 13,
+    fontWeight: 500,
+    color: '#ffffff',
+    letterSpacing: '0.2px',
+    textAlign: 'center',
   },
   dot: {
     width: 6,
