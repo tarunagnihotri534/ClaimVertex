@@ -641,59 +641,55 @@ export const App: React.FC = () => {
 			<>
 				<LandingPage onLogin={() => setIsLoginModalOpen(true)} />
 
-				{/* ── PROFESSIONAL ENTERPRISE LOGIN MODAL ── */}
+				{/* ── OFFICIAL ENTERPRISE LOGIN MODAL ── */}
 				{isLoginModalOpen && (
-					<div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.65)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={() => setIsLoginModalOpen(false)}>
-						<div style={{ backgroundColor: '#ffffff', borderRadius: 20, width: '100%', maxWidth: 440, padding: '36px 32px', boxShadow: '0 25px 60px -15px rgba(0,0,0,0.35)', position: 'relative', maxHeight: '92vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+					<div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={() => setIsLoginModalOpen(false)}>
+						<div style={{ backgroundColor: '#ffffff', borderRadius: 16, width: '100%', maxWidth: 400, padding: '32px 28px', boxShadow: '0 20px 40px -10px rgba(15,23,42,0.2)', border: '1px solid #e2e8f0', position: 'relative', maxHeight: '92vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
 							
 							{/* Close Button */}
-							<button onClick={() => setIsLoginModalOpen(false)} style={{ position: 'absolute', top: 18, right: 18, background: '#f1f5f9', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer', transition: 'background 0.15s' }}>
-								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+							<button onClick={() => setIsLoginModalOpen(false)} style={{ position: 'absolute', top: 16, right: 16, background: '#f1f5f9', border: 'none', borderRadius: '50%', width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 							</button>
 
-							{/* Brand Badge */}
-							<div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#0f172a', color: '#fff', padding: '5px 14px', borderRadius: 20, fontSize: 12, fontWeight: 700, marginBottom: 16 }}>
-								<Logo size={18} color="#ffffff" />
-								<span>ClaimVertex</span>
+							{/* Official Header */}
+							<div style={{ textAlign: 'center', marginBottom: 22 }}>
+								<div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: '#0f172a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+									<Logo size={24} color="#ffffff" />
+								</div>
+								<h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0', letterSpacing: '-0.3px' }}>Sign In</h2>
+								<p style={{ fontSize: 13, color: '#64748b', margin: 0 }}>ClaimVertex Enterprise Portal</p>
 							</div>
-
-							<h2 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px', margin: '0 0 6px 0' }}>Sign In to Command Center</h2>
-							<p style={{ fontSize: 13.5, color: '#64748b', margin: '0 0 24px 0', lineHeight: 1.5 }}>Enter your corporate credentials to access autonomous Straight-Through Processing and SIU risk intelligence.</p>
 
 							{/* Login Form */}
 							<form onSubmit={e => { e.preventDefault(); setActiveUser({ name: authName || 'Sarah Jenkins', email: authEmail, role: 'Senior Claims Adjuster', avatar: 'SJ' }); setView('dashboard'); setIsLoginModalOpen(false); }}>
 								
 								{/* Email Input */}
-								<div style={{ marginBottom: 16 }}>
-									<label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: '#475569', letterSpacing: '0.4px', textTransform: 'uppercase', marginBottom: 6 }}>
-										Work Email / Adjuster ID
+								<div style={{ marginBottom: 14 }}>
+									<label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#334155', marginBottom: 5 }}>
+										Email address
 									</label>
-									<div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-										<span style={{ position: 'absolute', left: 12, color: '#94a3b8', fontSize: 14 }}>✉️</span>
-										<input
-											type="email"
-											value={authEmail}
-											onChange={e => setAuthEmail(e.target.value)}
-											placeholder="name@insurance-carrier.com"
-											style={{ width: '100%', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: 10, padding: '12px 14px 12px 38px', fontFamily: 'Inter, sans-serif', fontSize: 13.5, color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
-											required
-										/>
-									</div>
+									<input
+										type="email"
+										value={authEmail}
+										onChange={e => setAuthEmail(e.target.value)}
+										placeholder="adjuster@claimvertex.ai"
+										style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '10px 12px', fontFamily: 'inherit', fontSize: 13.5, color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
+										required
+									/>
 								</div>
 
 								{/* Password Input */}
-								<div style={{ marginBottom: 18 }}>
-									<label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: '#475569', letterSpacing: '0.4px', textTransform: 'uppercase', marginBottom: 6 }}>
+								<div style={{ marginBottom: 16 }}>
+									<label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#334155', marginBottom: 5 }}>
 										Password
 									</label>
 									<div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-										<span style={{ position: 'absolute', left: 12, color: '#94a3b8', fontSize: 14 }}>🔒</span>
 										<input
 											type={showPassword ? 'text' : 'password'}
 											value={authPassword}
 											onChange={e => setAuthPassword(e.target.value)}
-											placeholder="Enter your corporate password"
-											style={{ width: '100%', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: 10, padding: '12px 42px 12px 38px', fontFamily: 'Inter, sans-serif', fontSize: 13.5, color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
+											placeholder="••••••••••••"
+											style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '10px 42px 10px 12px', fontFamily: 'inherit', fontSize: 13.5, color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
 											required
 										/>
 										<button
@@ -707,10 +703,10 @@ export const App: React.FC = () => {
 								</div>
 
 								{/* Options Row */}
-								<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 22, fontSize: 12.5 }}>
+								<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, fontSize: 12.5 }}>
 									<label style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#475569', cursor: 'pointer' }}>
 										<input type="checkbox" defaultChecked style={{ accentColor: '#0f172a' }} />
-										<span>Remember this session</span>
+										<span>Remember this device</span>
 									</label>
 									<span style={{ color: '#0f172a', fontWeight: 600, cursor: 'pointer' }}>
 										Forgot password?
@@ -721,15 +717,15 @@ export const App: React.FC = () => {
 								<button
 									type="submit"
 									id="modal-submit-btn"
-									style={{ width: '100%', backgroundColor: '#0f172a', color: '#ffffff', fontSize: 14.5, fontWeight: 700, padding: '13px 0', borderRadius: 10, border: 'none', cursor: 'pointer', boxShadow: '0 4px 14px rgba(15,23,42,0.25)' }}
+									style={{ width: '100%', backgroundColor: '#0f172a', color: '#ffffff', fontSize: 14, fontWeight: 700, padding: '11px 0', borderRadius: 8, border: 'none', cursor: 'pointer' }}
 								>
-									Sign In to Command Center →
+									Sign In
 								</button>
 
 								{/* Divider */}
-								<div style={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '20px 0 16px', color: '#94a3b8', fontSize: 11, fontWeight: 700, letterSpacing: '0.4px' }}>
+								<div style={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '18px 0 14px', color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>
 									<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
-									<span style={{ padding: '0 12px' }}>SINGLE SIGN-ON</span>
+									<span style={{ padding: '0 10px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>or</span>
 									<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
 								</div>
 
@@ -737,15 +733,15 @@ export const App: React.FC = () => {
 								<button
 									type="button"
 									onClick={() => { setActiveUser({ name: 'Sarah Jenkins', email: authEmail || 'sarah@claimvertex.ai', role: 'Senior Claims Adjuster', avatar: 'SJ' }); setView('dashboard'); setIsLoginModalOpen(false); }}
-									style={{ width: '100%', backgroundColor: '#f8fafc', border: '1px solid #cbd5e1', color: '#334155', fontSize: 13, fontWeight: 600, padding: '11px 0', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+									style={{ width: '100%', backgroundColor: '#ffffff', border: '1px solid #cbd5e1', color: '#334155', fontSize: 13, fontWeight: 600, padding: '10px 0', borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
 								>
-									<span>🏢 Continue with Enterprise SSO / SAML</span>
+									<span>Sign In with Enterprise SSO</span>
 								</button>
 							</form>
 
 							{/* Security Certifications Footer */}
-							<div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid #f1f5f9', textAlign: 'center', fontSize: 11, color: '#94a3b8' }}>
-								🔒 256-bit TLS Encryption • SOC-2 Type II Certified
+							<div style={{ marginTop: 22, paddingTop: 14, borderTop: '1px solid #f1f5f9', textAlign: 'center', fontSize: 11, color: '#94a3b8' }}>
+								🔒 Enterprise 256-bit encryption · SOC-2 compliant
 							</div>
 
 						</div>

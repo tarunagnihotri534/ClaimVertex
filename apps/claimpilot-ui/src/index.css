@@ -28,7 +28,7 @@ html, body {
   justify-content: space-between !important;
 }
 
-/* ── Smooth Ambient Keyframes & Micro-Animations ── */
+/* ── Smooth Ambient Keyframes & Background Animations (Landing UI only) ── */
 
 @keyframes floatHeroMain {
   0%, 100% {
@@ -88,6 +88,40 @@ html, body {
   }
 }
 
+/* Ambient Floating Background Orbs for Landing Page */
+@keyframes orbFloatSlow1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(35px, -45px) scale(1.12);
+  }
+  66% {
+    transform: translate(-25px, 20px) scale(0.92);
+  }
+}
+
+@keyframes orbFloatSlow2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-40px, 30px) scale(1.08);
+  }
+  66% {
+    transform: translate(25px, -35px) scale(0.95);
+  }
+}
+
+@keyframes orbFloatSlow3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, 30px) scale(1.15);
+  }
+}
+
 .hero-main-img {
   animation: floatHeroMain 5.5s ease-in-out infinite;
   will-change: transform;
@@ -111,4 +145,41 @@ html, body {
 
 .pulse-indicator {
   animation: pulseDot 2s ease-in-out infinite;
+}
+
+/* Landing background orb classes */
+.landing-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(65px);
+  z-index: 0;
+  opacity: 0.45;
+}
+
+.landing-orb-1 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(160, 229, 113, 0.45) 0%, rgba(160, 229, 113, 0) 70%);
+  top: 10%;
+  right: 5%;
+  animation: orbFloatSlow1 12s ease-in-out infinite;
+}
+
+.landing-orb-2 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(56, 189, 248, 0) 70%);
+  bottom: 15%;
+  left: 5%;
+  animation: orbFloatSlow2 15s ease-in-out infinite;
+}
+
+.landing-orb-3 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(17, 75, 95, 0.22) 0%, rgba(17, 75, 95, 0) 70%);
+  top: 35%;
+  left: 40%;
+  animation: orbFloatSlow3 18s ease-in-out infinite;
 }

@@ -11,6 +11,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   return (
     <div style={styles.root}>
 
+      {/* ── AMBIENT FLOATING BACKGROUND ORBS (Landing UI only) ── */}
+      <div className="landing-bg-orb landing-orb-1" />
+      <div className="landing-bg-orb landing-orb-2" />
+      <div className="landing-bg-orb landing-orb-3" />
+
       {/* ── TOP NAVBAR (Edge-to-Edge Touching Corners) ── */}
       <header style={styles.navbar}>
         <div style={styles.navLeft}>
@@ -127,6 +132,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     minHeight: '100vh',
     width: '100%',
+    position: 'relative',
     margin: 0,
     padding: 0,
     backgroundColor: '#fffef5',
