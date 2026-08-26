@@ -1,0 +1,80 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1772 >>
+stream
+BT
+/F1 15 Tf
+50 740 Td
+(SENTINEL MUTUAL PROPERTY & CASUALTY INSURANCE) Tj
+/F1 9 Tf
+0 -16 Td
+(Policy Declarations Page & Endorsement Schedule) Tj
+0 -12 Td
+(-------------------------------------------------------------------------------------------------------) Tj
+/F1 9.5 Tf
+0 -14 Td
+(Named Insured:  Jane Doe                        Policy Number: POL-994821) Tj
+0 -13 Td
+(Effective:      Jan 01, 2026 to Jan 01, 2027    Policy Form:   HO-3 Special Dwelling) Tj
+0 -13 Td
+(Insured Risk:   742 Evergreen Terrace           Agent Code:    AG-88210) Tj
+0 -10 Td
+(-------------------------------------------------------------------------------------------------------) Tj
+/F1 10.5 Tf
+0 -18 Td
+(SECTION I - COVERAGE LIMITS:) Tj
+/F1 9 Tf
+0 -13 Td
+(Coverage A - Dwelling Building Limit ............................................. $500,000.00) Tj
+0 -13 Td
+(Coverage B - Other Structures Limit [10%] ....................................... $50,000.00) Tj
+0 -13 Td
+(Coverage C - Personal Property Contents Limit [50%] .............................. $250,000.00) Tj
+0 -13 Td
+(Coverage D - Loss of Use / Additional Living Expenses [20%] ...................... $100,000.00) Tj
+/F1 10.5 Tf
+0 -18 Td
+(DEDUCTIBLE SCHEDULE & ENDORSEMENTS:) Tj
+/F1 9 Tf
+0 -13 Td
+(- Standard Property Damage Deductible: $1,000.00 per occurrence.) Tj
+0 -13 Td
+(- Endorsement HO-0422: Sudden & Accidental Water Discharge [Included].) Tj
+0 -13 Td
+(- Endorsement HO-0350: Replacement Cost Value [RCV] Settlement Provision.) Tj
+0 -12 Td
+(-------------------------------------------------------------------------------------------------------) Tj
+/F1 11 Tf
+0 -16 Td
+(AGGREGATE POLICY LIMIT CAPACITY: $900,000.00) Tj
+/F1 8.5 Tf
+0 -24 Td
+(Underwriting Officer: Elizabeth Vance | Sentinel Mutual Insurance Group) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002065 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2135
+%%EOF

@@ -330,14 +330,267 @@
 
     /* RESULT & GAUGE */
     .result-box {
-      background: var(--bg-base);
+      background: var(--bg-surface);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 18px;
+      border-radius: var(--radius);
+      padding: 20px;
       font-size: 13px;
       line-height: 1.6;
-      min-height: 160px;
       color: var(--text-main);
+    }
+
+    .peril-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .peril-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .claim-meta-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* FINANCIAL METRIC CARDS */
+    .financial-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .fin-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    .fin-card.highlight {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+    .fin-card.highlight .fin-val {
+      color: #15803d;
+    }
+    .fin-card.alert {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+    .fin-card.alert .fin-val {
+      color: #b91c1c;
+    }
+    .fin-label {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-subtle);
+      letter-spacing: 0.5px;
+    }
+    .fin-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .fin-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* SUB-TABS */
+    .subtabs-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+    .subtab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .subtab-btn:hover {
+      background: var(--bg-elevated);
+      color: var(--text-main);
+    }
+    .subtab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* ESTIMATE TABLE */
+    .estimate-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+    .estimate-table th {
+      background: var(--bg-elevated);
+      color: var(--text-subtle);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      padding: 8px 10px;
+      border: 1px solid var(--border-color);
+      text-align: left;
+    }
+    .estimate-table td {
+      padding: 8px 10px;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .estimate-table tr:nth-child(even) {
+      background: #fafafa;
+    }
+    .cat-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* SIU RISK VECTORS */
+    .vectors-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .vector-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .vector-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .vector-pill {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .vector-pill.ok {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .vector-pill.warn {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .vector-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ADJUSTER ACTIONS */
+    .adjuster-action-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .action-btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid transparent;
+    }
+    .btn-action.approve {
+      background: #15803d;
+      color: #ffffff;
+    }
+    .btn-action.approve:hover {
+      background: #166534;
+      box-shadow: 0 2px 6px rgba(22, 101, 52, 0.2);
+    }
+    .btn-action.inspect {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+    .btn-action.inspect:hover {
+      background: #f1f5f9;
+      border-color: #0f172a;
+    }
+    .btn-action.siu {
+      background: #b91c1c;
+      color: #ffffff;
+    }
+    .btn-action.siu:hover {
+      background: #991b1b;
+      box-shadow: 0 2px 6px rgba(153, 27, 27, 0.2);
+    }
+    .btn-action.print {
+      background: #ffffff;
+      color: #475569;
+      border-color: #cbd5e1;
+    }
+    .btn-action.print:hover {
+      background: #f8fafc;
+      color: #0f172a;
     }
 
     .gauge-container {
@@ -383,12 +636,17 @@
       border: 1px solid var(--status-pass-border);
       color: var(--status-pass-text);
     }
+    .gate-badge.approved {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+    }
 
     /* INGESTION & PIPELINE FLOW */
     .dropzone {
       border: 2px dashed #cbd5e1;
       border-radius: 8px;
-      padding: 36px 20px;
+      padding: 30px 20px;
       text-align: center;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -423,6 +681,75 @@
     .flow-arrow {
       color: var(--text-subtle);
       font-size: 12px;
+    }
+
+    /* DOCUMENT INTELLIGENCE CARD */
+    .doc-intel-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .doc-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .doc-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .doc-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .doc-meta-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .doc-meta-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+    }
+    .doc-meta-val {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .doc-summary-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+    .clickable-row {
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .clickable-row:hover {
+      background: #f1f5f9 !important;
     }
 
     /* CHAT BOX */
@@ -970,16 +1297,18 @@
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 4px;">
-          <div style="font-size: 11px; color: var(--text-subtle); text-transform: uppercase; font-weight:700;">Sample Templates:</div>
+          <div style="font-size: 11px; color: var(--text-subtle); text-transform: uppercase; font-weight:700;">Sample Real-World Templates:</div>
           <div class="preset-row">
             <button class="preset-btn" onclick="loadPreset('water')">Water Burst ($8,450)</button>
             <button class="preset-btn" onclick="loadPreset('fire')">Warehouse Fire ($142,000)</button>
             <button class="preset-btn" onclick="loadPreset('auto')">Auto Hail ($3,200)</button>
+            <button class="preset-btn" onclick="loadPreset('roof')">Hurricane Roof ($38,750)</button>
+            <button class="preset-btn" onclick="loadPreset('commercial')">Commercial Spoilage ($24,500)</button>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Claimant Name</label>
+          <label>Claimant Name / Entity</label>
           <input type="text" id="claimant" class="form-input" value="Jane Doe" />
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -996,27 +1325,24 @@
           <label>Loss Description & Incident Details</label>
           <textarea id="description" class="form-input">Water line burst in kitchen causing damage to hardwood floors, base cabinets, and sub-flooring. Plumber invoice attached.</textarea>
         </div>
-        <button class="btn-primary" onclick="runClaimAnalysis()">Analyze Claim</button>
+        <button class="btn-primary" id="analyze-btn" onclick="runClaimAnalysis()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          <span>Analyze Claim &amp; Compute Financial Budget</span>
+        </button>
       </div>
 
-      <div class="card">
+      <div class="card" style="min-height: 580px;">
         <div class="card-header">
-          <div class="card-title">Assessment & Audit Evaluation</div>
+          <div class="card-title">Assessment &amp; Audit Evaluation</div>
           <div id="gate-badge-slot"></div>
         </div>
 
-        <div id="gauge-box" class="gauge-container" style="display: none;">
-          <div class="gauge-header">
-            <span>Fraud Risk Score</span>
-            <span id="score-val">14 / 100</span>
+        <div id="analysis-output" style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="text-align: center; padding: 60px 20px; color: var(--text-subtle);">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 12px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <div style="font-size: 15px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">No Claim Record Evaluated Yet</div>
+            <div style="font-size: 13px;">Select a sample template or enter claim details, then click <strong>Analyze Claim</strong> to generate full insurance financial accounting, Xactimate line-item estimates, and SIU fraud risk vectors.</div>
           </div>
-          <div class="gauge-bar-bg">
-            <div class="gauge-fill" id="score-bar"></div>
-          </div>
-        </div>
-
-        <div class="result-box" id="analysis-output">
-          <span style="color: var(--text-subtle);">Submit a claim record to trigger real-time risk evaluation and adjuster gate verification.</span>
         </div>
       </div>
     </div>
@@ -1025,21 +1351,26 @@
     <div id="tab-ingestion" class="dashboard-grid" style="display: none;">
       <div class="card">
         <div class="card-header">
-          <div class="card-title">Document Ingestion & Indexing</div>
+          <div class="card-title">Document Ingestion &amp; Intelligence</div>
           <div class="pipeline-tag">ingestion.pipe</div>
         </div>
         <div class="dropzone" onclick="document.getElementById('file-input').click()">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-          <div style="font-size: 14px; font-weight: 600; color: var(--text-main); margin-top: 4px;">Upload Claim Evidence & Invoices</div>
+          <div style="font-size: 14px; font-weight: 600; color: var(--text-main); margin-top: 4px;">Upload Claim Evidence &amp; Invoices</div>
           <div style="font-size: 12px; color: var(--text-subtle);">Supports PDF, PNG, JPG, CSV parsed and vector indexed into Qdrant</div>
           <input type="file" id="file-input" style="display: none;" onchange="uploadFile(this.files[0])" />
         </div>
-        <div id="upload-status-box" style="font-size: 12px; color: var(--text-muted); font-weight: 500;"></div>
+        
+        <div id="upload-status-box" style="margin-top: 10px; font-size: 12px; color: var(--text-muted); font-weight: 500;"></div>
+
+        <!-- Document Intelligence Preview Card Slot -->
+        <div id="doc-preview-slot"></div>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-title">Ingestion Execution Pipeline</div>
+          <button class="preset-btn" onclick="fetchDocuments()">Refresh Index</button>
         </div>
         <div style="font-size: 13px; line-height: 1.6; color: var(--text-muted);">
           Multi-stage DAG processing sequence:
@@ -1056,15 +1387,16 @@
           </div>
         </div>
         
-        <div style="margin-top: 14px;">
-          <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Indexed Evidence Documents:</div>
+        <div style="margin-top: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-size: 13px; font-weight: 600;">Indexed Evidence Documents:</div>
+            <span style="font-size: 11px; color: var(--text-subtle);">Click any document to inspect extracted details</span>
+          </div>
           <table id="docs-table">
             <thead>
-              <tr><th>Filename</th><th>Size</th><th>Status</th></tr>
+              <tr><th>Filename</th><th>Classification</th><th>Policy</th><th>Scope</th><th>Status</th></tr>
             </thead>
             <tbody id="docs-list-body">
-              <tr><td>Plumber_Invoice_88412.pdf</td><td>245 KB</td><td><span style="color:var(--status-pass-text); font-weight:600;">Complete</span></td></tr>
-              <tr><td>Property_Policy_POL994821.pdf</td><td>1,048 KB</td><td><span style="color:var(--status-pass-text); font-weight:600;">Complete</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -1137,8 +1469,17 @@
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
 
+      if (name === 'ingestion') fetchDocuments();
       if (name === 'history') fetchHistory();
     }
+
+    // Initialize document index on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchDocuments();
+      updateStats();
+    });
+
+    let lastAnalyzedData = null;
 
     function loadPreset(type) {
       if (type === 'water') {
@@ -1156,6 +1497,16 @@
         document.getElementById('policy').value = 'POL-551029';
         document.getElementById('amount').value = '3200.00';
         document.getElementById('description').value = 'Vehicle roof and windshield dented by severe hail storm while parked in driveway.';
+      } else if (type === 'roof') {
+        document.getElementById('claimant').value = 'Coastal Heritage Realty';
+        document.getElementById('policy').value = 'POL-771820';
+        document.getElementById('amount').value = '38750.00';
+        document.getElementById('description').value = 'Hurricane gale wind uplift tore 38 squares of architectural shingles with ceiling water intrusion into second floor bedrooms.';
+      } else if (type === 'commercial') {
+        document.getElementById('claimant').value = 'Bistro Milano Restaurant Group';
+        document.getElementById('policy').value = 'POL-119482';
+        document.getElementById('amount').value = '24500.00';
+        document.getElementById('description').value = 'Commercial walk-in compressor mechanical failure resulting in total spoilage of refrigerated inventory and business interruption loss.';
       }
     }
 
@@ -1173,18 +1524,16 @@
     async function runClaimAnalysis() {
       const output = document.getElementById('analysis-output');
       const badgeSlot = document.getElementById('gate-badge-slot');
-      const gaugeBox = document.getElementById('gauge-box');
-      const scoreVal = document.getElementById('score-val');
-      const scoreBar = document.getElementById('score-bar');
+      const btn = document.getElementById('analyze-btn');
 
-      output.innerHTML = '<span style="color: var(--text-subtle);">Evaluating claim record against risk parameters...</span>';
-      badgeSlot.innerHTML = '';
-      gaugeBox.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = '<span>Evaluating Risk & Financials...</span>';
+      output.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">Running RocketRide claim analysis pipeline, verifying policy coverage, and computing line-item budget...</div>';
 
       const payload = {
         claimant: document.getElementById('claimant').value,
         policy_number: document.getElementById('policy').value,
-        amount: parseFloat(document.getElementById('amount').value),
+        amount: parseFloat(document.getElementById('amount').value) || 0,
         description: document.getElementById('description').value,
         loss_date: new Date().toISOString().split('T')[0]
       };
@@ -1196,44 +1545,373 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json();
+        lastAnalyzedData = data;
 
-        // Update score gauge
-        gaugeBox.style.display = 'block';
-        scoreVal.innerText = `${data.fraud_risk_score} / 100`;
-        scoreBar.style.width = `${data.fraud_risk_score}%`;
-        if (data.fraud_risk_score > 60) {
-          scoreBar.style.backgroundColor = '#b91c1c';
-        } else if (data.fraud_risk_score > 30) {
-          scoreBar.style.backgroundColor = '#d97706';
-        } else {
-          scoreBar.style.backgroundColor = '#15803d';
-        }
-
-        output.innerHTML = `
-          <strong>Claim Record ID:</strong> ${data.claim_id}<br/>
-          <strong>Claimant:</strong> ${data.claimant}<br/>
-          <strong>Claim Amount:</strong> $${data.amount.toLocaleString()}<br/>
-          <strong>Recommendation:</strong> ${data.recommendation}<br/><br/>
-          <strong>Assessment Summary:</strong><br/>
-          ${data.assessment}
-        `;
-
-        if (data.human_review_required) {
-          badgeSlot.innerHTML = `<div class="gate-badge human">ESCALATED TO ADJUSTER REVIEW</div>`;
-        } else {
-          badgeSlot.innerHTML = `<div class="gate-badge auto">AUTOMATED APPROVAL PASSED</div>`;
-        }
-
+        renderAssessment(data);
         updateStats();
       } catch (err) {
-        output.innerHTML = 'Error analyzing claim: ' + err.message;
+        output.innerHTML = '<div style="color: #b91c1c; padding: 20px;">Error analyzing claim: ' + err.message + '</div>';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><span>Analyze Claim &amp; Compute Financial Budget</span>';
       }
     }
+
+    function renderAssessment(data) {
+      const output = document.getElementById('analysis-output');
+      const badgeSlot = document.getElementById('gate-badge-slot');
+      const f = data.financials;
+
+      // Update gate badge in header
+      if (data.gate_status === 'APPROVED BY HUMAN ADJUSTER') {
+        badgeSlot.innerHTML = `<div class="gate-badge approved">APPROVED BY ADJUSTER</div>`;
+      } else if (data.human_review_required) {
+        badgeSlot.innerHTML = `<div class="gate-badge human">ESCALATED TO SENIOR REVIEW</div>`;
+      } else {
+        badgeSlot.innerHTML = `<div class="gate-badge auto">AUTOMATED APPROVAL PASSED</div>`;
+      }
+
+      // Fraud score color
+      let scoreColor = '#15803d';
+      if (data.fraud_risk_score >= 70) scoreColor = '#b91c1c';
+      else if (data.fraud_risk_score >= 40) scoreColor = '#d97706';
+
+      output.innerHTML = `
+        <!-- Peril & ID Banner -->
+        <div class="peril-banner">
+          <div>
+            <div class="peril-title">
+              <span>${data.peril}</span>
+            </div>
+            <div style="font-size: 11.5px; color: var(--text-subtle); margin-top: 2px;">
+              Policy: <strong>${data.policy_number}</strong> &bull; Claimant: <strong>${data.claimant}</strong>
+            </div>
+          </div>
+          <div class="claim-meta-tag">ID: ${data.claim_id}</div>
+        </div>
+
+        <!-- 4 Key Financial Summary Cards -->
+        <div class="financial-grid">
+          <div class="fin-card">
+            <span class="fin-label">Claimed (RCV)</span>
+            <span class="fin-val">$${f.replacement_cost_value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            <span class="fin-sub">Gross Repair Estimate</span>
+          </div>
+          <div class="fin-card">
+            <span class="fin-label">Depreciation (${f.depreciation_rate_pct}%)</span>
+            <span class="fin-val">-$${f.depreciation_amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            <span class="fin-sub">$${f.recoverable_depreciation.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} Recoverable</span>
+          </div>
+          <div class="fin-card">
+            <span class="fin-label">Actual Cash Value (ACV)</span>
+            <span class="fin-val">$${f.actual_cash_value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            <span class="fin-sub">RCV &minus; Depreciation</span>
+          </div>
+          <div class="fin-card highlight">
+            <span class="fin-label">Net Initial Payout</span>
+            <span class="fin-val">$${f.net_payable_payout.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            <span class="fin-sub">After $${f.policy_deductible.toLocaleString()} Deductible</span>
+          </div>
+        </div>
+
+        <!-- Fraud Score Bar -->
+        <div class="gauge-container" style="background:#f8fafc; border:1px solid var(--border-color); padding:12px 16px; border-radius:8px;">
+          <div class="gauge-header">
+            <span><strong>SIU Fraud Risk Score:</strong> ${data.fraud_risk_score} / 100</span>
+            <span style="color: ${scoreColor}; font-weight:700;">${data.risk_level}</span>
+          </div>
+          <div class="gauge-bar-bg" style="height:8px;">
+            <div class="gauge-fill" style="width: ${data.fraud_risk_score}%; background-color: ${scoreColor};"></div>
+             <!-- Sub-tabs Navigation -->
+        <div class="subtabs-bar">
+          <button class="subtab-btn active" onclick="switchSubTab(event, 'subtab-financials')">Financials &amp; Reserves</button>
+          <button class="subtab-btn" onclick="switchSubTab(event, 'subtab-estimate')">Itemized Estimate</button>
+          <button class="subtab-btn" onclick="switchSubTab(event, 'subtab-siu')">SIU Risk Matrix (${data.risk_vectors.length})</button>
+          <button class="subtab-btn" onclick="switchSubTab(event, 'subtab-adjuster')">Adjuster Actions</button>
+        </div>
+
+        <!-- SUBTAB 1: FINANCIALS & RESERVES -->
+        <div id="subtab-financials" class="subtab-content">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+              <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-subtle); margin-bottom: 8px;">Policy Coverage Limit &amp; Reserve Utilization</div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                <span>Total Incurred Exposure: <strong>$${f.total_incurred_reserve.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></span>
+                <span>Policy Limit (${f.coverage_type}): <strong>$${f.coverage_limit.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></span>
+              </div>
+              <div class="gauge-bar-bg" style="height: 10px;">
+                <div class="gauge-fill" style="width: ${Math.min(100, (f.total_incurred_reserve / f.coverage_limit * 100)).toFixed(1)}%; background-color: #0f172a;"></div>
+              </div>
+              <div style="font-size: 11px; color: var(--text-subtle); margin-top: 6px;">
+                Available Remaining Policy Capacity: <strong>$${f.remaining_coverage.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> (${(100 - (f.total_incurred_reserve / f.coverage_limit * 100)).toFixed(1)}% remaining)
+              </div>
+            </div>
+
+            <table class="estimate-table">
+              <thead>
+                <tr><th>Accounting Item</th><th>Allocation / Status</th><th>Amount ($)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Gross Replacement Cost (RCV)</td><td>Total contractor & materials quote</td><td style="font-weight:600;">$${f.replacement_cost_value.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                <tr><td>Non-Recoverable Depreciation</td><td>Materials wear & tear factor</td><td style="color:#b91c1c;">-$${f.non_recoverable_depreciation.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                <tr><td>Recoverable Depreciation Holdback</td><td>Payable upon completion certificate</td><td style="color:#b91c1c;">-$${f.recoverable_depreciation.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                <tr><td>Policy Deductible</td><td>Insured out-of-pocket retention</td><td style="color:#b91c1c;">-$${f.policy_deductible.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                <tr style="background:#f0fdf4; font-weight:700;"><td>Net Initial Payout (Direct to Claimant)</td><td>Immediate settlement disbursement</td><td style="color:#15803d; font-size:14px;">$${f.net_payable_payout.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                <tr><td>Adjuster Expense Reserve (ALAE)</td><td>Independent adjuster & forensic review budget</td><td>$${f.allocated_alae_reserve.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                <tr style="font-weight:700;"><td>Total Incurred Loss Exposure</td><td>Indemnity Reserve + Expense Reserve</td><td>$${f.total_incurred_reserve.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUBTAB 2: ITEMIZED ESTIMATE -->
+        <div id="subtab-estimate" class="subtab-content" style="display: none;">
+          <table class="estimate-table">
+            <thead>
+              <tr>
+                <th>Scope of Repair / Materials</th>
+                <th>Category</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total ($)</th>
+                <th>Audit Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.line_items.map(it => `
+                <tr>
+                  <td style="font-weight:600;">${it.item}</td>
+                  <td><span class="cat-tag">${it.category}</span></td>
+                  <td>${it.qty} ${it.unit}</td>
+                  <td>$${it.unit_price.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                  <td style="font-weight:700; font-family:'JetBrains Mono',monospace;">$${it.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                  <td style="font-size:11px; color:var(--text-subtle);">${it.status}</td>
+                </tr>
+              `).join('')}
+              <tr style="background:var(--bg-elevated); font-weight:700;">
+                <td colspan="4" style="text-align:right;">Subtotal Estimate (RCV):</td>
+                <td style="font-family:'JetBrains Mono',monospace; font-size:13px;">$${f.replacement_cost_value.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <td>Validated</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SUBTAB 3: SIU FRAUD RISK MATRIX -->
+        <div id="subtab-siu" class="subtab-content" style="display: none;">
+          <div class="vectors-grid">
+            ${data.risk_vectors.map(v => `
+              <div class="vector-card">
+                <div class="vector-header">
+                  <span>${v.vector}</span>
+                  <span class="vector-pill ${v.score > 50 ? 'warn' : 'ok'}">${v.status}</span>
+                </div>
+                <div class="gauge-bar-bg">
+                  <div class="gauge-fill" style="width: ${v.score}%; background-color: ${v.score > 50 ? '#b91c1c' : '#15803d'};"></div>
+                </div>
+                <div class="vector-desc">${v.detail}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- SUBTAB 4: ADJUSTER ACTIONS & OVERSIGHT -->
+        <div id="subtab-adjuster" class="subtab-content" style="display: none;">
+          <div class="adjuster-action-box">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">Executive Adjuster Recommendation</div>
+              <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">${data.recommendation}</div>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px;">
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-subtle); margin-bottom: 6px;">Evaluation Rationale &amp; Gate Rules</div>
+              <ul style="padding-left: 18px; font-size: 12px; color: var(--text-main); display: flex; flex-direction: column; gap: 4px;">
+                ${data.reasoning.map(r => `<li>${r}</li>`).join('')}
+              </ul>
+            </div>
+
+            <div class="action-btn-row">
+              <button class="btn-action approve" onclick="executeApproveClaim('${data.claim_id}')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Authorize Payout ($${f.net_payable_payout.toLocaleString(undefined, {minimumFractionDigits: 2})})</span>
+              </button>
+              <button class="btn-action inspect" onclick="executeFieldInspection('${data.claim_id}')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>Schedule Field Inspection</span>
+              </button>
+              <button class="btn-action siu" onclick="executeEscalateSIU('${data.claim_id}')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>Escalate to SIU Fraud</span>
+              </button>
+              <button class="btn-action print" onclick="printClaimReport('${data.claim_id}')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                <span>Print Official Report</span>
+              </button>
+            </div>
+          </div>
+        </div>    </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function switchSubTab(e, subtabId) {
+      document.querySelectorAll('.subtab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.subtab-content').forEach(content => content.style.display = 'none');
+      e.target.classList.add('active');
+      document.getElementById(subtabId).style.display = 'block';
+    }
+
+    async function executeApproveClaim(claimId) {
+      const userProfile = JSON.parse(localStorage.getItem('claimpilot_user_profile') || '{}');
+      const adjusterName = userProfile.name ? `${userProfile.name} (${userProfile.role || 'Senior Adjuster'})` : 'Senior Licensed Adjuster';
+
+      try {
+        const formData = new FormData();
+        formData.append('adjuster_name', adjusterName);
+
+        const res = await fetch(`/api/claims/${claimId}/approve`, { method: 'POST', body: formData });
+        const resData = await res.json();
+        
+        alert(`Authorization Successful!\n\n${resData.message}\nAuthorization Token: ${resData.claim.authorization_token}`);
+        
+        if (lastAnalyzedData && lastAnalyzedData.claim_id === claimId) {
+          lastAnalyzedData.gate_status = 'APPROVED BY HUMAN ADJUSTER';
+          lastAnalyzedData.human_review_required = false;
+          renderAssessment(lastAnalyzedData);
+        }
+        updateStats();
+      } catch (err) {
+        alert('Error approving claim: ' + err.message);
+      }
+    }
+
+    async function executeEscalateSIU(claimId) {
+      const reason = prompt('Enter SIU Investigation reason & recorded statement instructions:', 'Formal forensic origin examination and recorded policyholder interview mandated.');
+      if (reason === null) return;
+
+      try {
+        const formData = new FormData();
+        formData.append('notes', reason);
+
+        const res = await fetch(`/api/claims/${claimId}/escalate`, { method: 'POST', body: formData });
+        const resData = await res.json();
+        
+        alert(`Notice: Claim Escalated to SIU!\n\n${resData.message}`);
+        
+        if (lastAnalyzedData && lastAnalyzedData.claim_id === claimId) {
+          lastAnalyzedData.gate_status = 'ESCALATED TO SIU INVESTIGATION';
+          lastAnalyzedData.human_review_required = true;
+          renderAssessment(lastAnalyzedData);
+        }
+        updateStats();
+      } catch (err) {
+        alert('Error escalating claim: ' + err.message);
+      }
+    }
+
+    function executeFieldInspection(claimId) {
+      alert(`Field Inspection Scheduled!\n\nSenior Independent Property Adjuster assigned to conduct on-site moisture and structural scans for claim ${claimId}.`);
+    }
+
+    function printClaimReport(claimId) {
+      if (!lastAnalyzedData) return;
+      const d = lastAnalyzedData;
+      const f = d.financials;
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>ClaimPilot Adjuster Loss Report - ${d.claim_id}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; color: #111; line-height: 1.5; font-size: 13px; }
+            h1 { font-size: 20px; margin-bottom: 2px; }
+            .header-tbl { width: 100%; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 20px; }
+            .sec-title { font-weight: bold; font-size: 14px; margin: 18px 0 8px 0; border-bottom: 1px solid #ddd; padding-bottom: 4px; text-transform: uppercase; }
+            table.tbl { width: 100%; border-collapse: collapse; margin-top: 8px; }
+            table.tbl th, table.tbl td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; font-size: 12px; }
+            table.tbl th { background: #f2f2f2; }
+            .signature-box { margin-top: 40px; display: flex; justify-content: space-between; }
+            .sig-line { width: 45%; border-top: 1px solid #000; padding-top: 6px; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <div class="header-tbl">
+            <h1>CLAIM MANAGEMENT &amp; LOSS ADJUSTMENT REPORT</h1>
+            <div>ClaimPilot Enterprise Platform &bull; RocketRide AI Engine &bull; Confidential</div>
+          </div>
+
+          <div>
+            <strong>Claim ID:</strong> ${d.claim_id} &nbsp;|&nbsp; 
+            <strong>Policy Number:</strong> ${d.policy_number} &nbsp;|&nbsp; 
+            <strong>Claimant:</strong> ${d.claimant} &nbsp;|&nbsp; 
+            <strong>Date of Loss:</strong> ${new Date().toLocaleDateString()}
+          </div>
+
+          <div class="sec-title">1. Loss &amp; Peril Classification</div>
+          <div><strong>Peril:</strong> ${d.peril}</div>
+          <div><strong>Coverage Scope:</strong> ${f.coverage_type}</div>
+          <div><strong>Initial Gate Status:</strong> ${d.gate_status} (Fraud Risk Score: ${d.fraud_risk_score}/100)</div>
+
+          <div class="sec-title">2. Financial Settlement Budget Accounting</div>
+          <table class="tbl">
+            <tr><th>Description</th><th>Financial Amount</th></tr>
+            <tr><td>Replacement Cost Value (RCV)</td><td>$${f.replacement_cost_value.toFixed(2)}</td></tr>
+            <tr><td>Depreciation (${f.depreciation_rate_pct}%)</td><td>-$${f.depreciation_amount.toFixed(2)}</td></tr>
+            <tr><td>Actual Cash Value (ACV)</td><td>$${f.actual_cash_value.toFixed(2)}</td></tr>
+            <tr><td>Policy Deductible Applied</td><td>-$${f.policy_deductible.toFixed(2)}</td></tr>
+            <tr style="font-weight:bold; background:#eee;"><td>Net Immediate Payable Payout</td><td>$${f.net_payable_payout.toFixed(2)}</td></tr>
+            <tr><td>Recoverable Holdback (Subject to Proof of Repair)</td><td>$${f.recoverable_depreciation.toFixed(2)}</td></tr>
+          </table>
+
+          <div class="sec-title">3. Itemized Xactimate Repair Estimate Breakdown</div>
+          <table class="tbl">
+            <tr><th>Line Item</th><th>Category</th><th>Qty</th><th>Unit Price</th><th>Total ($)</th></tr>
+            ${d.line_items.map(it => `
+              <tr>
+                <td>${it.item}</td>
+                <td>${it.category}</td>
+                <td>${it.qty} ${it.unit}</td>
+                <td>$${it.unit_price.toFixed(2)}</td>
+                <td>$${it.total.toFixed(2)}</td>
+              </tr>
+            `).join('')}
+          </table>
+
+          <div class="sec-title">4. Adjuster Sign-Off &amp; Authorization</div>
+          <div><strong>Recommendation:</strong> ${d.recommendation}</div>
+
+          <div class="signature-box">
+            <div class="sig-line">
+              <strong>Licensed Property Adjuster Signature</strong><br/>
+              Date: ________________________
+            </div>
+            <div class="sig-line">
+              <strong>Supervisory Claims Lead Approval</strong><br/>
+              Date: ________________________
+            </div>
+          </div>
+        </body>
+        </html>
+      `);
+      win.document.close();
+      win.print();
+    }
+
+    let allUploadedDocs = [];
 
     async function uploadFile(file) {
       if (!file) return;
       const statusBox = document.getElementById('upload-status-box');
-      statusBox.innerHTML = `Uploading '${file.name}' to Ingestion Pipeline...`;
+      const previewSlot = document.getElementById('doc-preview-slot');
+      
+      statusBox.innerHTML = `
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+          <span>Uploading and processing <strong>${file.name}</strong> via <code>ingestion.pipe</code>...</span>
+          <span style="font-size: 11px; color: var(--text-subtle);">Extracting text, stripping PII, and vector indexing...</span>
+        </div>
+      `;
 
       const formData = new FormData();
       formData.append('file', file);
@@ -1241,14 +1919,157 @@
       try {
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
         const data = await res.json();
-        statusBox.innerHTML = `${data.message}`;
+        
+        statusBox.innerHTML = `
+          <div style="background: #f0fdf4; border: 1px solid #86efac; color: #15803d; padding: 10px 14px; border-radius: 6px; font-weight: 600;">
+            ${data.message}
+          </div>
+        `;
 
-        const tbody = document.getElementById('docs-list-body');
-        tbody.innerHTML = `<tr><td>${data.filename}</td><td>${(data.size_bytes/1024).toFixed(0)} KB</td><td><span style="color:var(--status-pass-text); font-weight:600;">Complete</span></td></tr>` + tbody.innerHTML;
+        if (data.document) {
+          renderDocumentDetails(data.document);
+        }
+        fetchDocuments();
         updateStats();
       } catch (err) {
-        statusBox.innerHTML = `Upload failed: ` + err.message;
+        statusBox.innerHTML = `<div style="background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 10px 14px; border-radius: 6px;">Upload failed: ${err.message}</div>`;
       }
+    }
+
+    function renderDocumentDetails(doc) {
+      const slot = document.getElementById('doc-preview-slot');
+      if (!slot || !doc) return;
+
+      const items = doc.line_items || [];
+      const sizeKb = (doc.size_bytes / 1024).toFixed(1);
+
+      slot.innerHTML = `
+        <div class="doc-intel-card">
+          <div class="doc-card-header">
+            <div class="doc-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #2563eb;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>${doc.filename}</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="claim-meta-tag">${sizeKb} KB</span>
+              <span class="gate-badge auto" style="margin: 0; padding: 3px 8px; font-size: 10px;">${doc.status || 'Complete'}</span>
+            </div>
+          </div>
+
+          <!-- 4 Metadata Boxes -->
+          <div class="doc-meta-grid">
+            <div class="doc-meta-box">
+              <span class="doc-meta-label">Classification</span>
+              <span class="doc-meta-val">${doc.doc_type || 'Claim Evidence'}</span>
+            </div>
+            <div class="doc-meta-box">
+              <span class="doc-meta-label">Matched Policy</span>
+              <span class="doc-meta-val">${doc.policy_number || 'N/A'} (${doc.claimant || 'Insured'})</span>
+            </div>
+            <div class="doc-meta-box">
+              <span class="doc-meta-label">Parsed Scope Amount</span>
+              <span class="doc-meta-val" style="color: #15803d; font-family: 'JetBrains Mono', monospace;">${doc.extracted_amount || '$0.00'}</span>
+            </div>
+            <div class="doc-meta-box">
+              <span class="doc-meta-label">Privacy &amp; PII Audit</span>
+              <span class="doc-meta-val" style="color: #0f172a; font-size: 11px;">${doc.pii_status || 'PII Anonymized'}</span>
+            </div>
+          </div>
+
+          <!-- Executive Document Summary -->
+          <div>
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-subtle); margin-bottom: 4px;">Executive Document Intelligence Summary</div>
+            <div class="doc-summary-box">
+              ${doc.summary || 'Document parsed, tokenized, and indexed into Qdrant vector database.'}
+              <div style="margin-top: 6px; font-size: 11.5px; color: var(--text-subtle);">
+                <strong>Compliance Standard:</strong> ${doc.compliance || 'Industry Standard Verified'} &bull; <strong>Vector DB:</strong> ${doc.vector_chunks || 4} Chunks (512 tokens each) in collection <code>claim_evidence</code>.
+              </div>
+            </div>
+          </div>
+
+          <!-- Parsed Itemized Table if available -->
+          ${items.length > 0 ? `
+            <div>
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-subtle); margin-bottom: 6px;">Parsed Line-Item Scope Table (${items.length} Items)</div>
+              <table class="estimate-table">
+                <thead>
+                  <tr><th>Scope Item</th><th>Qty / Unit</th><th>Unit Rate</th><th>Total ($)</th><th>Audit Status</th></tr>
+                </thead>
+                <tbody>
+                  ${items.map(it => `
+                    <tr>
+                      <td style="font-weight: 600;">${it.item}</td>
+                      <td>${it.qty}</td>
+                      <td>${it.rate}</td>
+                      <td style="font-weight: 700; font-family: 'JetBrains Mono', monospace;">${it.total}</td>
+                      <td style="font-size: 11px; color: var(--text-subtle);">${it.audit || 'Verified'}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          ` : ''}
+
+          <!-- Quick Action Bar -->
+          <div style="display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px;">
+            <button class="btn-action inspect" onclick="queryDocInChat('${doc.filename}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <span>Ask RAG Copilot About This Document</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function fetchDocuments() {
+      try {
+        const res = await fetch('/api/documents');
+        const data = await res.json();
+        allUploadedDocs = data.documents || [];
+
+        const tbody = document.getElementById('docs-list-body');
+        if (!tbody) return;
+
+        if (allUploadedDocs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-subtle); padding: 20px;">No documents uploaded yet. Drag and drop a PDF above.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = allUploadedDocs.map((d, idx) => `
+          <tr class="clickable-row" onclick="selectDocument(${idx})">
+            <td style="font-weight: 600; color: #2563eb; display: flex; align-items: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span>${d.filename}</span>
+            </td>
+            <td style="font-size: 11.5px;">${d.doc_type || 'Claim Evidence'}</td>
+            <td style="font-size: 11.5px; font-family: 'JetBrains Mono', monospace;">${d.policy_number || 'N/A'}</td>
+            <td style="font-weight: 700; font-family: 'JetBrains Mono', monospace;">${d.extracted_amount || '$0.00'}</td>
+            <td>
+              <span class="gate-badge auto" style="padding: 2px 6px; font-size: 10px; margin: 0;">Complete</span>
+            </td>
+          </tr>
+        `).join('');
+
+        // If slot is empty, render the first document
+        const slot = document.getElementById('doc-preview-slot');
+        if (slot && slot.innerHTML.trim() === '' && allUploadedDocs.length > 0) {
+          renderDocumentDetails(allUploadedDocs[0]);
+        }
+      } catch (err) {}
+    }
+
+    function selectDocument(index) {
+      if (allUploadedDocs && allUploadedDocs[index]) {
+        renderDocumentDetails(allUploadedDocs[index]);
+        // Scroll preview into view smoothly
+        document.getElementById('doc-preview-slot').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function queryDocInChat(filename) {
+      showTab('copilot');
+      document.getElementById('chat-input').value = `Summarize the extracted scope of loss, damages, and compliance findings from ${filename}.`;
+      sendChatMessage();
     }
 
     function setQuery(q) {
@@ -1298,7 +2119,7 @@
             <td>$${c.amount.toLocaleString()}</td>
             <td style="font-weight:600;">${c.fraud_risk_score}/100</td>
             <td>
-              <span class="gate-badge ${c.human_review_required ? 'human' : 'auto'}" style="padding: 3px 6px; font-size: 11px; margin: 0;">
+              <span class="gate-badge ${c.gate_status.includes('APPROVED') ? 'approved' : (c.human_review_required ? 'human' : 'auto')}" style="padding: 3px 6px; font-size: 11px; margin: 0;">
                 ${c.gate_status}
               </span>
             </td>

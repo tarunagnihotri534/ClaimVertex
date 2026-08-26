@@ -6,4 +6,7 @@ __pycache__/
 *.pyc
 .claude/
 data/
-
+node_modules/
+dist/
+*.vsix
+.vscode/
