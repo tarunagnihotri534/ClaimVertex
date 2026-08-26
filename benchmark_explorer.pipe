@@ -33,37 +33,35 @@
 			}
 		},
 		{
-			"id": "prompt_1",
-			"provider": "prompt",
+			"id": "qdrant_1",
+			"provider": "qdrant",
 			"config": {
-				"instructions": [
-					"You are ClaimPilot Damage & Fraud Assessment AI.",
-					"Itemize damages into Xactimate repair lines, calculate financial settlement amounts, and evaluate SIU risk."
-				],
+				"profile": "local",
+				"local": {
+					"host": "${ROCKETRIDE_QDRANT_HOST}",
+					"port": 6333,
+					"collection": "cost_benchmarks"
+				},
 				"parameters": {}
 			},
 			"input": [
-				{ "lane": "text", "from": "parse_1" }
+				{ "lane": "questions", "from": "parse_1" }
 			],
 			"ui": {
 				"position": { "x": 460, "y": 200 },
-				"measured": { "width": 150, "height": 66 },
+				"measured": { "width": 150, "height": 135 },
 				"nodeType": "default",
 				"formDataValid": true
 			}
 		},
 		{
-			"id": "llm_1",
-			"provider": "llm_openai",
+			"id": "response_1",
+			"provider": "response_documents",
 			"config": {
-				"profile": "openai-4o",
-				"openai-4o": {
-					"apikey": "${ROCKETRIDE_OPENAI_KEY}"
-				},
-				"parameters": {}
+				"laneName": "documents"
 			},
 			"input": [
-				{ "lane": "questions", "from": "prompt_1" }
+				{ "lane": "documents", "from": "qdrant_1" }
 			],
 			"ui": {
 				"position": { "x": 680, "y": 200 },
@@ -71,25 +69,9 @@
 				"nodeType": "default",
 				"formDataValid": true
 			}
-		},
-		{
-			"id": "response_1",
-			"provider": "response_answers",
-			"config": {
-				"laneName": "answers"
-			},
-			"input": [
-				{ "lane": "answers", "from": "llm_1" }
-			],
-			"ui": {
-				"position": { "x": 900, "y": 200 },
-				"measured": { "width": 150, "height": 66 },
-				"nodeType": "default",
-				"formDataValid": true
-			}
 		}
 	],
-	"project_id": "f90a2b3c-4d5e-46f7-a08b-9c0d1e2f3a4b",
+	"project_id": "c23d4e5f-6a7b-4c8d-9e0f-1a2b3c4d5e6f",
 	"viewport": { "x": 0, "y": 0, "zoom": 1 },
 	"version": 1
 }

@@ -37,8 +37,8 @@
 			"provider": "prompt",
 			"config": {
 				"instructions": [
-					"You are ClaimPilot Damage & Fraud Assessment AI.",
-					"Itemize damages into Xactimate repair lines, calculate financial settlement amounts, and evaluate SIU risk."
+					"You are ClaimPilot AI Telephony Voice Scheduling Assistant.",
+					"Conduct realistic automated voice confirmation calls for field inspections and return structured transcripts."
 				],
 				"parameters": {}
 			},
@@ -89,7 +89,7 @@
 			}
 		}
 	],
-	"project_id": "f90a2b3c-4d5e-46f7-a08b-9c0d1e2f3a4b",
+	"project_id": "d34e5f6a-7b8c-4d9e-0f1a-2b3c4d5e6f7a",
 	"viewport": { "x": 0, "y": 0, "zoom": 1 },
 	"version": 1
 }

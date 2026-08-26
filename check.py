@@ -28,7 +28,13 @@ except ImportError:
 PIPE_FILES = [
     "ingestion.pipe",
     "claim_analysis.pipe",
-    "claim_chat.pipe"
+    "claim_chat.pipe",
+    "siu_dashboard.pipe",
+    "benchmark_explorer.pipe",
+    "inspection_scheduling.pipe",
+    "claim_status.pipe",
+    "adjuster_queue.pipe",
+    "feedback_loop.pipe"
 ]
 
 GUID_REGEX = re.compile(
