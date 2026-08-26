@@ -25,6 +25,13 @@ export default defineConfig(() => ({
 			},
 		}),
 	],
+	html: {
+		title: 'ClaimVertex',
+		favicon: './public/logo.png',
+		meta: {
+			description: 'ClaimVertex — Enterprise AI Insurance Claims & SIU Command Platform',
+		},
+	},
 	tools: {
 		rspack: {
 			module: {

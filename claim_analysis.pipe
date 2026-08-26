@@ -37,7 +37,7 @@
 			"provider": "prompt",
 			"config": {
 				"instructions": [
-					"You are ClaimPilot Damage & Fraud Assessment AI.",
+					"You are ClaimVertex Damage & Fraud Assessment AI.",
 					"Itemize damages into Xactimate repair lines, calculate financial settlement amounts, and evaluate SIU risk."
 				],
 				"parameters": {}

@@ -37,7 +37,7 @@
 			"provider": "prompt",
 			"config": {
 				"instructions": [
-					"You are ClaimPilot AI Telephony Voice Scheduling Assistant.",
+					"You are ClaimVertex AI Telephony Voice Scheduling Assistant.",
 					"Conduct realistic automated voice confirmation calls for field inspections and return structured transcripts."
 				],
 				"parameters": {}

@@ -1,0 +1,114 @@
+/* Force 0 margin on all edges so navbar & footer touch browser window corners */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  background-color: #fffef5 !important;
+  overflow-x: hidden !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box !important;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+/* ── Smooth Ambient Keyframes & Micro-Animations ── */
+
+@keyframes floatHeroMain {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0.5deg);
+  }
+}
+
+@keyframes floatChip1 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-8px) translateX(4px);
+  }
+}
+
+@keyframes floatChip2 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(7px) translateX(-3px);
+  }
+}
+
+@keyframes floatChip3 {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.02);
+  }
+}
+
+@keyframes auraBreath {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.hero-main-img {
+  animation: floatHeroMain 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.chip-stp {
+  animation: floatChip1 4.2s ease-in-out infinite;
+}
+
+.chip-siu {
+  animation: floatChip2 5s ease-in-out infinite 0.5s;
+}
+
+.chip-ocr {
+  animation: floatChip3 4.6s ease-in-out infinite 1s;
+}
+
+.ambient-aura {
+  animation: auraBreath 6s ease-in-out infinite;
+}
+
+.pulse-indicator {
+  animation: pulseDot 2s ease-in-out infinite;
+}

@@ -1,7 +1,7 @@
 """
-ClaimPilot Enterprise FastAPI Web Application Server & GUI Launcher
-Serves the ClaimPilot Web Dashboard and provides REST endpoints for ClaimPilot AI pipelines
-and all capabilities specified in the ClaimPilot Feature Roadmap.
+ClaimVertex Enterprise FastAPI Web Application Server & GUI Launcher
+Serves the ClaimVertex Web Dashboard and provides REST endpoints for ClaimVertex AI pipelines
+and all capabilities specified in the ClaimVertex Feature Roadmap.
 """
 
 import asyncio
@@ -29,7 +29,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 class StandalonePipelineEngine:
-    """Autonomous local execution engine for all 9 ClaimPilot P&C AI pipelines."""
+    """Autonomous local execution engine for all 9 ClaimVertex P&C AI pipelines."""
     def __init__(self):
         self.is_connected = True
         self.mode = "standalone"
@@ -42,7 +42,7 @@ class StandalonePipelineEngine:
         return {"token": f"standalone_{pipe_key}_active", "status": "active"}
 
     async def send(self, token: str, data: Any):
-        return {"answers": ["Claim evaluation completed autonomously by ClaimPilot engine."]}
+        return {"answers": ["Claim evaluation completed autonomously by ClaimVertex engine."]}
 
     async def chat(self, token: str, question: Any):
         return {"answers": ["Copilot analysis generated autonomously."]}
@@ -54,7 +54,7 @@ class StandalonePipelineEngine:
         pass
 
 
-app = FastAPI(title="ClaimPilot AI Enterprise Dashboard", version="2.5.0")
+app = FastAPI(title="ClaimVertex AI Enterprise Dashboard", version="2.5.0")
 
 # Mount static folder
 static_dir = Path(__file__).parent / "static"
@@ -196,7 +196,7 @@ inspections_store = [
         "inspection_type": "On-Site Structural Fire & Electrical Origin Audit",
         "location": "4400 Gateway Logistics Park, Bay #4",
         "voice_call_transcript": (
-            "[AI Assistant]: Hello Apex Commercial Logistics, this is ClaimPilot AI confirming your field inspection for Claim #CP-2026-90124.\n"
+            "[AI Assistant]: Hello Apex Commercial Logistics, this is ClaimVertex AI confirming your field inspection for Claim #CP-2026-90124.\n"
             "[Policyholder]: Hello, yes we are expecting you.\n"
             "[AI Assistant]: We have certified Forensic Engineer David Vance available Thursday, August 28th at 2:00 PM. Does this time work for facility access?\n"
             "[Policyholder]: Yes, Thursday at 2:00 PM works perfectly. Our facility manager Mark will be on-site with keys.\n"
@@ -224,7 +224,7 @@ audit_trail_store = [
         "field_name": "gate_status",
         "old_value": "AUTOMATED_PENDING",
         "new_value": "ESCALATED TO SENIOR ADJUSTER",
-        "user": "ClaimPilot claim_analysis.pipe",
+        "user": "ClaimVertex claim_analysis.pipe",
         "reason": "Exceeded $10k STP limit ($142,000) and triggered SIU overnight fire vector.",
         "timestamp": "2026-08-23 22:15:02"
     }
@@ -475,7 +475,7 @@ uploaded_documents = [
                 "risk_impact": "+25% to Vector 5 Loss Frequency / Duplicate Billing Audit"
             }
         ],
-        "summary": "Secondary contractor submission with identical dollar total ($8,450.00) on policy POL-994821. Flagged by ClaimPilot ingestion.pipe duplicate detector node.",
+        "summary": "Secondary contractor submission with identical dollar total ($8,450.00) on policy POL-994821. Flagged by ClaimVertex ingestion.pipe duplicate detector node.",
         "line_items": [
             {"item": "Emergency Extraction Crew Callout", "qty": "1 LS", "rate": "$1,260.00", "total": "$1,260.00", "audit": "Possible Duplicate Charge", "confidence": 88},
             {"item": "Hardwood Floor Reconstruction", "qty": "240 SF", "rate": "$18.50/SF", "total": "$4,440.00", "audit": "Duplicate Scope Alert", "confidence": 85},
@@ -521,25 +521,25 @@ uploaded_documents = [
 
 # Pre-configured Demo Adjuster Accounts
 DEMO_USERS = {
-    "adjuster@claimpilot.ai": {
+    "adjuster@claimvertex.ai": {
         "name": "Sarah Jenkins",
-        "email": "adjuster@claimpilot.ai",
+        "email": "adjuster@claimvertex.ai",
         "role": "Senior Claims Adjuster",
         "department": "Property & Casualty",
         "badge": "LICENSED ADJUSTER #CP-8842",
         "avatar": "SJ"
     },
-    "underwriter@claimpilot.ai": {
+    "underwriter@claimvertex.ai": {
         "name": "Marcus Vance",
-        "email": "underwriter@claimpilot.ai",
+        "email": "underwriter@claimvertex.ai",
         "role": "Underwriting Lead",
         "department": "Commercial Risk & Policy",
         "badge": "CHIEF UNDERWRITER",
         "avatar": "MV"
     },
-    "auditor@claimpilot.ai": {
+    "auditor@claimvertex.ai": {
         "name": "Elena Rostova",
-        "email": "auditor@claimpilot.ai",
+        "email": "auditor@claimvertex.ai",
         "role": "Fraud & Claims Auditor",
         "department": "SIU Fraud Prevention",
         "badge": "SENIOR AUDITOR",
@@ -554,8 +554,8 @@ active_sessions = {}
 # =============================================================================
 
 async def init_pipelines():
-    """Initializes all 9 ClaimPilot roadmap pipelines in autonomous standalone mode."""
-    print("🚀 Initializing ClaimPilot Autonomous AI Engine (9 Pipelines)...")
+    """Initializes all 9 ClaimVertex roadmap pipelines in autonomous standalone mode."""
+    print("🚀 Initializing ClaimVertex Autonomous AI Engine (9 Pipelines)...")
     pipe_names = [
         ("ingestion", "ingestion.pipe"),
         ("analysis", "claim_analysis.pipe"),
@@ -572,18 +572,18 @@ async def init_pipelines():
         tokens[key] = f"standalone_{key}_active"
         print(f"  ✓ Pipeline [{key}] active -> {filepath} (Token: {tokens[key]})")
 
-    print("✅ All 9 ClaimPilot P&C AI Pipelines are operational and ready.")
+    print("✅ All 9 ClaimVertex P&C AI Pipelines are operational and ready.")
 
 
 @app.on_event("startup")
 async def startup_event():
-    print("ClaimPilot Enterprise Server Started.")
+    print("ClaimVertex Enterprise Server Started.")
     asyncio.create_task(init_pipelines())
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    print("Shutting down ClaimPilot pipeline workers...")
+    print("Shutting down ClaimVertex pipeline workers...")
     for name, token in tokens.items():
         if token and client and hasattr(client, "terminate"):
             try:
@@ -595,7 +595,7 @@ async def shutdown_event():
             await client.disconnect()
         except Exception:
             pass
-    print("ClaimPilot server shut down cleanly.")
+    print("ClaimVertex server shut down cleanly.")
 
 
 def extract_answer(response: dict) -> str:
@@ -680,7 +680,7 @@ async def get_dashboard():
     index_file = static_dir / "index.html"
     if index_file.exists():
         return HTMLResponse(content=index_file.read_text(encoding="utf-8"))
-    return HTMLResponse(content="<h1>ClaimPilot Enterprise Web Dashboard Running</h1>")
+    return HTMLResponse(content="<h1>ClaimVertex Enterprise Web Dashboard Running</h1>")
 
 
 @app.post("/api/login")
@@ -731,8 +731,8 @@ async def get_status():
     return {
         "status": "operational",
         "mode": "Autonomous Standalone Engine",
-        "engine": "ClaimPilot Independent AI Engine v2.5",
-        "uri": os.getenv("CLAIMPILOT_URI", "http://127.0.0.1:8000"),
+        "engine": "ClaimVertex Independent AI Engine v2.5",
+        "uri": os.getenv("CLAIMVERTEX_URI", "http://127.0.0.1:8000"),
         "tokens": tokens,
         "pipelines_count": 9,
         "pipelines": [
@@ -1051,7 +1051,7 @@ async def analyze_claim(req: AnalyzeRequest):
         "field_name": "claim_record",
         "old_value": "NONE",
         "new_value": f"Created (${req.amount:,.2f}, {analysis['peril']})",
-        "user": "ClaimPilot claim_analysis.pipe",
+        "user": "ClaimVertex claim_analysis.pipe",
         "reason": f"Initial FNOL intake & automated STP gate evaluation ({analysis['gate_status']}).",
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
     })
@@ -1476,7 +1476,7 @@ async def schedule_inspection(claim_id: str, req: ScheduleInspectionRequest):
     inspector = req.inspector_id or "David Henderson, PE Senior Loss Engineer"
 
     voice_transcript = (
-        f"[AI Assistant]: Hello {policyholder}, this is ClaimPilot AI confirming your required property inspection for Claim #{claim_id}.\n"
+        f"[AI Assistant]: Hello {policyholder}, this is ClaimVertex AI confirming your required property inspection for Claim #{claim_id}.\n"
         f"[Policyholder]: Yes hello, I need someone to come out and inspect the damage.\n"
         f"[AI Assistant]: We have certified Engineer {inspector} scheduled for {app_date}. Will someone over 18 be present for structural access?\n"
         f"[Policyholder]: Yes, that time works perfectly. I will be home.\n"
@@ -1506,7 +1506,7 @@ async def schedule_inspection(claim_id: str, req: ScheduleInspectionRequest):
         "field_name": "inspection_schedule",
         "old_value": "UNSCHEDULED",
         "new_value": f"BOOKED ({app_date})",
-        "user": "ClaimPilot inspection_scheduling.pipe",
+        "user": "ClaimVertex inspection_scheduling.pipe",
         "reason": f"Automated voice AI call confirmed with {policyholder} ({insp_id}).",
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
     })
@@ -1600,7 +1600,7 @@ async def get_cycle_time_analytics():
 
     funnel_stages = [
         {"stage": "1. Document Ingestion & PII Masking", "median_hours": 0.2, "target_hours": 0.5, "status": "OPTIMAL", "throughput": "100%"},
-        {"stage": "2. ClaimPilot AI Damage & Risk Scoring", "median_hours": 0.1, "target_hours": 0.2, "status": "OPTIMAL", "throughput": "100%"},
+        {"stage": "2. ClaimVertex AI Damage & Risk Scoring", "median_hours": 0.1, "target_hours": 0.2, "status": "OPTIMAL", "throughput": "100%"},
         {"stage": "3. Human Adjuster Desk Review (Escalated)", "median_hours": 18.4, "target_hours": 24.0, "status": "WITHIN_SLA", "throughput": f"{esc_count} Active"},
         {"stage": "4. Final Payment Authorization & Check Disbursement", "median_hours": 3.8, "target_hours": 6.0, "status": "OPTIMAL", "throughput": f"{auto_count} STP Payouts"}
     ]
@@ -1688,7 +1688,7 @@ async def get_model_drift_analytics():
     return {
         "status": "success",
         "pipeline": "feedback_loop.pipe",
-        "model_version": "ClaimPilot Autonomous Neural Ensemble v2.5",
+        "model_version": "ClaimVertex Autonomous Neural Ensemble v2.5",
         "rolling_accuracy_rate": 96.8,
         "total_decisions_logged": len(feedback_drift_store) + 48,
         "human_overrides_logged": len(feedback_drift_store),
@@ -1804,7 +1804,7 @@ async def chat_assistant(req: ChatRequest):
         sources = [
             "Water_Mitigation_Duplicate_Check.pdf (Vendor B)",
             "Plumber_Invoice_JaneDoe.pdf (Vendor A)",
-            "ClaimPilot ingestion.pipe Duplicate Detector Log"
+            "ClaimVertex ingestion.pipe Duplicate Detector Log"
         ]
         confidence = 99.4
         recommendation = "Maintain duplicate billing hold; cross-examine both contractors for invoice overlapping."
@@ -1849,7 +1849,7 @@ async def chat_assistant(req: ChatRequest):
         )
     else:
         answer = (
-            f"**ClaimPilot RAG Copilot Intelligence Report:**\n\n"
+            f"**ClaimVertex RAG Copilot Intelligence Report:**\n\n"
             f"Analyzed query: *\"{req.question}\"* across active Qdrant vector collections and policy schedules under persona *{persona.upper()}*.\n\n"
             f"• **Context Matched**: Document scope '{scope}' cross-referenced with P&C underwriting standards.\n"
             f"• **Findings**: Policy coverage provisions, deductible rules, and itemized damage bounds are validated.\n"
@@ -1875,13 +1875,13 @@ def launch_browser():
     """Waits 1.5s for Uvicorn server to initialize, then opens the web GUI."""
     time.sleep(1.5)
     url = "http://127.0.0.1:8000"
-    print(f"Opening ClaimPilot Enterprise Dashboard in browser: {url}")
+    print(f"Opening ClaimVertex Enterprise Dashboard in browser: {url}")
     webbrowser.open(url)
 
 
 if __name__ == "__main__":
     print("==================================================")
-    print("     ClaimPilot AI Insurance Command Center       ")
+    print("     ClaimVertex AI Insurance Command Center       ")
     print("==================================================")
     
     threading.Thread(target=launch_browser, daemon=True).start()

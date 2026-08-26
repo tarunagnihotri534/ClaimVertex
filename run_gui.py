@@ -1,5 +1,5 @@
 """
-ClaimPilot GUI Launcher Script
+ClaimVertex GUI Launcher Script
 Starts the FastAPI backend web server and launches the Web GUI in your browser.
 """
 
@@ -29,7 +29,7 @@ def get_python_interpreter():
 
 def main():
     print("==========================================================")
-    print(" ClaimPilot -- AI Insurance Claims Command Center GUI")
+    print(" ClaimVertex -- AI Insurance Claims Command Center GUI")
     print("==========================================================")
     print("Initialising Web Dashboard server at http://127.0.0.1:8000...")
     print("Your web browser will open automatically in a moment.")
@@ -41,7 +41,7 @@ def main():
     try:
         subprocess.run([python_bin, app_path], check=True)
     except KeyboardInterrupt:
-        print("\nClaimPilot Web GUI closed gracefully.")
+        print("\nClaimVertex Web GUI closed gracefully.")
 
 if __name__ == "__main__":
     main()

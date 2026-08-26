@@ -1,5 +1,5 @@
 """
-ClaimPilot - AI Insurance Claim Processing Application (CLI Mode)
+ClaimVertex - AI Insurance Claim Processing Application (CLI Mode)
 Autonomous multi-pipeline execution engine for Property & Casualty claims.
 """
 
@@ -39,8 +39,8 @@ def extract_answer(response: dict) -> str:
     return response.get("message", "No response text received.")
 
 
-class ClaimPilotApp:
-    """Main application class for ClaimPilot AI operations in CLI mode."""
+class ClaimVertexApp:
+    """Main application class for ClaimVertex AI operations in CLI mode."""
 
     def __init__(self):
         self.ingestion_token = "standalone_ingestion"
@@ -48,8 +48,8 @@ class ClaimPilotApp:
         self.chat_token = "standalone_chat"
 
     async def initialize_pipelines(self):
-        """Initialize all 9 ClaimPilot pipelines in autonomous standalone mode."""
-        print("🔗 Initializing ClaimPilot Pipeline Engine...")
+        """Initialize all 9 ClaimVertex pipelines in autonomous standalone mode."""
+        print("🔗 Initializing ClaimVertex Pipeline Engine...")
 
         # Autonomous standalone pipeline initialization
         print("✓ Ingestion Pipeline (ingestion.pipe) -> Ready [OCR, PII Masking, Duplicate Check]")
@@ -61,14 +61,14 @@ class ClaimPilotApp:
         print("✓ Public Status Tracker (claim_status.pipe) -> Ready")
         print("✓ Adjuster Queue (adjuster_queue.pipe) -> Ready")
         print("✓ RLHF Feedback Loop (feedback_loop.pipe) -> Ready")
-        print("🚀 All 9 ClaimPilot AI Pipelines initialized successfully in Autonomous Standalone Mode.\n")
+        print("🚀 All 9 ClaimVertex AI Pipelines initialized successfully in Autonomous Standalone Mode.\n")
 
     async def analyze_claim_file(self, claim_text: str):
         """Analyze claim details using deterministic STP and damage evaluation."""
         print("🔍 Running AI Claim Assessment & Fraud Screening...")
 
         # Standalone autonomous evaluation
-        print("📊 Claim Assessment Result (ClaimPilot Engine):")
+        print("📊 Claim Assessment Result (ClaimVertex Engine):")
         print("┌────────────────────────────────────────────────────────────────────────┐")
         print("│ CLAIM EVALUATION: #CP-2026-88412 | Claimant: Jane Doe (POL-994821)     │")
         print("├────────────────────────────────────────────────────────────────────────┤")
@@ -82,7 +82,7 @@ class ClaimPilotApp:
         print("└────────────────────────────────────────────────────────────────────────┘")
 
     async def query_claim_assistant(self, question_text: str) -> str:
-        """Query the ClaimPilot RAG assistant regarding claim documents."""
+        """Query the ClaimVertex RAG assistant regarding claim documents."""
         print(f"\n❓ Adjuster Query: '{question_text}'")
 
         # Standalone autonomous RAG response
@@ -94,20 +94,20 @@ class ClaimPilotApp:
             "• **Policy Deductible**: $1,000.00 applies.\n"
             "• **Net Immediate Payout**: $6,436.00 payable directly to Jane Doe."
         )
-        print(f"🤖 ClaimPilot Copilot Response:\n{answer}\n")
+        print(f"🤖 ClaimVertex Copilot Response:\n{answer}\n")
         return answer
 
     async def close(self):
         """Clean up pipeline workers."""
-        print("🔌 ClaimPilot session closed cleanly.")
+        print("🔌 ClaimVertex session closed cleanly.")
 
 
 async def main():
     print("==================================================")
-    print("        ClaimPilot - AI Insurance Engine          ")
+    print("        ClaimVertex - AI Insurance Engine          ")
     print("==================================================")
 
-    app = ClaimPilotApp()
+    app = ClaimVertexApp()
     try:
         await app.initialize_pipelines()
 

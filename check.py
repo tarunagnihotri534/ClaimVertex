@@ -1,5 +1,5 @@
 """
-ClaimPilot Setup Diagnostic & Verification Tool
+ClaimVertex Setup Diagnostic & Verification Tool
 Validates environment configuration, standalone dependencies, UI assets, and .pipe pipeline schemas.
 """
 
@@ -113,18 +113,18 @@ def verify_pipeline_file(filepath: str) -> bool:
 
 def check_env_vars():
     print("\n--- Checking Environment Configuration (Optional) ---")
-    uri = os.getenv("CLAIMPILOT_URI")
+    uri = os.getenv("CLAIMVERTEX_URI")
     openai_key = os.getenv("OPENAI_API_KEY")
     qdrant_host = os.getenv("QDRANT_HOST", "localhost")
 
-    print(f"  CLAIMPILOT_URI        : {uri or 'http://127.0.0.1:8000 (local standalone)'}")
+    print(f"  CLAIMVERTEX_URI        : {uri or 'http://127.0.0.1:8000 (local standalone)'}")
     print(f"  OPENAI_API_KEY        : {'Set (masked)' if openai_key else 'Not set (using built-in deterministic engine)'}")
     print(f"  QDRANT_HOST           : {qdrant_host}")
-    print("ℹ️ Note: ClaimPilot runs 100% autonomously in standalone mode.")
+    print("ℹ️ Note: ClaimVertex runs 100% autonomously in standalone mode.")
 
 def main():
     print("==================================================")
-    print("       ClaimPilot Standalone Diagnostic Tool      ")
+    print("       ClaimVertex Standalone Diagnostic Tool      ")
     print("==================================================")
 
     dep_ok = check_dependencies()
@@ -139,7 +139,7 @@ def main():
     print("\n==================================================")
     if dep_ok and pipe_ok:
         print("🎉 ALL CHECKS PASSED SUCCESSFULLY!")
-        print("ClaimPilot is properly configured and ready for Independent Autonomous Execution.")
+        print("ClaimVertex is properly configured and ready for Independent Autonomous Execution.")
         print("Launch the Web GUI anytime via: python run_gui.py")
     else:
         print("❌ SOME CHECKS FAILED. Please review the errors above.")

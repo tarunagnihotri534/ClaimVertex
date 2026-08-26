@@ -1,6 +1,6 @@
-# ClaimPilot Enterprise Architecture & Multi-Pipeline Workflow Guide
+# ClaimVertex Enterprise Architecture & Multi-Pipeline Workflow Guide
 
-An in-depth technical explanation of **ClaimPilot**, its end-to-end architecture, the **Autonomous Pipeline Engine**, and the pipeline-driven workflows for enterprise insurance claims settlement, document intelligence, and Special Investigation Unit (SIU) fraud prevention.
+An in-depth technical explanation of **ClaimVertex**, its end-to-end architecture, the **Autonomous Pipeline Engine**, and the pipeline-driven workflows for enterprise insurance claims settlement, document intelligence, and Special Investigation Unit (SIU) fraud prevention.
 
 ---
 
@@ -9,7 +9,7 @@ An in-depth technical explanation of **ClaimPilot**, its end-to-end architecture
 1. [Executive Overview](#1-executive-overview)
 2. [End-to-End System Architecture](#2-end-to-end-system-architecture)
 3. [Autonomous AI Core Workflow & Pipeline Engine](#3-autonomous-ai-core-workflow--pipeline-engine)
-   - [What is a ClaimPilot Pipeline (.pipe)?](#what-is-a-claimpilot-pipeline-pipe)
+   - [What is a ClaimVertex Pipeline (.pipe)?](#what-is-a-claimvertex-pipeline-pipe)
    - [The 8 Core Node Components](#the-8-core-node-components)
    - [Pipeline 1: claim_analysis.pipe](#pipeline-1-claim_analysispipe)
    - [Pipeline 2: ingestion.pipe](#pipeline-2-ingestionpipe)
@@ -31,20 +31,20 @@ Property & Casualty (P&C) insurance carriers face two major operational challeng
 1. **Settlement Latency**: Manual review of First Notice of Loss (FNOL) takes days or weeks.
 2. **Fraud Leakage**: Fraudulent claims cost U.S. insurers over $308 Billion annually.
 
-**ClaimPilot** solves this by embedding an **Autonomous Multi-Pipeline AI Engine** as the core orchestrator. It automates First-Party Property Damage assessments, ingests unstructured proof-of-loss PDFs, performs automated PII redaction, indexes vectors into Qdrant, calculates real-dollar settlement budgets (RCV, ACV, Depreciation, Deductibles), and screens claims through a 6-vector SIU fraud matrix before either issuing a Straight-Through Processing (STP) payout or escalating to senior human adjusters.
+**ClaimVertex** solves this by embedding an **Autonomous Multi-Pipeline AI Engine** as the core orchestrator. It automates First-Party Property Damage assessments, ingests unstructured proof-of-loss PDFs, performs automated PII redaction, indexes vectors into Qdrant, calculates real-dollar settlement budgets (RCV, ACV, Depreciation, Deductibles), and screens claims through a 6-vector SIU fraud matrix before either issuing a Straight-Through Processing (STP) payout or escalating to senior human adjusters.
 
 ---
 
 ## 2. End-to-End System Architecture
 
-The ClaimPilot ecosystem is structured as a multi-tier, event-driven platform:
+The ClaimVertex ecosystem is structured as a multi-tier, event-driven platform:
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────────────┐
 │                             USER INTERFACES                                      │
 │                                                                                  │
 │   Web Dashboard (HTML5 / Vanilla CSS / JS)     React Enterprise App (React / TS) │
-│            http://127.0.0.1:8000                          apps/claimpilot-ui/    │
+│            http://127.0.0.1:8000                          apps/claimvertex-ui/    │
 └───────────────────────────┬───────────────────────────────────┬──────────────────┘
                             │ HTTP / REST                       │ React Bridge
                             ▼                                   ▼
@@ -55,7 +55,7 @@ The ClaimPilot ecosystem is structured as a multi-tier, event-driven platform:
 │   • POST /api/claims/approve  • POST /api/claims/escalate • GET  /api/stats      │
 │                                                                                  │
 │   ┌──────────────────────────────────────────────────────────────────────────┐   │
-│   │                   ClaimPilot Standalone Pipeline Engine                  │   │
+│   │                   ClaimVertex Standalone Pipeline Engine                  │   │
 │   │   Task Tokens: tokens["analysis"], tokens["ingestion"], tokens["chat"]   │   │
 │   └──────────────────────────────────┬───────────────────────────────────────┘   │
 └──────────────────────────────────────┼───────────────────────────────────────────┘
@@ -85,8 +85,8 @@ The ClaimPilot ecosystem is structured as a multi-tier, event-driven platform:
 
 ## 3. Autonomous AI Core Workflow & Pipeline Engine
 
-### What is a ClaimPilot Pipeline (.pipe)?
-A **ClaimPilot Pipeline** is a declarative **Directed Acyclic Graph (DAG)** of processing nodes. Each node performs a deterministic or AI-driven operation on incoming streaming data lanes. Pipelines are saved as `.pipe` files and executed in an isolated execution sandbox.
+### What is a ClaimVertex Pipeline (.pipe)?
+A **ClaimVertex Pipeline** is a declarative **Directed Acyclic Graph (DAG)** of processing nodes. Each node performs a deterministic or AI-driven operation on incoming streaming data lanes. Pipelines are saved as `.pipe` files and executed in an isolated execution sandbox.
 
 ### The 8 Core Node Components
 
@@ -169,7 +169,7 @@ The backend operates 100% autonomously via the native `StandalonePipelineEngine`
 
 ```python
 class StandalonePipelineEngine:
-    """Autonomous local execution engine for all 9 ClaimPilot P&C AI pipelines."""
+    """Autonomous local execution engine for all 9 ClaimVertex P&C AI pipelines."""
     def __init__(self):
         self.is_connected = True
         self.mode = "standalone"
@@ -204,7 +204,7 @@ def extract_answer(response: dict) -> str:
 
 ## 5. Insurance Financial Accounting & Settlement Mathematics
 
-ClaimPilot computes full financial accounting budgets per insurance industry standards:
+ClaimVertex computes full financial accounting budgets per insurance industry standards:
 
 $$\text{Actual Cash Value (ACV)} = \text{Replacement Cost Value (RCV)} - \text{Total Depreciation}$$
 
@@ -256,12 +256,12 @@ When a claim exceeds threshold limits or triggers risk flags:
 
 ## 8. Frontend & Command Center Integration
 
-ClaimPilot provides two presentation options:
+ClaimVertex provides two presentation options:
 
 * **Web Command Center**: `static/index.html` — Zero-build, high-performance dashboard served directly by FastAPI.
-* **React Application**: `apps/claimpilot-ui/` — React 18, TypeScript, and Rsbuild application.
+* **React Application**: `apps/claimvertex-ui/` — React 18, TypeScript, and Rsbuild application.
 
 ---
 
-*Authored for the ClaimPilot Enterprise Command Center Ecosystem.*
+*Authored for the ClaimVertex Enterprise Command Center Ecosystem.*
 

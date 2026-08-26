@@ -3,10 +3,10 @@ import type { AppDescriptor } from 'shell';
 import App from './App';
 
 const descriptor: AppDescriptor = {
-	id: 'tarun.claimpilot',
-	name: 'ClaimPilot',
+	id: 'tarun.claimvertex',
+	name: 'ClaimVertex',
 	branding: {
-		appName: 'ClaimPilot AI',
+		appName: 'ClaimVertex AI',
 	},
 	app: App,
 };

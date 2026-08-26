@@ -1,4 +1,0 @@
-# ClaimPilot workspace — root install links apps under apps/.
-packages:
-  - 'apps/*'
-

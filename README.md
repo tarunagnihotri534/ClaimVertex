@@ -1,15 +1,15 @@
-# 🛡️ ClaimPilot — Enterprise AI Insurance Claims & SIU Fraud Engine
+# 🛡️ ClaimVertex — Enterprise AI Insurance Claims & SIU Fraud Engine
 
 <div align="center">
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/Frontend-React_18_%2B_Module_Federation-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![Vercel](https://img.shields.io/badge/Deployment-Vercel_Live-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://claim-pilot-orcin.vercel.app)
+[![Vercel](https://img.shields.io/badge/Deployment-Vercel_Live-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://claim-vertex-orcin.vercel.app)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 **An autonomous, load-bearing AI platform for property & casualty insurance carriers, forensic engineering units, and Special Investigation Units (SIU).**
 
-[Live Web Demo](https://claim-pilot-orcin.vercel.app) • [Architecture](#-system-architecture) • [9 AI Pipelines](#-the-9-ai-pipelines) • [Quick Start](#-quick-start)
+[Live Web Demo](https://claim-vertex-orcin.vercel.app) • [Architecture](#-system-architecture) • [9 AI Pipelines](#-the-9-ai-pipelines) • [Quick Start](#-quick-start)
 
 </div>
 
@@ -17,7 +17,7 @@
 
 ## 🌟 Executive Summary
 
-**ClaimPilot** revolutionizes property & casualty insurance claim operations by combining **9 deterministic AI pipelines** with a modern dual-panel command center. It eliminates manual claim triage bottlenecks, slashes Straight-Through Processing (STP) payout latency to under 0.9s, anonymizes sensitive claimant PII in real-time, and exposes a 6-vector forensic fraud matrix to catch syndicated billing anomalies.
+**ClaimVertex** revolutionizes property & casualty insurance claim operations by combining **9 deterministic AI pipelines** with a modern dual-panel command center. It eliminates manual claim triage bottlenecks, slashes Straight-Through Processing (STP) payout latency to under 0.9s, anonymizes sensitive claimant PII in real-time, and exposes a 6-vector forensic fraud matrix to catch syndicated billing anomalies.
 
 ---
 
@@ -59,9 +59,9 @@ flowchart TD
         B --> C[FastAPI UI / React Standalone App]
     end
 
-    subgraph CoreEngine["⚙️ ClaimPilot Orchestration Gateway"]
+    subgraph CoreEngine["⚙️ ClaimVertex Orchestration Gateway"]
         C -->|REST / SSE / WebSockets| D[FastAPI API Router]
-        D -->|Autonomous Engine| E[ClaimPilot AI Runtime]
+        D -->|Autonomous Engine| E[ClaimVertex AI Runtime]
     end
 
     subgraph PipelineDAGs["🚀 9 Declarative AI Pipelines"]
@@ -96,22 +96,22 @@ flowchart TD
 
 | # | Pipeline File | Description | Trigger / Source | Primary Components |
 |---|---|---|---|---|
-| **1** | [`ingestion.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/ingestion.pipe) | Ingests claim files, removes claimant PII, chunks and embeds into vector store | Webhook | `webhook`, `parse`, `anonymize_text`, `preprocessor_langchain`, `embedding_openai`, `qdrant` |
-| **2** | [`claim_analysis.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/claim_analysis.pipe) | Straight-through claim validation, coverage limits check & repair breakdown | Webhook | `webhook`, `parse`, `llm_openai`, `response_answers` |
-| **3** | [`claim_chat.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/claim_chat.pipe) | RAG Q&A copilot answering adjuster queries with policy citations | Chat | `chat`, `embedding_openai`, `qdrant`, `prompt`, `llm_openai`, `response_answers` |
-| **4** | [`siu_dashboard.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/siu_dashboard.pipe) | 6-Vector fraud detection scoring (EXIF, duplicate invoices, vendor inflation) | Webhook | `webhook`, `llm_openai`, `response_answers` |
-| **5** | [`benchmark_explorer.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/benchmark_explorer.pipe) | Regional market rate indexing and material price variance comparison | Webhook | `webhook`, `llm_openai`, `response_answers` |
-| **6** | [`inspection_scheduling.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/inspection_scheduling.pipe) | Forensic PE engineering inspection booking and voice dispatch protocol | Webhook | `webhook`, `llm_openai`, `response_answers` |
-| **7** | [`claim_status.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/claim_status.pipe) | Public-facing status tracking and timeline milestone progression | Webhook | `webhook`, `llm_openai`, `response_answers` |
-| **8** | [`adjuster_queue.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/adjuster_queue.pipe) | High-exposure triage queue with manual approval and override gates | Webhook | `webhook`, `llm_openai`, `response_answers` |
-| **9** | [`feedback_loop.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/feedback_loop.pipe) | Adjuster correction feedback capture for continuous AI calibration | Webhook | `webhook`, `llm_openai`, `response_answers` |
+| **1** | [`ingestion.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/ingestion.pipe) | Ingests claim files, removes claimant PII, chunks and embeds into vector store | Webhook | `webhook`, `parse`, `anonymize_text`, `preprocessor_langchain`, `embedding_openai`, `qdrant` |
+| **2** | [`claim_analysis.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/claim_analysis.pipe) | Straight-through claim validation, coverage limits check & repair breakdown | Webhook | `webhook`, `parse`, `llm_openai`, `response_answers` |
+| **3** | [`claim_chat.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/claim_chat.pipe) | RAG Q&A copilot answering adjuster queries with policy citations | Chat | `chat`, `embedding_openai`, `qdrant`, `prompt`, `llm_openai`, `response_answers` |
+| **4** | [`siu_dashboard.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/siu_dashboard.pipe) | 6-Vector fraud detection scoring (EXIF, duplicate invoices, vendor inflation) | Webhook | `webhook`, `llm_openai`, `response_answers` |
+| **5** | [`benchmark_explorer.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/benchmark_explorer.pipe) | Regional market rate indexing and material price variance comparison | Webhook | `webhook`, `llm_openai`, `response_answers` |
+| **6** | [`inspection_scheduling.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/inspection_scheduling.pipe) | Forensic PE engineering inspection booking and voice dispatch protocol | Webhook | `webhook`, `llm_openai`, `response_answers` |
+| **7** | [`claim_status.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/claim_status.pipe) | Public-facing status tracking and timeline milestone progression | Webhook | `webhook`, `llm_openai`, `response_answers` |
+| **8** | [`adjuster_queue.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/adjuster_queue.pipe) | High-exposure triage queue with manual approval and override gates | Webhook | `webhook`, `llm_openai`, `response_answers` |
+| **9** | [`feedback_loop.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimVertex/feedback_loop.pipe) | Adjuster correction feedback capture for continuous AI calibration | Webhook | `webhook`, `llm_openai`, `response_answers` |
 
 ---
 
 ## 📁 Repository Structure
 
 ```text
-ClaimPilot/
+ClaimVertex/
 ├── app.py                      # FastAPI core backend & REST endpoints
 ├── main.py                     # CLI verification & standalone pipeline test script
 ├── check.py                    # Standalone setup & pipeline diagnostic tool
@@ -120,12 +120,12 @@ ClaimPilot/
 ├── vercel.json                 # Vercel cloud serverless deployment config
 │
 ├── apps/
-│   └── claimpilot-ui/          # React + Rsbuild frontend
-│       ├── package.json        # App manifest: "tarun.claimpilot"
+│   └── claimvertex-ui/          # React + Rsbuild frontend
+│       ├── package.json        # App manifest: "tarun.claimvertex"
 │       ├── rsbuild.config.mts  # Build configuration
-│       ├── icon.svg            # Custom supersonic shield SVG logo
+│       ├── icon.svg            # Custom automation circuit gear SVG logo
 │       └── src/
-│           ├── App.tsx         # Full ClaimPilot React frontend
+│           ├── App.tsx         # Full ClaimVertex React frontend
 │           └── AppDescriptor.ts# App descriptor
 │
 ├── static/
@@ -143,8 +143,8 @@ ClaimPilot/
 
 ### 1. Clone & Setup Environment
 ```bash
-git clone https://github.com/tarunagnihotri534/ClaimPilot.git
-cd ClaimPilot
+git clone https://github.com/tarunagnihotri534/ClaimVertex.git
+cd ClaimVertex
 
 # Create and activate virtual environment
 python -m venv venv
@@ -156,9 +156,9 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configure Environment (Optional)
-ClaimPilot runs completely standalone out of the box with zero setup. Optional parameters can be added to `.env` (copy from `env.example`):
+ClaimVertex runs completely standalone out of the box with zero setup. Optional parameters can be added to `.env` (copy from `env.example`):
 ```env
-CLAIMPILOT_URI=http://127.0.0.1:8000
+CLAIMVERTEX_URI=http://127.0.0.1:8000
 OPENAI_API_KEY=your-openai-api-key
 QDRANT_HOST=localhost
 ```
@@ -182,7 +182,7 @@ Open **[http://localhost:8000](http://localhost:8000)** in your browser.
 
 | Deployment Target | URL | Description |
 |---|---|---|
-| 🚀 **Live Web App (Vercel)** | [https://claim-pilot-orcin.vercel.app](https://claim-pilot-orcin.vercel.app) | Public production deployment linked to `main` branch |
+| 🚀 **Live Web App (Vercel)** | [https://claim-vertex-orcin.vercel.app](https://claim-vertex-orcin.vercel.app) | Public production deployment linked to `main` branch |
 | 💻 **Local Core Server** | `http://localhost:8000` | Local full-stack development environment |
 
 ---
@@ -196,7 +196,7 @@ Open **[http://localhost:8000](http://localhost:8000)** in your browser.
 ---
 
 <div align="center">
-  <b>ClaimPilot Enterprise 2026</b><br/>
+  <b>ClaimVertex Enterprise 2026</b><br/>
   <i>Engineered for Autonomous Insurance Claims & Forensic Governance.</i>
 </div>
 

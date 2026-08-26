@@ -1,6 +1,6 @@
 @echo off
-title ClaimPilot AI Command Center GUI
-echo Starting ClaimPilot Web GUI...
+title ClaimVertex AI Command Center GUI
+echo Starting ClaimVertex Web GUI...
 if exist .venv\Scripts\python.exe (
     .venv\Scripts\python.exe app.py
 ) else (

@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ClaimPilot — Enterprise AI Insurance Claims & SIU Command Platform</title>
+  <title>ClaimVertex — Enterprise AI Insurance Claims & SIU Command Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+  <link rel="alternate icon" type="image/png" href="/static/logo.png">
   <style>
     :root {
       --bg-base: #f8fafc;
@@ -312,7 +314,7 @@
 
     /* Bottom Bar */
     .figma-bottom-bar {
-      background-color: #3f3d3d;
+      background-color: #000000;
       min-height: 64px;
       padding: 14px 44px;
       display: flex;
@@ -1217,28 +1219,16 @@
   <header id="dashboard-header" style="display: none;">
     <div class="brand" onclick="exitToLanding()">
       <!-- Custom SVG Logo -->
-      <div class="brand-mark-svg">
-        <svg viewBox="0 0 120 120" width="38" height="38">
+      <div class="brand-mark-svg" style="background: #0b1329; border-radius: 8px; border: 1px solid #1e293b; padding: 4px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(37,99,235,0.35);">
+        <svg viewBox="0 0 512 512" width="28" height="28">
           <defs>
-            <linearGradient id="cpLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0b1329" />
-              <stop offset="100%" stop-color="#1e293b" />
-            </linearGradient>
-            <linearGradient id="cpShieldG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="cpLogoGrad_html" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#2563eb" />
+              <stop offset="50%" stop-color="#38bdf8" />
               <stop offset="100%" stop-color="#06b6d4" />
             </linearGradient>
-            <linearGradient id="cpGoldG" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f59e0b" />
-              <stop offset="100%" stop-color="#fbbf24" />
-            </linearGradient>
           </defs>
-          <rect width="120" height="120" rx="26" fill="url(#cpLogoGrad)" />
-          <path d="M60 18 L92 32 V62 C92 84 60 102 60 102 C60 102 28 84 28 62 V32 Z" fill="url(#cpShieldG)" fill-opacity="0.18" stroke="url(#cpShieldG)" stroke-width="4" stroke-linejoin="round" />
-          <path d="M60 32 L82 54 L68 54 L60 42 L52 54 L38 54 Z" fill="#ffffff" />
-          <path d="M60 48 L76 68 L64 68 L60 60 L56 68 L44 68 Z" fill="url(#cpShieldG)" />
-          <polygon points="60,62 67,76 60,90 53,76" fill="url(#cpGoldG)" />
-          <circle cx="60" cy="76" r="3.5" fill="#ffffff" />
+          <path fill="url(#cpLogoGrad_html)" fill-rule="evenodd" clip-rule="evenodd" d="M 249,406 L 249,472 L 250,474 L 253,476 L 377,476 L 379,478 L 382,486 L 388,492 L 393,495 L 399,497 L 410,497 L 416,495 L 421,492 L 429,483 L 432,473 L 432,467 L 430,459 L 427,454 L 420,447 L 414,444 L 410,443 L 399,443 L 391,446 L 382,454 L 379,462 L 377,464 L 261,463 L 261,406 Z M 401,455 L 408,455 L 412,457 L 418,463 L 419,465 L 419,468 L 420,469 L 418,477 L 412,483 L 408,485 L 401,485 L 397,483 L 392,478 L 390,474 L 390,465 L 391,463 L 397,457 Z M 167,379 L 167,442 L 165,444 L 161,445 L 156,448 L 149,456 L 146,464 L 146,475 L 147,479 L 150,485 L 157,492 L 165,496 L 170,497 L 176,497 L 186,494 L 189,492 L 196,485 L 200,475 L 200,465 L 198,458 L 195,453 L 190,448 L 185,445 L 181,444 L 179,442 L 179,379 Z M 169,455 L 177,455 L 181,457 L 186,462 L 188,467 L 188,473 L 186,477 L 180,483 L 175,485 L 171,485 L 163,481 L 158,473 L 158,466 L 160,462 L 165,457 Z M 496,334 L 493,325 L 485,316 L 477,312 L 472,311 L 466,311 L 461,312 L 454,315 L 446,323 L 442,332 L 378,332 L 378,344 L 443,345 L 443,348 L 445,352 L 453,361 L 462,365 L 476,365 L 486,360 L 492,353 L 495,347 L 496,343 Z M 467,323 L 471,323 L 476,325 L 482,331 L 484,336 L 484,341 L 482,346 L 477,351 L 473,353 L 465,353 L 461,351 L 456,346 L 454,342 L 454,335 L 457,329 L 462,325 Z M 105,250 L 39,250 L 35,255 L 35,378 L 33,380 L 25,383 L 19,389 L 15,397 L 14,402 L 14,409 L 16,416 L 18,420 L 23,426 L 31,431 L 34,432 L 48,432 L 57,428 L 64,421 L 68,412 L 68,399 L 66,393 L 60,385 L 59,385 L 56,382 L 48,379 L 48,262 L 105,262 Z M 40,390 L 46,391 L 50,393 L 54,397 L 56,401 L 56,410 L 51,417 L 50,417 L 46,420 L 37,420 L 33,418 L 29,414 L 26,407 L 26,403 L 28,398 L 34,392 Z M 15,167 L 15,181 L 20,191 L 27,197 L 33,200 L 38,201 L 45,201 L 50,200 L 58,196 L 64,190 L 67,182 L 69,180 L 133,180 L 131,176 L 132,168 L 68,167 L 65,159 L 61,154 L 57,151 L 48,147 L 35,147 L 26,151 L 19,158 Z M 38,159 L 46,159 L 51,162 L 55,167 L 57,172 L 57,175 L 55,181 L 49,187 L 44,189 L 39,189 L 36,188 L 29,182 L 27,178 L 27,169 L 28,167 L 35,160 Z M 234,119 L 228,147 L 227,149 L 222,154 L 206,161 L 200,161 L 196,159 L 174,144 L 172,144 L 143,174 L 159,198 L 160,201 L 160,207 L 153,223 L 148,228 L 143,230 L 120,234 L 118,235 L 118,277 L 129,280 L 138,281 L 146,283 L 148,284 L 153,289 L 160,305 L 160,311 L 159,314 L 144,336 L 143,339 L 172,368 L 174,368 L 196,353 L 201,351 L 205,351 L 222,358 L 227,363 L 230,372 L 233,390 L 235,394 L 276,394 L 277,392 L 277,388 L 282,366 L 284,362 L 290,357 L 305,351 L 310,351 L 316,354 L 335,367 L 339,368 L 367,340 L 367,337 L 352,315 L 350,310 L 350,307 L 355,294 L 358,288 L 361,285 L 368,282 L 390,278 L 391,277 L 393,277 L 393,235 L 364,229 L 358,224 L 352,211 L 350,205 L 350,202 L 352,197 L 367,175 L 367,172 L 339,144 L 335,145 L 313,160 L 310,161 L 305,161 L 288,154 L 284,150 L 282,146 L 280,138 L 279,129 L 277,124 L 277,120 L 276,118 Z M 335,237 L 337,246 L 337,265 L 336,272 L 332,285 L 328,294 L 323,302 L 314,313 L 305,321 L 296,327 L 281,334 L 274,336 L 262,338 L 249,338 L 233,335 L 222,331 L 216,328 L 214,326 L 211,325 L 215,338 L 211,343 L 207,343 L 204,341 L 202,337 L 195,314 L 195,311 L 197,308 L 210,303 L 223,299 L 228,299 L 232,304 L 231,308 L 227,311 L 221,312 L 216,314 L 220,317 L 231,322 L 242,325 L 249,326 L 262,326 L 277,323 L 292,316 L 298,312 L 311,299 L 317,290 L 321,281 L 325,265 L 325,247 L 323,239 L 327,234 L 330,233 Z M 248,214 L 263,214 L 270,216 L 279,221 L 283,224 L 291,233 L 295,241 L 297,247 L 298,254 L 297,265 L 295,271 L 291,279 L 282,289 L 270,296 L 263,298 L 247,298 L 238,295 L 230,290 L 221,281 L 215,270 L 213,262 L 213,250 L 214,245 L 221,231 L 230,222 L 236,218 Z M 308,171 L 310,178 L 313,200 L 312,202 L 308,206 L 281,210 L 276,207 L 275,205 L 275,202 L 276,200 L 281,197 L 287,197 L 288,196 L 291,196 L 289,194 L 280,190 L 270,187 L 263,186 L 247,186 L 233,189 L 218,196 L 211,201 L 201,211 L 194,221 L 188,235 L 185,251 L 185,261 L 187,270 L 187,274 L 184,278 L 181,279 L 179,278 L 175,274 L 173,261 L 173,251 L 175,238 L 178,228 L 183,217 L 191,205 L 204,192 L 214,185 L 224,180 L 232,177 L 247,174 L 264,174 L 270,175 L 284,179 L 293,183 L 297,186 L 299,186 L 297,177 L 297,173 L 298,171 L 302,168 L 304,168 Z M 476,80 L 463,80 L 455,83 L 448,89 L 443,98 L 442,102 L 442,111 L 445,120 L 453,129 L 458,132 L 462,133 L 462,250 L 405,250 L 405,262 L 472,262 L 475,259 L 476,133 L 482,131 L 488,127 L 492,122 L 496,113 L 496,101 L 495,97 L 492,91 L 485,84 Z M 465,92 L 473,92 L 477,94 L 482,99 L 484,103 L 484,110 L 481,116 L 478,119 L 471,122 L 467,122 L 462,120 L 456,114 L 454,109 L 454,104 L 456,99 L 461,94 Z M 335,15 L 330,16 L 323,19 L 316,25 L 312,32 L 310,43 L 312,53 L 314,57 L 317,60 L 317,61 L 325,67 L 330,68 L 332,70 L 332,133 L 344,133 L 345,68 L 348,68 L 352,66 L 355,63 L 356,63 L 361,57 L 364,50 L 365,41 L 363,32 L 359,25 L 355,21 L 345,16 Z M 336,27 L 339,27 L 346,30 L 350,34 L 352,38 L 353,43 L 350,51 L 347,54 L 342,57 L 333,57 L 326,52 L 323,47 L 322,42 L 325,34 L 329,30 Z M 80,33 L 79,36 L 79,48 L 82,56 L 89,64 L 94,67 L 100,69 L 112,69 L 118,67 L 124,63 L 127,60 L 133,48 L 249,49 L 249,106 L 261,106 L 261,39 L 257,36 L 132,35 L 132,33 L 129,27 L 121,19 L 111,15 L 101,15 L 97,16 L 91,19 L 85,24 Z M 103,27 L 109,27 L 113,29 L 117,32 L 121,39 L 121,45 L 120,48 L 114,55 L 110,57 L 102,57 L 98,55 L 93,50 L 91,46 L 91,39 L 93,34 L 97,30 Z" />
         </svg>
       </div>
       <div>
@@ -1271,16 +1261,9 @@
     <!-- Top Navigation Bar -->
     <nav class="figma-navbar">
       <div class="figma-brand" onclick="openLoginModal()">
-        <div class="figma-logo-icon">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-            <rect width="30" height="30" rx="7" fill="#062238" stroke="#0e4b77" stroke-width="1.2"/>
-            <circle cx="15" cy="15" r="8.5" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="2 3"/>
-            <path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fill-opacity="0.3" stroke="#38bdf8" stroke-width="1.5"/>
-            <circle cx="15" cy="15" r="3.2" fill="#38bdf8"/>
-            <line x1="6" y1="15" x2="9.5" y2="15" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="20.5" y1="15" x2="24" y2="15" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="15" y1="6" x2="15" y2="9.5" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="15" y1="20.5" x2="15" y2="24" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        <div class="figma-logo-icon" style="width: 32px; height: 32px; border-radius: 8px; background: #0a2e3b; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(160,229,113,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+          <svg width="20" height="20" viewBox="0 0 512 512" fill="#a0e571">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M 249,406 L 249,472 L 250,474 L 253,476 L 377,476 L 379,478 L 382,486 L 388,492 L 393,495 L 399,497 L 410,497 L 416,495 L 421,492 L 429,483 L 432,473 L 432,467 L 430,459 L 427,454 L 420,447 L 414,444 L 410,443 L 399,443 L 391,446 L 382,454 L 379,462 L 377,464 L 261,463 L 261,406 Z M 401,455 L 408,455 L 412,457 L 418,463 L 419,465 L 419,468 L 420,469 L 418,477 L 412,483 L 408,485 L 401,485 L 397,483 L 392,478 L 390,474 L 390,465 L 391,463 L 397,457 Z M 167,379 L 167,442 L 165,444 L 161,445 L 156,448 L 149,456 L 146,464 L 146,475 L 147,479 L 150,485 L 157,492 L 165,496 L 170,497 L 176,497 L 186,494 L 189,492 L 196,485 L 200,475 L 200,465 L 198,458 L 195,453 L 190,448 L 185,445 L 181,444 L 179,442 L 179,379 Z M 169,455 L 177,455 L 181,457 L 186,462 L 188,467 L 188,473 L 186,477 L 180,483 L 175,485 L 171,485 L 163,481 L 158,473 L 158,466 L 160,462 L 165,457 Z M 496,334 L 493,325 L 485,316 L 477,312 L 472,311 L 466,311 L 461,312 L 454,315 L 446,323 L 442,332 L 378,332 L 378,344 L 443,345 L 443,348 L 445,352 L 453,361 L 462,365 L 476,365 L 486,360 L 492,353 L 495,347 L 496,343 Z M 467,323 L 471,323 L 476,325 L 482,331 L 484,336 L 484,341 L 482,346 L 477,351 L 473,353 L 465,353 L 461,351 L 456,346 L 454,342 L 454,335 L 457,329 L 462,325 Z M 105,250 L 39,250 L 35,255 L 35,378 L 33,380 L 25,383 L 19,389 L 15,397 L 14,402 L 14,409 L 16,416 L 18,420 L 23,426 L 31,431 L 34,432 L 48,432 L 57,428 L 64,421 L 68,412 L 68,399 L 66,393 L 60,385 L 59,385 L 56,382 L 48,379 L 48,262 L 105,262 Z M 40,390 L 46,391 L 50,393 L 54,397 L 56,401 L 56,410 L 51,417 L 50,417 L 46,420 L 37,420 L 33,418 L 29,414 L 26,407 L 26,403 L 28,398 L 34,392 Z M 15,167 L 15,181 L 20,191 L 27,197 L 33,200 L 38,201 L 45,201 L 50,200 L 58,196 L 64,190 L 67,182 L 69,180 L 133,180 L 131,176 L 132,168 L 68,167 L 65,159 L 61,154 L 57,151 L 48,147 L 35,147 L 26,151 L 19,158 Z M 38,159 L 46,159 L 51,162 L 55,167 L 57,172 L 57,175 L 55,181 L 49,187 L 44,189 L 39,189 L 36,188 L 29,182 L 27,178 L 27,169 L 28,167 L 35,160 Z M 234,119 L 228,147 L 227,149 L 222,154 L 206,161 L 200,161 L 196,159 L 174,144 L 172,144 L 143,174 L 159,198 L 160,201 L 160,207 L 153,223 L 148,228 L 143,230 L 120,234 L 118,235 L 118,277 L 129,280 L 138,281 L 146,283 L 148,284 L 153,289 L 160,305 L 160,311 L 159,314 L 144,336 L 143,339 L 172,368 L 174,368 L 196,353 L 201,351 L 205,351 L 222,358 L 227,363 L 230,372 L 233,390 L 235,394 L 276,394 L 277,392 L 277,388 L 282,366 L 284,362 L 290,357 L 305,351 L 310,351 L 316,354 L 335,367 L 339,368 L 367,340 L 367,337 L 352,315 L 350,310 L 350,307 L 355,294 L 358,288 L 361,285 L 368,282 L 390,278 L 391,277 L 393,277 L 393,235 L 364,229 L 358,224 L 352,211 L 350,205 L 350,202 L 352,197 L 367,175 L 367,172 L 339,144 L 335,145 L 313,160 L 310,161 L 305,161 L 288,154 L 284,150 L 282,146 L 280,138 L 279,129 L 277,124 L 277,120 L 276,118 Z M 335,237 L 337,246 L 337,265 L 336,272 L 332,285 L 328,294 L 323,302 L 314,313 L 305,321 L 296,327 L 281,334 L 274,336 L 262,338 L 249,338 L 233,335 L 222,331 L 216,328 L 214,326 L 211,325 L 215,338 L 211,343 L 207,343 L 204,341 L 202,337 L 195,314 L 195,311 L 197,308 L 210,303 L 223,299 L 228,299 L 232,304 L 231,308 L 227,311 L 221,312 L 216,314 L 220,317 L 231,322 L 242,325 L 249,326 L 262,326 L 277,323 L 292,316 L 298,312 L 311,299 L 317,290 L 321,281 L 325,265 L 325,247 L 323,239 L 327,234 L 330,233 Z M 248,214 L 263,214 L 270,216 L 279,221 L 283,224 L 291,233 L 295,241 L 297,247 L 298,254 L 297,265 L 295,271 L 291,279 L 282,289 L 270,296 L 263,298 L 247,298 L 238,295 L 230,290 L 221,281 L 215,270 L 213,262 L 213,250 L 214,245 L 221,231 L 230,222 L 236,218 Z M 308,171 L 310,178 L 313,200 L 312,202 L 308,206 L 281,210 L 276,207 L 275,205 L 275,202 L 276,200 L 281,197 L 287,197 L 288,196 L 291,196 L 289,194 L 280,190 L 270,187 L 263,186 L 247,186 L 233,189 L 218,196 L 211,201 L 201,211 L 194,221 L 188,235 L 185,251 L 185,261 L 187,270 L 187,274 L 184,278 L 181,279 L 179,278 L 175,274 L 173,261 L 173,251 L 175,238 L 178,228 L 183,217 L 191,205 L 204,192 L 214,185 L 224,180 L 232,177 L 247,174 L 264,174 L 270,175 L 284,179 L 293,183 L 297,186 L 299,186 L 297,177 L 297,173 L 298,171 L 302,168 L 304,168 Z M 476,80 L 463,80 L 455,83 L 448,89 L 443,98 L 442,102 L 442,111 L 445,120 L 453,129 L 458,132 L 462,133 L 462,250 L 405,250 L 405,262 L 472,262 L 475,259 L 476,133 L 482,131 L 488,127 L 492,122 L 496,113 L 496,101 L 495,97 L 492,91 L 485,84 Z M 465,92 L 473,92 L 477,94 L 482,99 L 484,103 L 484,110 L 481,116 L 478,119 L 471,122 L 467,122 L 462,120 L 456,114 L 454,109 L 454,104 L 456,99 L 461,94 Z M 335,15 L 330,16 L 323,19 L 316,25 L 312,32 L 310,43 L 312,53 L 314,57 L 317,60 L 317,61 L 325,67 L 330,68 L 332,70 L 332,133 L 344,133 L 345,68 L 348,68 L 352,66 L 355,63 L 356,63 L 361,57 L 364,50 L 365,41 L 363,32 L 359,25 L 355,21 L 345,16 Z M 336,27 L 339,27 L 346,30 L 350,34 L 352,38 L 353,43 L 350,51 L 347,54 L 342,57 L 333,57 L 326,52 L 323,47 L 322,42 L 325,34 L 329,30 Z M 80,33 L 79,36 L 79,48 L 82,56 L 89,64 L 94,67 L 100,69 L 112,69 L 118,67 L 124,63 L 127,60 L 133,48 L 249,49 L 249,106 L 261,106 L 261,39 L 257,36 L 132,35 L 132,33 L 129,27 L 121,19 L 111,15 L 101,15 L 97,16 L 91,19 L 85,24 Z M 103,27 L 109,27 L 113,29 L 117,32 L 121,39 L 121,45 L 120,48 L 114,55 L 110,57 L 102,57 L 98,55 L 93,50 L 91,46 L 91,39 L 93,34 L 97,30 Z" />
           </svg>
         </div>
         <span class="figma-brand-name">ClaimVertex</span>
@@ -1291,144 +1274,49 @@
       </div>
     </nav>
 
-    <!-- Main Hero Stage -->
-    <section class="figma-hero-stage">
+    <!-- Main Hero Stage matching Figma 1:1 -->
+    <section class="figma-hero-stage" style="display: flex; align-items: center; justify-content: space-between; gap: 48px; max-width: 1280px; margin: 0 auto; padding: 48px 48px; flex-wrap: wrap;">
       <!-- Left Column: Headline & Action -->
-      <div class="figma-hero-content">
-        <h1 class="figma-hero-headline">
+      <div class="figma-hero-content" style="flex: 1 1 500px; max-width: 580px;">
+        <div style="display: inline-block; background: rgba(17,75,95,0.09); color: #114b5f; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(17,75,95,0.22); margin-bottom: 16px;">
+          AI-POWERED P&amp;C INSURANCE
+        </div>
+
+        <h1 class="figma-hero-headline" style="font-family: 'Segoe UI', -apple-system, sans-serif; font-size: 38px; font-weight: 700; line-height: 1.25; color: #0d1f2d; letter-spacing: -0.5px; margin-bottom: 16px;">
           Transforming Claims from Manual Workflows to Intelligent Decisions
         </h1>
-        <button class="figma-learn-more-btn" onclick="openLearnMoreModal()">
-          Learn More
-        </button>
+
+        <p style="font-size: 15.5px; line-height: 1.65; color: #4a5568; margin-bottom: 24px;">
+          Autonomous Straight-Through Processing (STP), 6-vector SIU fraud detection, and real-time financial settlement — all in under 0.9 seconds.
+        </p>
+
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <button class="figma-learn-more-btn" onclick="openLoginModal()" style="font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 14.5px; color: #0d1f2d; background-color: #a0e571; border: none; border-radius: 24px; padding: 12px 28px; cursor: pointer; box-shadow: 0 4px 14px rgba(160,229,113,0.5);">
+            Learn More
+          </button>
+          <button onclick="openLoginModal()" style="font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 14.5px; color: #ffffff; background-color: #114b5f; border: none; border-radius: 24px; padding: 12px 28px; cursor: pointer; box-shadow: 0 4px 14px rgba(17,75,95,0.35);">
+            Launch Dashboard →
+          </button>
+        </div>
       </div>
 
-      <!-- Right Column: Smartphone & Claim Document Scanner SVG Illustration -->
-      <div class="figma-hero-illustration">
-        <svg class="figma-illustration-svg" viewBox="0 0 500 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter id="docShadow" x="-10%" y="-10%" width="130%" height="130%" filterUnits="userSpaceOnUse">
-              <feDropShadow dx="3" dy="6" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.1" />
-            </filter>
-            <filter id="phoneShadow" x="-15%" y="-15%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-              <feDropShadow dx="6" dy="12" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.2" />
-            </filter>
-            <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#081e30" />
-              <stop offset="100%" stop-color="#04121d" />
-            </linearGradient>
-            <linearGradient id="laserGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0" />
-              <stop offset="25%" stop-color="#38bdf8" stop-opacity="0.85" />
-              <stop offset="50%" stop-color="#0ea5e9" stop-opacity="1" />
-              <stop offset="75%" stop-color="#38bdf8" stop-opacity="0.85" />
-              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="phoneBody" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1e293b" />
-              <stop offset="100%" stop-color="#0f172a" />
-            </linearGradient>
-          </defs>
-
-          <!-- 1. Background Cascading Document Sheets -->
-          <g class="doc-stack">
-            <!-- Doc 1 (Back Left) -->
-            <g transform="translate(60, 45) rotate(-14)" filter="url(#docShadow)">
-              <rect width="130" height="175" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5" />
-              <rect x="12" y="14" width="60" height="10" rx="3" fill="#93c5fd" stroke="#60a5fa" stroke-width="1" />
-              <rect x="12" y="32" width="106" height="5" rx="2" fill="#cbd5e1" />
-              <rect x="12" y="44" width="96" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="12" y="56" width="100" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="12" y="68" width="70" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="12" y="86" width="106" height="5" rx="2" fill="#cbd5e1" />
-              <rect x="12" y="98" width="90" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="12" y="110" width="80" height="5" rx="2" fill="#e2e8f0" />
-            </g>
-
-            <!-- Doc 2 (Middle) -->
-            <g transform="translate(95, 30) rotate(-4)" filter="url(#docShadow)">
-              <rect width="135" height="180" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5" />
-              <rect x="14" y="14" width="70" height="12" rx="3" fill="#60a5fa" />
-              <rect x="14" y="34" width="107" height="6" rx="2" fill="#cbd5e1" />
-              <rect x="14" y="48" width="95" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="14" y="60" width="100" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="14" y="72" width="85" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="14" y="92" width="107" height="18" rx="3" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
-              <rect x="20" y="98" width="40" height="6" rx="2" fill="#94a3b8" />
-              <rect x="75" y="98" width="38" height="6" rx="2" fill="#3b82f6" />
-              <rect x="14" y="118" width="107" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="14" y="130" width="75" height="5" rx="2" fill="#e2e8f0" />
-            </g>
-
-            <!-- Doc 3 (Front Sheet) -->
-            <g transform="translate(130, 25) rotate(6)" filter="url(#docShadow)">
-              <rect width="135" height="180" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2.5" />
-              <rect x="14" y="14" width="65" height="12" rx="3" fill="#3b82f6" />
-              <rect x="88" y="14" width="33" height="12" rx="3" fill="#22c55e" fill-opacity="0.3" stroke="#22c55e" stroke-width="1" />
-              <rect x="14" y="34" width="107" height="6" rx="2" fill="#94a3b8" />
-              <rect x="14" y="48" width="95" height="5" rx="2" fill="#cbd5e1" />
-              <rect x="14" y="60" width="107" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="14" y="72" width="80" height="5" rx="2" fill="#e2e8f0" />
-              <rect x="14" y="92" width="107" height="40" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
-              <circle cx="30" cy="112" r="8" fill="#e2e8f0" />
-              <rect x="46" y="105" width="65" height="5" rx="2" fill="#cbd5e1" />
-              <rect x="46" y="115" width="50" height="4" rx="2" fill="#e2e8f0" />
-            </g>
-          </g>
-
-          <!-- 2. Smartphone in Foreground with Glowing HUD Scanner -->
-          <g transform="translate(230, 68) rotate(9)" filter="url(#phoneShadow)">
-            <rect width="125" height="210" rx="24" fill="url(#phoneBody)" stroke="#334155" stroke-width="3.5" />
-            <rect x="6" y="8" width="113" height="194" rx="18" fill="url(#screenGrad)" />
-            <rect x="47" y="12" width="31" height="5" rx="2.5" fill="#0f172a" stroke="#334155" stroke-width="0.8" />
-            
-            <!-- Scanner Area -->
-            <g transform="translate(18, 38)">
-              <path d="M6 18 V6 H18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              <path d="M72 6 H84 V18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              <path d="M6 72 V84 H18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              <path d="M72 84 H84 V72" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              
-              <rect x="22" y="22" width="46" height="46" rx="8" fill="#0369a1" fill-opacity="0.25" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="3 3" />
-              <path d="M35 32 H55 M35 40 H55 M35 48 H47 M35 56 H51" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
-              <circle cx="45" cy="45" r="14" stroke="#0ea5e9" stroke-width="1.2" stroke-opacity="0.6" />
-              
-              <!-- Laser Scan Line Animation -->
-              <g class="scan-laser-line">
-                <line x1="10" y1="20" x2="80" y2="20" stroke="url(#laserGrad)" stroke-width="3" stroke-linecap="round" />
-                <ellipse cx="45" cy="20" rx="35" ry="3" fill="#38bdf8" fill-opacity="0.3" />
-              </g>
-            </g>
-
-            <!-- UI Verification Card on Phone -->
-            <g transform="translate(14, 145)">
-              <rect width="97" height="44" rx="8" fill="#0f172a" fill-opacity="0.85" stroke="#0284c7" stroke-width="1.2" />
-              <circle cx="22" cy="22" r="9" fill="#059669" />
-              <path d="M18 22 L21 25 L27 19" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              <text x="36" y="18" fill="#38bdf8" font-size="7.5" font-family="Inter, sans-serif" font-weight="700">CLAIM VERIFIED</text>
-              <text x="36" y="30" fill="#94a3b8" font-size="6.5" font-family="JetBrains Mono, monospace">STP &lt; 0.9s | 100%</text>
-            </g>
-          </g>
-
-          <!-- 3. Stylized Hand Holding the Smartphone -->
-          <g id="hand-grip" transform="translate(325, 175)">
-            <path d="M30 40 C45 35, 75 45, 95 65 C115 85, 115 125, 95 145 C80 160, 45 160, 20 145 C-5 130, -10 90, 5 60 Z" fill="#fab287" stroke="#1e293b" stroke-width="3.5" stroke-linejoin="round" />
-            <path d="M-15 15 C-25 15, -45 25, -45 42 C-45 55, -30 65, -15 65 C-5 65, 10 50, 10 35 C10 20, 0 15, -15 15 Z" fill="#fbc093" stroke="#1e293b" stroke-width="3.5" stroke-linejoin="round" />
-            <path d="M-40 45 C-55 45, -65 55, -60 68 C-55 78, -40 80, -25 75" fill="#fbc093" stroke="#1e293b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M75 125 C85 140, 115 165, 140 185" stroke="#1e293b" stroke-width="4" stroke-linecap="round" />
-          </g>
-        </svg>
+      <!-- Right Column: Exact Figma Hero Illustration PNG -->
+      <div style="flex: 1 1 420px; max-width: 480px; display: flex; justify-content: center; align-items: center;">
+        <img src="hero-scanner.png" alt="Claim Document & Smartphone Scanner" style="max-width: 100%; width: 380px; height: auto; display: block; filter: drop-shadow(0 15px 30px rgba(17, 75, 95, 0.15)) drop-shadow(0 5px 12px rgba(0,0,0,0.08));" />
       </div>
     </section>
 
     <!-- Bottom Dark Banner -->
-    <footer class="figma-bottom-bar">
+    <footer class="figma-bottom-bar" style="background-color: #534e4e; padding: 0 40px; height: 52px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; flex-wrap: wrap; gap: 12px;">
       <div class="figma-footer-left">
-        <span>ClaimVertex • Autonomous Insurance &amp; SIU Fraud Matrix</span>
+        <span style="font-size: 12.5px; color: rgba(255,255,255,0.8);">© 2026 ClaimVertex · AI-Powered P&amp;C Claims Intelligence</span>
       </div>
-      <div class="figma-footer-right">
-        <span class="figma-pipeline-tag">9 AI Pipelines Active</span>
-        <span class="figma-status-tag"><span class="figma-dot"></span> Core Server Online</span>
+      <div class="figma-footer-right" style="display: flex; align-items: center; gap: 12px;">
+        <span class="figma-pipeline-tag" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 6px; font-size: 11px; color: #93c5fd; font-family: monospace;">9 AI Pipelines Active</span>
+        <span class="figma-status-tag" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.18); border: 1px solid rgba(34,197,94,0.35); padding: 3px 10px; border-radius: 20px; color: #86efac; font-size: 11px; font-weight: 600;">
+          <span class="figma-dot" style="width: 6px; height: 6px; border-radius: 50%; background-color: #22c55e; box-shadow: 0 0 6px #22c55e;"></span>
+          Core Server Online
+        </span>
       </div>
     </footer>
   </main>
@@ -1446,10 +1334,8 @@
       </button>
 
       <div class="modal-brand-badge">
-        <svg width="18" height="18" viewBox="0 0 30 30" fill="none">
-          <rect width="30" height="30" rx="7" fill="#062238"/>
-          <circle cx="15" cy="15" r="8.5" stroke="#38bdf8" stroke-width="1.8"/>
-          <path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fill-opacity="0.5" stroke="#38bdf8" stroke-width="1.5"/>
+        <svg width="18" height="18" viewBox="0 0 512 512" fill="#a0e571">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M 249,406 L 249,472 L 250,474 L 253,476 L 377,476 L 379,478 L 382,486 L 388,492 L 393,495 L 399,497 L 410,497 L 416,495 L 421,492 L 429,483 L 432,473 L 432,467 L 430,459 L 427,454 L 420,447 L 414,444 L 410,443 L 399,443 L 391,446 L 382,454 L 379,462 L 377,464 L 261,463 L 261,406 Z M 401,455 L 408,455 L 412,457 L 418,463 L 419,465 L 419,468 L 420,469 L 418,477 L 412,483 L 408,485 L 401,485 L 397,483 L 392,478 L 390,474 L 390,465 L 391,463 L 397,457 Z M 167,379 L 167,442 L 165,444 L 161,445 L 156,448 L 149,456 L 146,464 L 146,475 L 147,479 L 150,485 L 157,492 L 165,496 L 170,497 L 176,497 L 186,494 L 189,492 L 196,485 L 200,475 L 200,465 L 198,458 L 195,453 L 190,448 L 185,445 L 181,444 L 179,442 L 179,379 Z M 169,455 L 177,455 L 181,457 L 186,462 L 188,467 L 188,473 L 186,477 L 180,483 L 175,485 L 171,485 L 163,481 L 158,473 L 158,466 L 160,462 L 165,457 Z M 496,334 L 493,325 L 485,316 L 477,312 L 472,311 L 466,311 L 461,312 L 454,315 L 446,323 L 442,332 L 378,332 L 378,344 L 443,345 L 443,348 L 445,352 L 453,361 L 462,365 L 476,365 L 486,360 L 492,353 L 495,347 L 496,343 Z M 467,323 L 471,323 L 476,325 L 482,331 L 484,336 L 484,341 L 482,346 L 477,351 L 473,353 L 465,353 L 461,351 L 456,346 L 454,342 L 454,335 L 457,329 L 462,325 Z M 105,250 L 39,250 L 35,255 L 35,378 L 33,380 L 25,383 L 19,389 L 15,397 L 14,402 L 14,409 L 16,416 L 18,420 L 23,426 L 31,431 L 34,432 L 48,432 L 57,428 L 64,421 L 68,412 L 68,399 L 66,393 L 60,385 L 59,385 L 56,382 L 48,379 L 48,262 L 105,262 Z M 40,390 L 46,391 L 50,393 L 54,397 L 56,401 L 56,410 L 51,417 L 50,417 L 46,420 L 37,420 L 33,418 L 29,414 L 26,407 L 26,403 L 28,398 L 34,392 Z M 15,167 L 15,181 L 20,191 L 27,197 L 33,200 L 38,201 L 45,201 L 50,200 L 58,196 L 64,190 L 67,182 L 69,180 L 133,180 L 131,176 L 132,168 L 68,167 L 65,159 L 61,154 L 57,151 L 48,147 L 35,147 L 26,151 L 19,158 Z M 38,159 L 46,159 L 51,162 L 55,167 L 57,172 L 57,175 L 55,181 L 49,187 L 44,189 L 39,189 L 36,188 L 29,182 L 27,178 L 27,169 L 28,167 L 35,160 Z M 234,119 L 228,147 L 227,149 L 222,154 L 206,161 L 200,161 L 196,159 L 174,144 L 172,144 L 143,174 L 159,198 L 160,201 L 160,207 L 153,223 L 148,228 L 143,230 L 120,234 L 118,235 L 118,277 L 129,280 L 138,281 L 146,283 L 148,284 L 153,289 L 160,305 L 160,311 L 159,314 L 144,336 L 143,339 L 172,368 L 174,368 L 196,353 L 201,351 L 205,351 L 222,358 L 227,363 L 230,372 L 233,390 L 235,394 L 276,394 L 277,392 L 277,388 L 282,366 L 284,362 L 290,357 L 305,351 L 310,351 L 316,354 L 335,367 L 339,368 L 367,340 L 367,337 L 352,315 L 350,310 L 350,307 L 355,294 L 358,288 L 361,285 L 368,282 L 390,278 L 391,277 L 393,277 L 393,235 L 364,229 L 358,224 L 352,211 L 350,205 L 350,202 L 352,197 L 367,175 L 367,172 L 339,144 L 335,145 L 313,160 L 310,161 L 305,161 L 288,154 L 284,150 L 282,146 L 280,138 L 279,129 L 277,124 L 277,120 L 276,118 Z M 335,237 L 337,246 L 337,265 L 336,272 L 332,285 L 328,294 L 323,302 L 314,313 L 305,321 L 296,327 L 281,334 L 274,336 L 262,338 L 249,338 L 233,335 L 222,331 L 216,328 L 214,326 L 211,325 L 215,338 L 211,343 L 207,343 L 204,341 L 202,337 L 195,314 L 195,311 L 197,308 L 210,303 L 223,299 L 228,299 L 232,304 L 231,308 L 227,311 L 221,312 L 216,314 L 220,317 L 231,322 L 242,325 L 249,326 L 262,326 L 277,323 L 292,316 L 298,312 L 311,299 L 317,290 L 321,281 L 325,265 L 325,247 L 323,239 L 327,234 L 330,233 Z M 248,214 L 263,214 L 270,216 L 279,221 L 283,224 L 291,233 L 295,241 L 297,247 L 298,254 L 297,265 L 295,271 L 291,279 L 282,289 L 270,296 L 263,298 L 247,298 L 238,295 L 230,290 L 221,281 L 215,270 L 213,262 L 213,250 L 214,245 L 221,231 L 230,222 L 236,218 Z M 308,171 L 310,178 L 313,200 L 312,202 L 308,206 L 281,210 L 276,207 L 275,205 L 275,202 L 276,200 L 281,197 L 287,197 L 288,196 L 291,196 L 289,194 L 280,190 L 270,187 L 263,186 L 247,186 L 233,189 L 218,196 L 211,201 L 201,211 L 194,221 L 188,235 L 185,251 L 185,261 L 187,270 L 187,274 L 184,278 L 181,279 L 179,278 L 175,274 L 173,261 L 173,251 L 175,238 L 178,228 L 183,217 L 191,205 L 204,192 L 214,185 L 224,180 L 232,177 L 247,174 L 264,174 L 270,175 L 284,179 L 293,183 L 297,186 L 299,186 L 297,177 L 297,173 L 298,171 L 302,168 L 304,168 Z M 476,80 L 463,80 L 455,83 L 448,89 L 443,98 L 442,102 L 442,111 L 445,120 L 453,129 L 458,132 L 462,133 L 462,250 L 405,250 L 405,262 L 472,262 L 475,259 L 476,133 L 482,131 L 488,127 L 492,122 L 496,113 L 496,101 L 495,97 L 492,91 L 485,84 Z M 465,92 L 473,92 L 477,94 L 482,99 L 484,103 L 484,110 L 481,116 L 478,119 L 471,122 L 467,122 L 462,120 L 456,114 L 454,109 L 454,104 L 456,99 L 461,94 Z M 335,15 L 330,16 L 323,19 L 316,25 L 312,32 L 310,43 L 312,53 L 314,57 L 317,60 L 317,61 L 325,67 L 330,68 L 332,70 L 332,133 L 344,133 L 345,68 L 348,68 L 352,66 L 355,63 L 356,63 L 361,57 L 364,50 L 365,41 L 363,32 L 359,25 L 355,21 L 345,16 Z M 336,27 L 339,27 L 346,30 L 350,34 L 352,38 L 353,43 L 350,51 L 347,54 L 342,57 L 333,57 L 326,52 L 323,47 L 322,42 L 325,34 L 329,30 Z M 80,33 L 79,36 L 79,48 L 82,56 L 89,64 L 94,67 L 100,69 L 112,69 L 118,67 L 124,63 L 127,60 L 133,48 L 249,49 L 249,106 L 261,106 L 261,39 L 257,36 L 132,35 L 132,33 L 129,27 L 121,19 L 111,15 L 101,15 L 97,16 L 91,19 L 85,24 Z M 103,27 L 109,27 L 113,29 L 117,32 L 121,39 L 121,45 L 120,48 L 114,55 L 110,57 L 102,57 L 98,55 L 93,50 L 91,46 L 91,39 L 93,34 L 97,30 Z" />
         </svg>
         <span>ClaimVertex</span>
       </div>
@@ -1966,7 +1852,7 @@
             <div class="chat-stream-area" id="chat-messages">
               <div class="chat-row ai">
                 <div class="msg-body">
-                  Hello! I am your <strong>ClaimPilot RAG Copilot</strong> powered by <code>claim_chat.pipe</code>. Ask me any question regarding policy limits, SIU anomaly vectors, regional benchmarks, or claim evidence.
+                  Hello! I am your <strong>ClaimVertex RAG Copilot</strong> powered by <code>claim_chat.pipe</code>. Ask me any question regarding policy limits, SIU anomaly vectors, regional benchmarks, or claim evidence.
                 </div>
               </div>
             </div>
@@ -2024,7 +1910,7 @@
 
   <!-- FOOTER -->
   <footer>
-    ClaimPilot Enterprise v2.5 &bull; Autonomous Multi-Pipeline Architecture &bull; All Rights Reserved.
+    ClaimVertex Enterprise v2.5 &bull; Autonomous Multi-Pipeline Architecture &bull; All Rights Reserved.
   </footer>
 
   <!-- CORE JAVASCRIPT LOGIC -->

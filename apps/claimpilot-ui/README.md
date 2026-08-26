@@ -1,6 +1,6 @@
-# 🛡️ ClaimPilot — Enterprise AI Insurance Claims & SIU Fraud Engine
+# 🛡️ ClaimVertex — Enterprise AI Insurance Claims & SIU Fraud Engine
 
-ClaimPilot is an enterprise-grade AI insurance platform orchestrating **9 deterministic AI pipelines** for Property & Casualty carriers, forensic structural engineers, and Special Investigation Units (SIU).
+ClaimVertex is an enterprise-grade AI insurance platform orchestrating **9 deterministic AI pipelines** for Property & Casualty carriers, forensic structural engineers, and Special Investigation Units (SIU).
 
 ## 🚀 Key Platform Features
 - **⚡ Straight-Through Processing (STP)**: Sub-second auto-payout authorizations for qualified low-risk claims.

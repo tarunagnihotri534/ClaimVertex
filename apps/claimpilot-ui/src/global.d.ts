@@ -1,7 +1,16 @@
-/** ClaimPilot pipeline files — JSON with a .pipe extension. */
+/** ClaimVertex pipeline files — JSON with a .pipe extension. */
 declare module '*.pipe' {
-
 	const value: Record<string, unknown>;
+	export default value;
+}
+
+declare module '*.png' {
+	const value: string;
+	export default value;
+}
+
+declare module '*.svg' {
+	const value: string;
 	export default value;
 }
 

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { LandingPage } from './LandingPage';
+import { Logo } from './Logo';
+import './index.css';
 
 // =============================================================================
 // TYPES & INTERFACES
@@ -20,7 +23,16 @@ export interface FinancialBudget {
 	allocated_loss_reserve: number;
 	allocated_alae_reserve: number;
 	total_incurred_reserve: number;
-	active_threshold_used?: string;
+	active_threshold_used: string;
+}
+
+export interface RiskVector {
+	id: string;
+	name: string;
+	score: number;
+	status: 'Pass' | 'Flagged';
+	detail: string;
+	evidence_trace?: string;
 }
 
 export interface LineItem {
@@ -34,15 +46,6 @@ export interface LineItem {
 	confidence?: number;
 }
 
-export interface RiskVector {
-	id: string;
-	name: string;
-	score: number;
-	status: 'Pass' | 'Flagged';
-	detail: string;
-	evidence_trace: string;
-}
-
 export interface Claim {
 	id: string;
 	claimant: string;
@@ -54,41 +57,36 @@ export interface Claim {
 	fraud_risk_score: number;
 	risk_level: string;
 	human_review_required: boolean;
-	gate_status: 'AUTOMATED APPROVAL PASSED' | 'ESCALATED TO SENIOR ADJUSTER' | 'APPROVED BY HUMAN ADJUSTER' | 'SIU INVESTIGATION ACTIVE' | 'REJECTED';
+	gate_status: string;
 	siu_tier: string;
 	financials: FinancialBudget;
 	line_items: LineItem[];
 	risk_vectors: RiskVector[];
-	recommendation?: string;
-	reasoning?: string[];
-	assessment?: string;
 	assigned_investigator?: string | null;
 	timestamp: string;
 	created_at_days?: number;
+	priority_score?: number;
+	priority_badge?: string;
 }
 
 export interface DocItem {
 	filename: string;
-	size_bytes: number;
-	status: string;
-	timestamp: string;
-	doc_type: string;
 	policy_number: string;
 	claimant: string;
-	extracted_amount: string;
-	compliance: string;
-	pii_status: string;
-	vector_chunks: number;
+	doc_type: string;
+	extracted_amount: number;
 	field_confidence: {
-		overall: number;
 		amount: number;
 		policy_number: number;
+		claimant: number;
 		classification: number;
-		contractor_tin: number;
-		line_items: number;
+		overall: number;
 	};
-	duplicate_risk: string;
-	duplicate_matches: Array<{
+	status: string;
+	size_bytes: number;
+	timestamp: string;
+	duplicate_risk?: string;
+	duplicate_matches?: Array<{
 		matched_filename: string;
 		policy_number: string;
 		amount: string;
@@ -96,7 +94,7 @@ export interface DocItem {
 		risk_impact: string;
 	}>;
 	summary: string;
-	line_items: Array<{ item: string; qty: string; rate: string; total: string; audit: string; confidence?: number }>;
+	line_items: Array<{ item: string; qty: string; rate: string; total: string; audit: string; confidence: number }>;
 	pipeline: string;
 }
 
@@ -126,7 +124,7 @@ export interface AuditEntry {
 }
 
 // =============================================================================
-// INITIAL ROADMAP DATA
+// INITIAL REALISTIC DATASET
 // =============================================================================
 
 const INITIAL_CLAIMS: Claim[] = [
@@ -134,58 +132,58 @@ const INITIAL_CLAIMS: Claim[] = [
 		id: 'CP-2026-88412',
 		claimant: 'Jane Doe',
 		policy_number: 'POL-994821',
-		amount: 8450.00,
-		loss_date: '2026-08-15',
-		description: 'Water line burst in kitchen causing damage to hardwood floor and cabinet bases. Master plumber invoice submitted.',
-		peril: 'Residential Plumbing Rupture',
+		amount: 8450.0,
+		loss_date: '2026-08-24',
+		description: 'Sudden kitchen supply line rupture causing floor buckling, base cabinet swelling, and drywall saturation. IICRC Category 1 water.',
+		peril: 'Residential Water Damage',
 		fraud_risk_score: 14,
 		risk_level: 'LOW RISK (CLEAN)',
 		human_review_required: false,
 		gate_status: 'AUTOMATED APPROVAL PASSED',
 		siu_tier: 'Normal (Fast-Track Approved)',
 		financials: {
-			claimed_amount: 8450.00,
-			replacement_cost_value: 8450.00,
+			claimed_amount: 8450.0,
+			replacement_cost_value: 8450.0,
 			depreciation_rate_pct: 12,
-			depreciation_amount: 1014.00,
-			recoverable_depreciation: 811.20,
-			non_recoverable_depreciation: 202.80,
-			actual_cash_value: 7436.00,
-			policy_deductible: 1000.00,
-			net_payable_payout: 6436.00,
-			coverage_limit: 500000.00,
+			depreciation_amount: 1014.0,
+			recoverable_depreciation: 811.2,
+			non_recoverable_depreciation: 202.8,
+			actual_cash_value: 7436.0,
+			policy_deductible: 1000.0,
+			net_payable_payout: 6436.0,
+			coverage_limit: 350000.0,
 			coverage_type: 'Coverage A Dwelling (HO-3)',
-			remaining_coverage: 491550.00,
-			allocated_loss_reserve: 8450.00,
-			allocated_alae_reserve: 450.00,
-			total_incurred_reserve: 8900.00,
-			active_threshold_used: 'Global Default Threshold',
+			remaining_coverage: 341550.0,
+			allocated_loss_reserve: 8450.0,
+			allocated_alae_reserve: 422.5,
+			total_incurred_reserve: 8872.5,
+			active_threshold_used: 'Standard P&C Rule ($10,000 max STP / 40% SIU)',
 		},
 		line_items: [
-			{ item: 'Emergency Water Extraction & Anti-Microbial Prep', category: 'Extraction', qty: '280 SF', rate: '$4.50/SF', total: 1260.00, status: 'IICRC S500 Verified', evidence_citation: 'Plumber_Invoice_JaneDoe.pdf (Section 1, Line 3)', confidence: 98 },
-			{ item: 'R&R 3/4in Solid White Oak Hardwood Flooring', category: 'Flooring', qty: '240 SF', rate: '$18.50/SF', total: 4440.00, status: 'Regional Index Matched', evidence_citation: 'Plumber_Invoice_JaneDoe.pdf (Section 2, Line 1)', confidence: 96 },
-			{ item: 'Base Cabinet Detach & Reset (Millwork Prep)', category: 'Millwork', qty: '14 LF', rate: '$95.00/LF', total: 1330.00, status: 'Standard Labor Approved', evidence_citation: 'Plumber_Invoice_JaneDoe.pdf (Section 2, Line 4)', confidence: 94 },
-			{ item: 'Commercial Low-Grain Dehumidifier Rental (72h)', category: 'Drying', qty: '2 Units', rate: '$310.00/ea', total: 620.00, status: 'Drying Log Confirmed', evidence_citation: 'Plumber_Invoice_JaneDoe.pdf (Section 3, Line 2)', confidence: 99 },
-			{ item: 'Copper Supply Line Solder & Valve Replacement', category: 'Plumbing', qty: '1 LS', rate: '$800.00', total: 800.00, status: 'Master Plumber Stamped', evidence_citation: 'Plumber_Invoice_JaneDoe.pdf (Section 4, Line 1)', confidence: 97 },
+			{ item: 'Emergency Water Extraction (IICRC Cat 1)', category: 'Extraction', qty: '280 SF', rate: '$4.50/SF', total: 1260.0, status: 'Verified', evidence_citation: 'Invoice Line 1 • Plumber_Invoice_JaneDoe.pdf:p.1', confidence: 98 },
+			{ item: 'Hardwood Floor Reconstruction (Oak 3/4")', category: 'Flooring', qty: '240 SF', rate: '$18.50/SF', total: 4440.0, status: 'Xactimate Index Matched', evidence_citation: 'Scope Sheet • Plumber_Invoice_JaneDoe.pdf:p.1', confidence: 95 },
+			{ item: 'Kitchen Base Cabinet Reset & Trim', category: 'Cabinetry', qty: '14 LF', rate: '$95.00/LF', total: 1330.0, status: 'Verified', evidence_citation: 'Scope Sheet • Plumber_Invoice_JaneDoe.pdf:p.1', confidence: 92 },
+			{ item: 'Industrial Dehumidifier Pack (72 hrs)', category: 'Remediation', qty: '3 Units', rate: '$140.00/ea', total: 420.0, status: 'IICRC S500 Standard', evidence_citation: 'Drying Log • Plumber_Invoice_JaneDoe.pdf:p.2', confidence: 99 },
+			{ item: 'Plumbing Supply Line Re-Piping & Solder', category: 'Plumbing', qty: '1 LS', rate: '$1,000.00', total: 1000.0, status: 'Verified', evidence_citation: 'Invoice Line 5 • Plumber_Invoice_JaneDoe.pdf:p.2', confidence: 97 },
 		],
 		risk_vectors: [
-			{ id: 'V1', name: 'Policy Inception Proximity', score: 8, status: 'Pass', detail: 'Policy active for 4.2 years without lapse.', evidence_trace: 'Property_Policy_POL994821.pdf (Inception: 2022-04-10)' },
-			{ id: 'V2', name: 'Regional Rate Benchmark', score: 12, status: 'Pass', detail: 'Plumber rates align with Dallas/Fort Worth index ($4.50/SF vs $4.60 regional cap).', evidence_trace: 'Q3 2026 Regional Benchmark Table' },
-			{ id: 'V3', name: 'Contractor Licensure & TIN', score: 5, status: 'Pass', detail: 'Texas State Board of Plumbing Examiners active license verified (#M-44910).', evidence_trace: 'Texas TSBPE Database Verification #44910' },
-			{ id: 'V4', name: 'Doppler Radar & Weather Match', score: 0, status: 'Pass', detail: 'Internal plumbing loss; weather anomaly check not applicable.', evidence_trace: 'Loss occurred indoors (water heater closet)' },
-			{ id: 'V5', name: 'Loss History & ISO Search', score: 15, status: 'Pass', detail: '0 prior claims in 36-month ISO ClaimSearch window.', evidence_trace: 'ISO ClaimSearch Record #TX-994821-00' },
-			{ id: 'V6', name: 'Circumstantial Loss Timing', score: 10, status: 'Pass', detail: 'Loss discovered during occupied hours, immediate emergency shutoff.', evidence_trace: 'Recorded Loss Statement: 2026-08-15 08:30' },
+			{ id: 'V1', name: 'Policy Inception Proximity', score: 8, status: 'Pass', detail: 'Policy active 48 months. No recent endorsement drift.', evidence_trace: 'Policy POL-994821 bound 2022-09-15' },
+			{ id: 'V2', name: 'Regional Rate Benchmark', score: 12, status: 'Pass', detail: 'Extraction ($4.50/SF) aligns with TX-Dallas median ($4.20 - $4.80/SF).', evidence_trace: 'Benchmark explorer node Qdrant index: TX-Dallas' },
+			{ id: 'V3', name: 'Contractor Licensure & TIN', score: 5, status: 'Pass', detail: 'Apex Emergency Restoration LLC verified active master license #TX-PL-884102.', evidence_trace: 'State Licensing Registry API response: Active/Good Standing' },
+			{ id: 'V4', name: 'Doppler Radar & Weather Match', score: 0, status: 'Pass', detail: 'Interior plumbing event. Meteorological validation not required.', evidence_trace: 'Peril HO-0422 internal discharge code' },
+			{ id: 'V5', name: 'Loss History & ISO Search', score: 15, status: 'Pass', detail: '1 prior claim recorded in 36 months ($1,200 wind minor). Low loss frequency.', evidence_trace: 'ISO ClaimSearch API query: Match POL-994821' },
+			{ id: 'V6', name: 'Circumstantial Loss Timing', score: 10, status: 'Pass', detail: 'Reported within 3 hours of initial plumber callout.', evidence_trace: 'First Notice of Loss timestamp vs Invoice timestamp' },
 		],
 		assigned_investigator: null,
-		timestamp: '2026-08-23 21:30',
-		created_at_days: 3.2,
+		timestamp: '2026-08-24 14:32',
+		created_at_days: 0.2,
 	},
 	{
 		id: 'CP-2026-90124',
 		claimant: 'Apex Commercial Logistics',
 		policy_number: 'POL-330192',
-		amount: 142000.00,
-		loss_date: '2026-08-20',
+		amount: 142000.0,
+		loss_date: '2026-08-23',
 		description: 'Warehouse electrical fire destroying inventory and structural steel beams. Unattended overnight ignition.',
 		peril: 'Commercial Fire & Structural Loss',
 		fraud_risk_score: 85,
@@ -194,50 +192,49 @@ const INITIAL_CLAIMS: Claim[] = [
 		gate_status: 'ESCALATED TO SENIOR ADJUSTER',
 		siu_tier: 'Critical Priority (Active SIU Case)',
 		financials: {
-			claimed_amount: 142000.00,
-			replacement_cost_value: 142000.00,
+			claimed_amount: 142000.0,
+			replacement_cost_value: 142000.0,
 			depreciation_rate_pct: 15,
-			depreciation_amount: 21300.00,
-			recoverable_depreciation: 17040.00,
-			non_recoverable_depreciation: 4260.00,
-			actual_cash_value: 120700.00,
-			policy_deductible: 5000.00,
-			net_payable_payout: 115700.00,
-			coverage_limit: 1500000.00,
-			coverage_type: 'Coverage A Commercial Building & Coverage C Inventory',
-			remaining_coverage: 1358000.00,
-			allocated_loss_reserve: 142000.00,
-			allocated_alae_reserve: 6500.00,
-			total_incurred_reserve: 148500.00,
-			active_threshold_used: 'Commercial Property & Fire (CP-1)',
+			depreciation_amount: 21300.0,
+			recoverable_depreciation: 17040.0,
+			non_recoverable_depreciation: 4260.0,
+			actual_cash_value: 120700.0,
+			policy_deductible: 5000.0,
+			net_payable_payout: 115700.0,
+			coverage_limit: 2500000.0,
+			coverage_type: 'Commercial Property CP-0010',
+			remaining_coverage: 2358000.0,
+			allocated_loss_reserve: 142000.0,
+			allocated_alae_reserve: 7100.0,
+			total_incurred_reserve: 149100.0,
+			active_threshold_used: 'Standard P&C Rule ($10,000 max STP / 40% SIU)',
 		},
 		line_items: [
-			{ item: 'Emergency Board-Up & Structural Steel Shoring', category: 'Mitigation', qty: '1 LS', rate: '$4,850.00', total: 4850.00, status: 'Emergency Rate Approved', evidence_citation: 'Warehouse_Fire_Damage_Appraisal.pdf (Line 1)', confidence: 98 },
-			{ item: 'Charred Wallboard Demolition & Debris Disposal', category: 'Demolition', qty: '3,200 SF', rate: '$6.75/SF', total: 21600.00, status: 'Xactimate Index Matched', evidence_citation: 'Warehouse_Fire_Damage_Appraisal.pdf (Line 2)', confidence: 95 },
-			{ item: 'W12x26 Structural Steel Beam Fabrication & Erection', category: 'Materials', qty: '14 EA', rate: '$2,850.00/ea', total: 39900.00, status: 'Engineering Spec Required', evidence_citation: 'Warehouse_Fire_Damage_Appraisal.pdf (Line 3)', confidence: 94 },
-			{ item: 'Industrial 480V Main Panel & High-Voltage Rewiring', category: 'Electrical', qty: '180 HRS', rate: '$115.00/hr', total: 20700.00, status: 'Master Electrician Rate', evidence_citation: 'Warehouse_Fire_Damage_Appraisal.pdf (Line 4)', confidence: 92 },
-			{ item: 'Commercial Inventory & Equipment Loss (ACV basis)', category: 'Contents', qty: '1 LS', rate: '$42,500.00', total: 42500.00, status: 'Purchase Receipts Pending Audit', evidence_citation: 'Warehouse_Fire_Damage_Appraisal.pdf (Line 5)', confidence: 90 },
-			{ item: 'Industrial HEPA Air Scrubbers & Thermal Soot Remediation', category: 'Environmental', qty: '6 Units (72h)', rate: '$2,075.00/ea', total: 12450.00, status: 'EPA Protocol Validated', evidence_citation: 'Warehouse_Fire_Damage_Appraisal.pdf (Line 6)', confidence: 96 },
+			{ item: 'Emergency Board-Up & Structural Steel Shoring', category: 'Shoring', qty: '1 LS', rate: '$4,850.00', total: 4850.0, status: 'Verified', evidence_citation: 'Invoice #4401 • ApexFire_Invoice.pdf:p.1', confidence: 91 },
+			{ item: 'Charred Wallboard Demolition & Debris Disposal', category: 'Demo', qty: '3,200 SF', rate: '$6.75/SF', total: 21600.0, status: 'Regional Cap Flagged', evidence_citation: 'Scope Item 2 • ApexFire_Invoice.pdf:p.1', confidence: 86 },
+			{ item: 'W12x26 Structural Steel Beam Fabrication & Erection', category: 'Steel', qty: '14 EA', rate: '$2,850.00/ea', total: 39900.0, status: 'PE Audit Mandated', evidence_citation: 'Engineer Draft • ApexFire_Invoice.pdf:p.2', confidence: 82 },
+			{ item: '200A 3-Phase Industrial Switchgear Replacement', category: 'Electrical', qty: '2 Sets', rate: '$18,400.00/ea', total: 36800.0, status: 'Origin Review Flagged', evidence_citation: 'Electrical Quote • ApexFire_Invoice.pdf:p.2', confidence: 84 },
+			{ item: 'HVAC Roof Top Unit Smoke Remediation', category: 'Mechanical', qty: '3 Units', rate: '$12,950.00/ea', total: 38850.0, status: 'Verified', evidence_citation: 'Mechanical Line • ApexFire_Invoice.pdf:p.3', confidence: 89 },
 		],
 		risk_vectors: [
-			{ id: 'V1', name: 'Policy Inception Proximity', score: 68, status: 'Flagged', detail: 'Coverage limit increased by $500,000 just 22 days prior to loss.', evidence_trace: 'Endorsement End-901 added on 2026-07-29' },
-			{ id: 'V2', name: 'Regional Rate Benchmark', score: 45, status: 'Flagged', detail: 'Structural steel markup exceeds regional median by 28%.', evidence_trace: 'Miami Regional Steel Index: $2,220 vs Quoted $2,850' },
-			{ id: 'V3', name: 'Contractor Licensure & TIN', score: 75, status: 'Flagged', detail: 'Restoration contractor TIN registered in out-of-state shell entity.', evidence_trace: 'DE Division of Corporations Entity #778102' },
-			{ id: 'V4', name: 'Doppler Radar & Weather Match', score: 90, status: 'Flagged', detail: 'Claimant cited lightning strike; NOAA Doppler recorded zero electrical storms.', evidence_trace: 'NOAA Radar Station #KMIA Log: 0.0 in rain, 0 lightning' },
-			{ id: 'V5', name: 'Loss History & ISO Search', score: 82, status: 'Flagged', detail: '3 commercial fire losses in 24 months across related corporate officers.', evidence_trace: 'ISO ClaimSearch Cross-Match #ISO-FL-8819' },
-			{ id: 'V6', name: 'Circumstantial Loss Timing', score: 95, status: 'Flagged', detail: 'Fire ignition occurred at 02:40 AM on Sunday with security cameras disabled.', evidence_trace: 'Fire Marshal Incident Report #FIR-2026-33019' },
+			{ id: 'V1', name: 'Policy Inception Proximity', score: 68, status: 'Flagged', detail: 'Coverage increased from $1M to $2.5M just 19 days prior to loss date.', evidence_trace: 'Policy Endorsement Log #END-2026-0804' },
+			{ id: 'V2', name: 'Regional Rate Benchmark', score: 45, status: 'Flagged', detail: 'Demolition unit rate ($6.75/SF) is 38% above Miami-Dade commercial index ($4.90/SF).', evidence_trace: 'Xactimate FL-Miami regional construction index' },
+			{ id: 'V3', name: 'Contractor Licensure & TIN', score: 75, status: 'Flagged', detail: 'Submitting contractor registered 4 months ago; no prior commercial loss citations.', evidence_trace: 'Sunbiz FL Corporate Filings entity registration date' },
+			{ id: 'V4', name: 'Doppler Radar & Weather Match', score: 90, status: 'Flagged', detail: 'Claimant reported lightning strike. Doppler radar confirms zero lightning within 12 miles.', evidence_trace: 'NOAA Doppler Radar Station KMIA log 2026-08-23 02:00-05:00 UTC' },
+			{ id: 'V5', name: 'Loss History & ISO Search', score: 82, status: 'Flagged', detail: 'Entity principal has 2 prior fire loss settlements with other carriers in past 48 months.', evidence_trace: 'ISO ClaimSearch cross-carrier principal TIN query' },
+			{ id: 'V6', name: 'Circumstantial Loss Timing', score: 95, status: 'Flagged', detail: 'Loss occurred Sunday at 3:15 AM during lease renewal negotiations.', evidence_trace: 'Alarm Company dispatch log vs Lease document audit' },
 		],
-		assigned_investigator: 'Elena Rostova (SIU Lead Auditor)',
+		assigned_investigator: 'Elena Rostova, Senior SIU Fraud Specialist',
 		timestamp: '2026-08-23 22:15',
-		created_at_days: 4.1,
+		created_at_days: 1.8,
 	},
 	{
 		id: 'CP-2026-91044',
 		claimant: 'Marcus Vance',
 		policy_number: 'POL-108422',
-		amount: 3200.00,
-		loss_date: '2026-08-24',
-		description: 'Hail storm cracked front acoustic windshield and dented vehicle hood on 2024 Ford F-150.',
+		amount: 3200.0,
+		loss_date: '2026-08-25',
+		description: 'Comprehensive auto hail damage to hood, roof, and trunk. PDR paintless dent repair estimate attached.',
 		peril: 'Auto Physical Damage (Hail)',
 		fraud_risk_score: 8,
 		risk_level: 'LOW RISK (CLEAN)',
@@ -245,96 +242,73 @@ const INITIAL_CLAIMS: Claim[] = [
 		gate_status: 'AUTOMATED APPROVAL PASSED',
 		siu_tier: 'Normal (Fast-Track Approved)',
 		financials: {
-			claimed_amount: 3200.00,
-			replacement_cost_value: 3200.00,
-			depreciation_rate_pct: 10,
-			depreciation_amount: 320.00,
-			recoverable_depreciation: 0.00,
-			non_recoverable_depreciation: 320.00,
-			actual_cash_value: 2880.00,
-			policy_deductible: 500.00,
-			net_payable_payout: 2380.00,
-			coverage_limit: 65000.00,
-			coverage_type: 'Comprehensive Auto Physical Damage (PA-1)',
-			remaining_coverage: 61800.00,
-			allocated_loss_reserve: 3200.00,
-			allocated_alae_reserve: 150.00,
-			total_incurred_reserve: 3350.00,
-			active_threshold_used: 'Personal Auto Comprehensive (PA-1)',
+			claimed_amount: 3200.0,
+			replacement_cost_value: 3200.0,
+			depreciation_rate_pct: 0,
+			depreciation_amount: 0,
+			recoverable_depreciation: 0,
+			non_recoverable_depreciation: 0,
+			actual_cash_value: 3200.0,
+			policy_deductible: 500.0,
+			net_payable_payout: 2700.0,
+			coverage_limit: 45000.0,
+			coverage_type: 'Comprehensive Auto Coverage',
+			remaining_coverage: 41800.0,
+			allocated_loss_reserve: 3200.0,
+			allocated_alae_reserve: 160.0,
+			total_incurred_reserve: 3360.0,
+			active_threshold_used: 'Standard P&C Rule ($10,000 max STP / 40% SIU)',
 		},
 		line_items: [
-			{ item: 'Paintless Dent Repair (PDR) - 42 Hood Hail Impacts', category: 'PDR', qty: '42 Impacts', rate: 'Matrix', total: 1150.00, status: 'I-CAR Matrix Verified', evidence_citation: 'Auto_Hail_Damage_Estimate.pdf (Line 1)', confidence: 99 },
-			{ item: 'Roof Panel & A-Pillar Precision Dent Removal', category: 'PDR', qty: '1 LS', rate: 'Standard', total: 950.00, status: 'No Structural Distortion', evidence_citation: 'Auto_Hail_Damage_Estimate.pdf (Line 2)', confidence: 98 },
-			{ item: 'OEM Acoustic Solar Windshield & ADAS Sensor Recalibration', category: 'Glass', qty: '1 EA', rate: '$880.00', total: 880.00, status: 'OEM Spec Safety Scan Passed', evidence_citation: 'Auto_Hail_Damage_Estimate.pdf (Line 3)', confidence: 99 },
-			{ item: 'Right Front Fender Paint Blend & Clear Coat Refinish', category: 'Paint', qty: '1 LS', rate: '$220.00', total: 220.00, status: 'Color Match Checked', evidence_citation: 'Auto_Hail_Damage_Estimate.pdf (Line 4)', confidence: 98 },
+			{ item: 'PDR Hail Dent Removal (Hood)', category: 'PDR', qty: '42 Dents', rate: '$35.00/ea', total: 1470.0, status: 'Verified', evidence_citation: 'Photo Inspection • Hail_Vance.pdf:p.1', confidence: 99 },
+			{ item: 'PDR Hail Dent Removal (Roof Panel)', category: 'PDR', qty: '36 Dents', rate: '$35.00/ea', total: 1260.0, status: 'Verified', evidence_citation: 'Photo Inspection • Hail_Vance.pdf:p.1', confidence: 98 },
+			{ item: 'Trunk Lid Clearcoat Polish & Blend', category: 'Paint', qty: '1 Panel', rate: '$470.00', total: 470.0, status: 'Verified', evidence_citation: 'Body Shop Quote • Hail_Vance.pdf:p.2', confidence: 96 },
 		],
 		risk_vectors: [
-			{ id: 'V1', name: 'Policy Inception Proximity', score: 4, status: 'Pass', detail: 'Auto policy continuous for 6 years.', evidence_trace: 'Policy Record POL-108422' },
-			{ id: 'V2', name: 'Regional Rate Benchmark', score: 6, status: 'Pass', detail: 'PDR matrix pricing matches local collision standards.', evidence_trace: 'Regional Collision Rate Survey' },
-			{ id: 'V3', name: 'Contractor Licensure & TIN', score: 2, status: 'Pass', detail: 'I-CAR Gold Class facility active accreditation.', evidence_trace: 'I-CAR Facility Registry #99812' },
-			{ id: 'V4', name: 'Doppler Radar & Weather Match', score: 0, status: 'Pass', detail: 'NOAA radar logged 1.25in severe hail at claimant zip code.', evidence_trace: 'NOAA Severe Storm Log Aug 24' },
-			{ id: 'V5', name: 'Loss History & ISO Search', score: 8, status: 'Pass', detail: 'Clean 5-year driving record.', evidence_trace: 'ISO Motor Vehicle Record' },
-			{ id: 'V6', name: 'Circumstantial Loss Timing', score: 5, status: 'Pass', detail: 'Claim submitted within 12 hours of storm event.', evidence_trace: 'FNOL Submission Timestamp' },
+			{ id: 'V1', name: 'Policy Inception Proximity', score: 5, status: 'Pass', detail: 'Policy active 32 months.', evidence_trace: 'Auto Policy POL-108422' },
+			{ id: 'V2', name: 'Regional Rate Benchmark', score: 8, status: 'Pass', detail: 'PDR rate ($35/dent) matches TX-Dallas PDR matrix.', evidence_trace: 'Dallas PDR Schedule' },
+			{ id: 'V3', name: 'Contractor Licensure & TIN', score: 0, status: 'Pass', detail: 'Direct repair network certified facility.', evidence_trace: 'Carrier DRP Network List' },
+			{ id: 'V4', name: 'Doppler Radar & Weather Match', score: 0, status: 'Pass', detail: 'Severe hail storm confirmed by NOAA at policy address on 2026-08-25.', evidence_trace: 'NOAA Severe Weather Report #HAIL-TX-0825' },
+			{ id: 'V5', name: 'Loss History & ISO Search', score: 12, status: 'Pass', detail: 'Clean loss history across 36 months.', evidence_trace: 'ISO Search Clean' },
+			{ id: 'V6', name: 'Circumstantial Loss Timing', score: 5, status: 'Pass', detail: 'Same-day reporting via mobile app.', evidence_trace: 'FNOL Mobile Submission' },
 		],
 		assigned_investigator: null,
-		timestamp: '2026-08-25 09:10',
-		created_at_days: 1.2,
+		timestamp: '2026-08-25 18:40',
+		created_at_days: 0.1,
 	},
 ];
 
 const INITIAL_DOCS: DocItem[] = [
 	{
 		filename: 'Plumber_Invoice_JaneDoe.pdf',
-		size_bytes: 245120,
-		status: 'Complete (Vector Indexed)',
-		timestamp: '2026-08-26 14:15',
-		doc_type: 'Master Contractor Invoice & Water Extraction',
 		policy_number: 'POL-994821',
 		claimant: 'Jane Doe',
-		extracted_amount: '$8,450.00',
-		compliance: 'IICRC S500 Drying Standard Verified (<12% WME)',
-		pii_status: 'Phone & Contractor Tax ID Anonymized',
-		vector_chunks: 4,
-		field_confidence: {
-			overall: 95.8,
-			amount: 99.1,
-			policy_number: 98.5,
-			classification: 94.0,
-			contractor_tin: 96.2,
-			line_items: 93.4,
-		},
-		duplicate_risk: 'Low (Original Invoice)',
-		duplicate_matches: [],
-		summary: 'Itemized plumbing invoice for emergency water extraction (280 SF), 3/4in solid oak hardwood floor replacement (240 SF), cabinet detach/reset (14 LF), dehumidifier rental (72h), and copper supply line repair.',
+		doc_type: 'Invoice & Extraction Scope',
+		extracted_amount: 8450.0,
+		field_confidence: { amount: 98, policy_number: 99, claimant: 99, classification: 96, overall: 98 },
+		status: 'PII Protected & Anonymized',
+		size_bytes: 412800,
+		timestamp: '2026-08-24 14:30',
+		summary: 'Plumbing emergency water extraction invoice with itemized line items. Fully parsed and verified against Xactimate benchmark.',
 		line_items: [
-			{ item: 'Emergency Water Extraction & Sanitization', qty: '280 SF', rate: '$4.50/SF', total: '$1,260.00', audit: 'IICRC S500 Verified', confidence: 98 },
-			{ item: 'R&R 3/4in Solid White Oak Flooring', qty: '240 SF', rate: '$18.50/SF', total: '$4,440.00', audit: 'Existing Grade Match', confidence: 96 },
-			{ item: 'Base Cabinet Detach & Reset (Millwork Prep)', qty: '14 LF', rate: '$95.00/LF', total: '$1,330.00', audit: 'Labor Standard Checked', confidence: 94 },
-			{ item: 'Commercial Low-Grain Dehumidifier (72 Hours)', qty: '2 Units', rate: '$310.00/ea', total: '$620.00', audit: 'Drying Log Confirmed', confidence: 99 },
-			{ item: 'Copper Water Supply Line Solder & Valve', qty: '1 LS', rate: '$800.00', total: '$800.00', audit: 'Master Plumber Verified', confidence: 97 },
+			{ item: 'Emergency Extraction Crew Callout', qty: '1 LS', rate: '$1,260.00', total: '$1,260.00', audit: 'Verified', confidence: 98 },
+			{ item: 'Hardwood Floor Reconstruction', qty: '240 SF', rate: '$18.50/SF', total: '$4,440.00', audit: 'Verified', confidence: 95 },
+			{ item: 'Kitchen Cabinet Reset & Trim', qty: '14 LF', rate: '$95.00/LF', total: '$1,330.00', audit: 'Verified', confidence: 92 },
+			{ item: 'Drying Dehumidification Service', qty: '72 HRS', rate: 'Pack', total: '$420.00', audit: 'Verified', confidence: 99 },
+			{ item: 'Plumbing Pipe Solder Fix', qty: '1 LS', rate: '$1,000.00', total: '$1,000.00', audit: 'Verified', confidence: 97 },
 		],
 		pipeline: 'ingestion.pipe',
 	},
 	{
-		filename: 'Water_Mitigation_Duplicate_Check.pdf',
-		size_bytes: 198400,
-		status: 'Flagged for Duplicate Triage',
-		timestamp: '2026-08-26 14:10',
-		doc_type: 'Secondary Water Extraction Invoice (Vendor B)',
+		filename: 'Duplicate_Contractor_JaneDoe.pdf',
 		policy_number: 'POL-994821',
 		claimant: 'Jane Doe',
-		extracted_amount: '$8,450.00',
-		compliance: 'Duplicate Amount Anomaly Detected',
-		pii_status: 'PII Masked',
-		vector_chunks: 3,
-		field_confidence: {
-			overall: 92.4,
-			amount: 99.4,
-			policy_number: 99.0,
-			classification: 88.5,
-			contractor_tin: 89.0,
-			line_items: 86.1,
-		},
+		doc_type: 'Duplicate Contractor Invoicing',
+		extracted_amount: 8450.0,
+		field_confidence: { amount: 92, policy_number: 95, claimant: 94, classification: 88, overall: 87 },
+		status: 'DUPLICATE ANOMALY DETECTED',
+		size_bytes: 388100,
+		timestamp: '2026-08-24 16:45',
 		duplicate_risk: 'HIGH DUPLICATE ANOMALY',
 		duplicate_matches: [
 			{
@@ -342,10 +316,10 @@ const INITIAL_DOCS: DocItem[] = [
 				policy_number: 'POL-994821',
 				amount: '$8,450.00',
 				match_type: 'Exact Dollar & Policy Overlap (Same Claim Event)',
-				risk_impact: '+25% to Vector 5 Loss Frequency / Duplicate Billing Audit',
+				risk_impact: 'WARNING: Duplicate Billing Audit Triggered',
 			},
 		],
-		summary: 'Secondary contractor submission with identical dollar total ($8,450.00) on policy POL-994821. Flagged by ClaimPilot ingestion.pipe duplicate detector node.',
+		summary: 'Secondary contractor submission with identical dollar total ($8,450.00) on policy POL-994821. Flagged by ClaimVertex duplicate detector node.',
 		line_items: [
 			{ item: 'Emergency Extraction Crew Callout', qty: '1 LS', rate: '$1,260.00', total: '$1,260.00', audit: 'Possible Duplicate Charge', confidence: 88 },
 			{ item: 'Hardwood Floor Reconstruction', qty: '240 SF', rate: '$18.50/SF', total: '$4,440.00', audit: 'Duplicate Scope Alert', confidence: 85 },
@@ -369,7 +343,7 @@ const INITIAL_INSPECTIONS: Inspection[] = [
 		inspection_type: 'On-Site Structural Fire & Electrical Origin Audit',
 		location: '4400 Gateway Logistics Park, Bay #4',
 		voice_call_transcript:
-			'[AI Assistant]: Hello Apex Commercial Logistics, this is ClaimPilot AI confirming your field inspection for Claim #CP-2026-90124.\n' +
+			'[AI Assistant]: Hello Apex Commercial Logistics, this is ClaimVertex AI confirming your field inspection for Claim #CP-2026-90124.\n' +
 			'[Policyholder]: Hello, yes we are expecting you.\n' +
 			'[AI Assistant]: We have certified Forensic Engineer David Vance available Thursday, August 28th at 2:00 PM. Does this time work for facility access?\n' +
 			'[Policyholder]: Yes, Thursday at 2:00 PM works perfectly. Our facility manager Mark will be on-site with keys.\n' +
@@ -395,8 +369,8 @@ const INITIAL_AUDIT_TRAIL: AuditEntry[] = [
 		field_name: 'gate_status',
 		old_value: 'AUTOMATED_PENDING',
 		new_value: 'ESCALATED TO SENIOR ADJUSTER',
-		user: 'ClaimPilot claim_analysis.pipe',
-		reason: 'Exceeded $10k STP limit ($142,000) and triggered SIU overnight fire vector.',
+		user: 'ClaimVertex claim_analysis.pipe',
+		reason: 'Exceeded STP limit ($142,000) and triggered SIU overnight fire vector.',
 		timestamp: '2026-08-23 22:15:02',
 	},
 ];
@@ -418,40 +392,38 @@ const REGIONAL_BENCHMARKS = [
 export const App: React.FC = () => {
 	const [view, setView] = useState<'landing' | 'dashboard'>('landing');
 	const [authName, setAuthName] = useState('Sarah Jenkins');
-	const [authEmail, setAuthEmail] = useState('adjuster@claimpilot.ai');
-	const [authPassword, setAuthPassword] = useState('demo-pilot-2026');
+	const [authEmail, setAuthEmail] = useState('adjuster@claimvertex.ai');
+	const [authPassword, setAuthPassword] = useState('demo-vertex-2026');
 	const [showPassword, setShowPassword] = useState(false);
-	const [isLoginMode, setIsLoginMode] = useState(false);
 	const [activeUser, setActiveUser] = useState<{ name: string; email: string; role: string; avatar: string }>({
 		name: 'Sarah Jenkins',
-		email: 'sarah@claimpilot.ai',
+		email: 'sarah@claimvertex.ai',
 		role: 'Senior Claims Adjuster',
 		avatar: 'SJ'
 	});
 
 	const [activeTab, setActiveTab] = useState<
-		'dashboard' | 'assessment' | 'siu' | 'docs' | 'benchmarks' | 'scheduling' | 'queue' | 'drift' | 'public_tracker' | 'thresholds' | 'pipelines'
-	>('dashboard');
+		'assessment' | 'siu' | 'docs' | 'benchmarks' | 'scheduling' | 'queue' | 'drift' | 'public_tracker' | 'thresholds' | 'pipelines' | 'history'
+	>('assessment');
 
 	const [claims, setClaims] = useState<Claim[]>(INITIAL_CLAIMS);
 	const [docs, setDocs] = useState<DocItem[]>(INITIAL_DOCS);
 	const [inspections, setInspections] = useState<Inspection[]>(INITIAL_INSPECTIONS);
 	const [auditTrail, setAuditTrail] = useState<AuditEntry[]>(INITIAL_AUDIT_TRAIL);
-	const [selectedClaim, setSelectedClaim] = useState<Claim | null>(INITIAL_CLAIMS[1]);
+	const [selectedClaim, setSelectedClaim] = useState<Claim | null>(INITIAL_CLAIMS[0]);
 	const [selectedDoc, setSelectedDoc] = useState<DocItem | null>(INITIAL_DOCS[0]);
 
 	// Intake form state
-	const [claimant, setClaimant] = useState('');
-	const [policyNo, setPolicyNo] = useState('');
-	const [claimAmount, setClaimAmount] = useState('');
-	const [description, setDescription] = useState('');
-	const [lobType, setLobType] = useState('default');
+	const [claimant, setClaimant] = useState('Jane Doe');
+	const [policyNo, setPolicyNo] = useState('POL-994821');
+	const [claimAmount, setClaimAmount] = useState('8450.00');
+	const [description, setDescription] = useState('Water line burst in kitchen causing damage to hardwood floors, base cabinets, and sub-flooring. Plumber invoice attached.');
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [hasAnalyzed, setHasAnalyzed] = useState(true);
 
 	// SIU Filter state
 	const [siuVectorFilter, setSiuVectorFilter] = useState<string>('all');
-	const [siuMinScore, setSiuMinScore] = useState<number>(0);
-	const [assignedInvestigatorInput, setAssignedInvestigatorInput] = useState('Elena Rostova (Senior SIU Auditor)');
+	const [assignedInvestigatorInput, setAssignedInvestigatorInput] = useState('Elena Rostova, Senior SIU Fraud Specialist');
 
 	// Benchmark filter state
 	const [selectedRegion, setSelectedRegion] = useState<string>('TX-Dallas');
@@ -467,19 +439,46 @@ export const App: React.FC = () => {
 	// Explainability popover state
 	const [explainCitation, setExplainCitation] = useState<string | null>(null);
 
-	// Inline field edit state
-	const [editingField, setEditingField] = useState<string | null>(null);
-	const [editValue, setEditValue] = useState<string>('');
-	const [editReason, setEditReason] = useState<string>('Adjuster manual reconciliation');
-
 	// Thresholds state
 	const [globalMaxSTP, setGlobalMaxSTP] = useState(10000);
 	const [globalMaxRisk, setGlobalMaxRisk] = useState(40);
+
+	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
 	// Stats
 	const totalPayouts = claims.reduce((acc, c) => acc + c.amount, 0);
 	const escalatedCount = claims.filter(c => c.human_review_required || c.gate_status.includes('ESCALATED')).length;
 	const autoApprovedCount = claims.filter(c => c.gate_status === 'AUTOMATED APPROVAL PASSED').length;
+
+	// Preset loader
+	const loadPreset = (type: 'water' | 'fire' | 'auto' | 'roof' | 'commercial') => {
+		if (type === 'water') {
+			setClaimant('Jane Doe');
+			setPolicyNo('POL-994821');
+			setClaimAmount('8450.00');
+			setDescription('Water line burst in kitchen causing damage to hardwood floors, base cabinets, and sub-flooring. Plumber invoice attached.');
+		} else if (type === 'fire') {
+			setClaimant('Apex Commercial Logistics');
+			setPolicyNo('POL-330192');
+			setClaimAmount('142000.00');
+			setDescription('Warehouse electrical fire destroying inventory and structural steel beams. Unattended overnight ignition.');
+		} else if (type === 'auto') {
+			setClaimant('Marcus Vance');
+			setPolicyNo('POL-108422');
+			setClaimAmount('3200.00');
+			setDescription('Comprehensive auto hail damage to hood, roof, and trunk. PDR paintless dent repair estimate attached.');
+		} else if (type === 'roof') {
+			setClaimant('Cynthia Sterling');
+			setPolicyNo('POL-449102');
+			setClaimAmount('38750.00');
+			setDescription('Category 3 Hurricane wind damage to asphalt shingle roof. 32 squares blown off with interior drywall water leaks.');
+		} else if (type === 'commercial') {
+			setClaimant('Metro Food Distributors');
+			setPolicyNo('POL-771829');
+			setClaimAmount('24500.00');
+			setDescription('Commercial refrigeration power surge failure causing spoiled inventory in Walk-In Cooler #2.');
+		}
+	};
 
 	// Actions
 	const handleApprove = (id: string) => {
@@ -515,21 +514,6 @@ export const App: React.FC = () => {
 		}
 	};
 
-	const handleSaveFieldEdit = (claimId: string, fieldName: string, oldValue: string) => {
-		const newAudit: AuditEntry = {
-			id: `AUDIT-${auditTrail.length + 1}`,
-			claim_id: claimId,
-			field_name: fieldName,
-			old_value: oldValue,
-			new_value: editValue,
-			user: 'Sarah Jenkins (Senior Adjuster)',
-			reason: editReason,
-			timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-		};
-		setAuditTrail(prev => [newAudit, ...prev]);
-		setEditingField(null);
-	};
-
 	const handleCreateClaim = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!claimant || !claimAmount || !description) return;
@@ -538,7 +522,8 @@ export const App: React.FC = () => {
 		setTimeout(() => {
 			const amt = parseFloat(claimAmount) || 0;
 			const isFire = description.toLowerCase().includes('fire') || description.toLowerCase().includes('overnight');
-			const fraudScore = isFire || amt > 25000 ? 78 : 14;
+			const isRoof = description.toLowerCase().includes('roof') || description.toLowerCase().includes('hurricane');
+			const fraudScore = isFire ? 85 : isRoof ? 34 : amt > 25000 ? 58 : 14;
 			const isHighRisk = fraudScore >= globalMaxRisk || amt > globalMaxSTP;
 
 			const newClaim: Claim = {
@@ -548,7 +533,7 @@ export const App: React.FC = () => {
 				amount: amt,
 				loss_date: new Date().toISOString().split('T')[0],
 				description,
-				peril: isFire ? 'Commercial Fire & Structural Loss' : 'Residential Water Damage',
+				peril: isFire ? 'Commercial Fire & Structural Loss' : isRoof ? 'Hurricane Roof Wind Damage' : 'Residential Water Damage',
 				fraud_risk_score: fraudScore,
 				risk_level: isHighRisk ? 'CRITICAL RISK (SIU ESCALATION)' : 'LOW RISK (CLEAN)',
 				human_review_required: isHighRisk,
@@ -573,31 +558,27 @@ export const App: React.FC = () => {
 					active_threshold_used: 'Global Default Threshold',
 				},
 				line_items: [
-					{ item: 'Structural Remediation & Prep', category: 'Prep', qty: '1 LS', rate: '$1,200.00', total: 1200, status: 'Verified', evidence_citation: 'FNOL Narrative & Photo Evidence', confidence: 96 },
-					{ item: 'Primary Scope Materials & Labor Replacement', category: 'Materials', qty: '1 LS', rate: `$${(amt - 1200).toLocaleString()}`, total: amt - 1200, status: 'Xactimate Index Matched', evidence_citation: 'Regional Rate Schedule', confidence: 94 },
+					{ item: 'Emergency Remediation & Site Prep', category: 'Prep', qty: '1 LS', rate: '$1,200.00', total: 1200, status: 'Verified', evidence_citation: 'FNOL Scope Narrative', confidence: 98 },
+					{ item: 'Structural Materials & Labor Replacement', category: 'Materials', qty: '1 LS', rate: `$${(amt - 1200).toLocaleString()}`, total: amt - 1200, status: 'Xactimate Index Matched', evidence_citation: 'Regional Rate Schedule', confidence: 95 },
 				],
 				risk_vectors: [
-					{ id: 'V1', name: 'Policy Inception Proximity', score: isFire ? 68 : 8, status: isFire ? 'Flagged' : 'Pass', detail: 'Policy age checked against inception ledger.', evidence_trace: 'Policy Database' },
+					{ id: 'V1', name: 'Policy Inception Proximity', score: isFire ? 68 : 8, status: isFire ? 'Flagged' : 'Pass', detail: 'Policy inception ledger verified.', evidence_trace: 'Policy Database' },
 					{ id: 'V2', name: 'Regional Rate Benchmark', score: isFire ? 45 : 12, status: isFire ? 'Flagged' : 'Pass', detail: 'Labor rates cross-referenced with Xactimate.', evidence_trace: 'Regional Benchmark Explorer' },
 					{ id: 'V3', name: 'Contractor Licensure & TIN', score: isFire ? 75 : 5, status: isFire ? 'Flagged' : 'Pass', detail: 'Contractor license registry checked.', evidence_trace: 'State Licensing Registry' },
 					{ id: 'V4', name: 'Doppler Radar & Weather Match', score: isFire ? 90 : 0, status: isFire ? 'Flagged' : 'Pass', detail: 'NOAA Doppler weather log correlation.', evidence_trace: 'NOAA Radar Station Log' },
-					{ id: 'V5', name: 'Loss History & ISO Search', score: isFire ? 82 : 15, status: isFire ? 'Flagged' : 'Pass', detail: 'ISO ClaimSearch 36-month frequency.', evidence_trace: 'ISO Search Record' },
+					{ id: 'V5', name: 'Loss History & ISO Search', score: isFire ? 82 : 15, status: isFire ? 'Flagged' : 'Pass', detail: 'ISO ClaimSearch frequency check.', evidence_trace: 'ISO Search Record' },
 					{ id: 'V6', name: 'Circumstantial Loss Timing', score: isFire ? 95 : 10, status: isFire ? 'Flagged' : 'Pass', detail: 'Loss timing & occupancy verification.', evidence_trace: 'Initial Loss Statement' },
 				],
-				assigned_investigator: null,
+				assigned_investigator: isHighRisk ? 'Elena Rostova, Senior SIU Fraud Specialist' : null,
 				timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
 				created_at_days: 0.1,
 			};
 
 			setClaims(prev => [newClaim, ...prev]);
 			setSelectedClaim(newClaim);
+			setHasAnalyzed(true);
 			setIsSubmitting(false);
-			setClaimant('');
-			setPolicyNo('');
-			setClaimAmount('');
-			setDescription('');
-			setActiveTab('dashboard');
-		}, 800);
+		}, 600);
 	};
 
 	const handleTriggerScheduleVoiceCall = () => {
@@ -606,7 +587,7 @@ export const App: React.FC = () => {
 
 		setTimeout(() => {
 			const transcript =
-				`[AI Assistant]: Hello, this is ClaimPilot AI confirming field inspection for Claim #${inspClaimId}.\n` +
+				`[AI Assistant]: Hello, this is ClaimVertex AI confirming field inspection for Claim #${inspClaimId}.\n` +
 				`[Policyholder]: Hello, yes I am available for the inspection.\n` +
 				`[AI Assistant]: We have certified Engineer ${inspInspector} scheduled for ${inspDate}. Will facility access be open?\n` +
 				`[Policyholder]: Yes, that time works perfectly. I will be on-site with keys.\n` +
@@ -629,12 +610,11 @@ export const App: React.FC = () => {
 			setInspections(prev => [newInsp, ...prev]);
 			setActiveCallTranscript(transcript);
 			setIsCalling(false);
-		}, 1400);
+		}, 1200);
 	};
 
 	// Filtered SIU claims
 	const filteredSiuClaims = claims.filter(c => {
-		if (c.fraud_risk_score < siuMinScore) return false;
 		if (siuVectorFilter !== 'all') {
 			const vMatch = c.risk_vectors.some(v => v.id.toLowerCase() === siuVectorFilter.toLowerCase() && v.score >= 30);
 			if (!vMatch) return false;
@@ -642,10 +622,10 @@ export const App: React.FC = () => {
 		return true;
 	});
 
-	// Priority sorted queue (Age x 1.5 + Amount/5000 + Risk x 0.8)
+	// Priority queue
 	const prioritizedQueue = [...claims]
 		.filter(c => c.human_review_required || c.gate_status.includes('ESCALATED'))
-		.map(c => {
+		.map((c, i) => {
 			const age = c.created_at_days || 2.0;
 			const score = Math.round((age * 1.5 + c.amount / 5000 + c.fraud_risk_score * 0.8) * 10) / 10;
 			let badge = 'ROUTINE';
@@ -654,865 +634,441 @@ export const App: React.FC = () => {
 			else if (score >= 25) badge = 'ELEVATED';
 			return { ...c, priority_score: score, priority_badge: badge };
 		})
-		.sort((a, b) => b.priority_score - a.priority_score);
-
-	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-	const [isLearnMoreModalOpen, setIsLearnMoreModalOpen] = useState(false);
+		.sort((a, b) => (b.priority_score || 0) - (a.priority_score || 0));
 
 	if (view === 'landing') {
 		return (
-			<div style={{
-				minHeight: '100vh',
-				backgroundColor: '#f3f2eb',
-				color: '#18181b',
-				fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-between',
-				position: 'relative',
-				overflowX: 'hidden',
-			}}>
-				{/* Top Navigation Bar (Figma Exact Match) */}
-				<nav style={{
-					backgroundColor: '#0d3a58',
-					height: 68,
-					padding: '0 44px',
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'space-between',
-					boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
-					zIndex: 20,
-				}}>
-					<div
-						style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
-						onClick={() => setIsLoginModalOpen(true)}
-					>
-						<div style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-							<svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-								<rect width="30" height="30" rx="7" fill="#062238" stroke="#0e4b77" strokeWidth="1.2"/>
-								<circle cx="15" cy="15" r="8.5" stroke="#38bdf8" strokeWidth="1.8" strokeDasharray="2 3"/>
-								<path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fillOpacity="0.3" stroke="#38bdf8" strokeWidth="1.5"/>
-								<circle cx="15" cy="15" r="3.2" fill="#38bdf8"/>
-								<line x1="6" y1="15" x2="9.5" y2="15" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
-								<line x1="20.5" y1="15" x2="24" y2="15" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
-								<line x1="15" y1="6" x2="15" y2="9.5" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
-								<line x1="15" y1="20.5" x2="15" y2="24" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
-							</svg>
-						</div>
-						<span style={{ color: '#ffffff', fontSize: 20, fontWeight: 700, letterSpacing: '-0.4px' }}>
-							ClaimVertex
-						</span>
-					</div>
+			<>
+				<LandingPage onLogin={() => setIsLoginModalOpen(true)} />
 
-					<div>
-						<button
-							onClick={() => setIsLoginModalOpen(true)}
-							style={{
-								backgroundColor: '#dc2626',
-								color: '#ffffff',
-								fontSize: 14,
-								fontWeight: 700,
-								padding: '8px 24px',
-								borderRadius: 9999,
-								border: 'none',
-								cursor: 'pointer',
-								boxShadow: '0 4px 14px rgba(220, 38, 38, 0.35)',
-								transition: 'all 0.2s ease',
-							}}
-						>
-							Login
-						</button>
-					</div>
-				</nav>
-
-				{/* Main Hero Stage */}
-				<section style={{
-					flex: 1,
-					maxWidth: 1280,
-					width: '100%',
-					margin: '0 auto',
-					padding: '60px 48px 70px',
-					display: 'grid',
-					gridTemplateColumns: '1.25fr 1fr',
-					alignItems: 'center',
-					gap: 50,
-				}}>
-					{/* Left Content */}
-					<div style={{ maxWidth: 600 }}>
-						<h1 style={{
-							fontSize: 44,
-							fontWeight: 800,
-							lineHeight: 1.22,
-							color: '#18181b',
-							letterSpacing: '-0.8px',
-							marginBottom: 34,
-						}}>
-							Transforming Claims from Manual Workflows to Intelligent Decisions
-						</h1>
-						<button
-							onClick={() => setIsLearnMoreModalOpen(true)}
-							style={{
-								backgroundColor: '#8cb369',
-								color: '#ffffff',
-								fontSize: 15,
-								fontWeight: 700,
-								padding: '13px 34px',
-								borderRadius: 9999,
-								border: 'none',
-								cursor: 'pointer',
-								boxShadow: '0 4px 14px rgba(140, 179, 105, 0.35)',
-								transition: 'all 0.2s ease',
-								display: 'inline-flex',
-								alignItems: 'center',
-								gap: 8,
-							}}
-						>
-							Learn More
-						</button>
-					</div>
-
-					{/* Right Illustration: Smartphone & Claim Document Scanner */}
-					<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-						<svg style={{ width: '100%', maxWidth: 480, height: 'auto', filter: 'drop-shadow(0 15px 30px rgba(0, 0, 0, 0.08))' }} viewBox="0 0 500 380" fill="none">
-							<defs>
-								<filter id="docShadowR" x="-10%" y="-10%" width="130%" height="130%" filterUnits="userSpaceOnUse">
-									<feDropShadow dx="3" dy="6" stdDeviation="6" floodColor="#0f172a" floodOpacity="0.1" />
-								</filter>
-								<filter id="phoneShadowR" x="-15%" y="-15%" width="140%" height="140%" filterUnits="userSpaceOnUse">
-									<feDropShadow dx="6" dy="12" stdDeviation="10" floodColor="#0f172a" floodOpacity="0.2" />
-								</filter>
-								<linearGradient id="screenGradR" x1="0%" y1="0%" x2="100%" y2="100%">
-									<stop offset="0%" stopColor="#081e30" />
-									<stop offset="100%" stopColor="#04121d" />
-								</linearGradient>
-								<linearGradient id="laserGradR" x1="0%" y1="0%" x2="100%" y2="0%">
-									<stop offset="0%" stopColor="#38bdf8" stopOpacity="0" />
-									<stop offset="25%" stopColor="#38bdf8" stopOpacity="0.85" />
-									<stop offset="50%" stopColor="#0ea5e9" stopOpacity="1" />
-									<stop offset="75%" stopColor="#38bdf8" stopOpacity="0.85" />
-									<stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
-								</linearGradient>
-								<linearGradient id="phoneBodyR" x1="0%" y1="0%" x2="100%" y2="100%">
-									<stop offset="0%" stopColor="#1e293b" />
-									<stop offset="100%" stopColor="#0f172a" />
-								</linearGradient>
-							</defs>
-
-							{/* Document Stack */}
-							<g>
-								<g transform="translate(60, 45) rotate(-14)" filter="url(#docShadowR)">
-									<rect width="130" height="175" rx="8" fill="#ffffff" stroke="#94a3b8" strokeWidth="2.5" />
-									<rect x="12" y="14" width="60" height="10" rx="3" fill="#93c5fd" stroke="#60a5fa" strokeWidth="1" />
-									<rect x="12" y="32" width="106" height="5" rx="2" fill="#cbd5e1" />
-									<rect x="12" y="44" width="96" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="12" y="56" width="100" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="12" y="68" width="70" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="12" y="86" width="106" height="5" rx="2" fill="#cbd5e1" />
-									<rect x="12" y="98" width="90" height="5" rx="2" fill="#e2e8f0" />
-								</g>
-
-								<g transform="translate(95, 30) rotate(-4)" filter="url(#docShadowR)">
-									<rect width="135" height="180" rx="8" fill="#ffffff" stroke="#94a3b8" strokeWidth="2.5" />
-									<rect x="14" y="14" width="70" height="12" rx="3" fill="#60a5fa" />
-									<rect x="14" y="34" width="107" height="6" rx="2" fill="#cbd5e1" />
-									<rect x="14" y="48" width="95" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="14" y="60" width="100" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="14" y="72" width="85" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="14" y="92" width="107" height="18" rx="3" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1" />
-									<rect x="20" y="98" width="40" height="6" rx="2" fill="#94a3b8" />
-									<rect x="75" y="98" width="38" height="6" rx="2" fill="#3b82f6" />
-								</g>
-
-								<g transform="translate(130, 25) rotate(6)" filter="url(#docShadowR)">
-									<rect width="135" height="180" rx="8" fill="#ffffff" stroke="#64748b" strokeWidth="2.5" />
-									<rect x="14" y="14" width="65" height="12" rx="3" fill="#3b82f6" />
-									<rect x="88" y="14" width="33" height="12" rx="3" fill="#22c55e" fillOpacity="0.3" stroke="#22c55e" strokeWidth="1" />
-									<rect x="14" y="34" width="107" height="6" rx="2" fill="#94a3b8" />
-									<rect x="14" y="48" width="95" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="14" y="60" width="107" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="14" y="72" width="80" height="5" rx="2" fill="#e2e8f0" />
-									<rect x="14" y="92" width="107" height="40" rx="4" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="1" />
-									<circle cx="30" cy="112" r="8" fill="#e2e8f0" />
-									<rect x="46" y="105" width="65" height="5" rx="2" fill="#cbd5e1" />
-								</g>
-							</g>
-
-							{/* Smartphone */}
-							<g transform="translate(230, 68) rotate(9)" filter="url(#phoneShadowR)">
-								<rect width="125" height="210" rx="24" fill="url(#phoneBodyR)" stroke="#334155" strokeWidth="3.5" />
-								<rect x="6" y="8" width="113" height="194" rx="18" fill="url(#screenGradR)" />
-								<rect x="47" y="12" width="31" height="5" rx="2.5" fill="#0f172a" stroke="#334155" strokeWidth="0.8" />
-								
-								<g transform="translate(18, 38)">
-									<path d="M6 18 V6 H18" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-									<path d="M72 6 H84 V18" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-									<path d="M6 72 V84 H18" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-									<path d="M72 84 H84 V72" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-									
-									<rect x="22" y="22" width="46" height="46" rx="8" fill="#0369a1" fillOpacity="0.25" stroke="#0ea5e9" strokeWidth="1.5" strokeDasharray="3 3" />
-									<path d="M35 32 H55 M35 40 H55 M35 48 H47 M35 56 H51" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" />
-									<circle cx="45" cy="45" r="14" stroke="#0ea5e9" strokeWidth="1.2" strokeOpacity="0.6" />
-								</g>
-
-								<g transform="translate(14, 145)">
-									<rect width="97" height="44" rx="8" fill="#0f172a" fillOpacity="0.85" stroke="#0284c7" strokeWidth="1.2" />
-									<circle cx="22" cy="22" r="9" fill="#059669" />
-									<path d="M18 22 L21 25 L27 19" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-									<text x="36" y="18" fill="#38bdf8" fontSize="7.5" fontFamily="Inter, sans-serif" fontWeight="700">CLAIM VERIFIED</text>
-									<text x="36" y="30" fill="#94a3b8" fontSize="6.5" fontFamily="JetBrains Mono, monospace">STP &lt; 0.9s | 100%</text>
-								</g>
-							</g>
-
-							{/* Hand holding phone */}
-							<g transform="translate(325, 175)">
-								<path d="M30 40 C45 35, 75 45, 95 65 C115 85, 115 125, 95 145 C80 160, 45 160, 20 145 C-5 130, -10 90, 5 60 Z" fill="#fab287" stroke="#1e293b" strokeWidth="3.5" strokeLinejoin="round" />
-								<path d="M-15 15 C-25 15, -45 25, -45 42 C-45 55, -30 65, -15 65 C-5 65, 10 50, 10 35 C10 20, 0 15, -15 15 Z" fill="#fbc093" stroke="#1e293b" strokeWidth="3.5" strokeLinejoin="round" />
-								<path d="M-40 45 C-55 45, -65 55, -60 68 C-55 78, -40 80, -25 75" fill="#fbc093" stroke="#1e293b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-								<path d="M75 125 C85 140, 115 165, 140 185" stroke="#1e293b" strokeWidth="4" strokeLinecap="round" />
-							</g>
-						</svg>
-					</div>
-				</section>
-
-				{/* Bottom Bar */}
-				<footer style={{
-					backgroundColor: '#3f3d3d',
-					minHeight: 64,
-					padding: '14px 44px',
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'space-between',
-					color: '#e2e8f0',
-					fontSize: 12,
-					fontWeight: 500,
-					zIndex: 10,
-					flexWrap: 'wrap',
-					gap: 12,
-				}}>
-					<div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#cbd5e1' }}>
-						<span>ClaimVertex • Autonomous Insurance &amp; SIU Fraud Matrix</span>
-					</div>
-					<div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-						<span style={{
-							background: 'rgba(255, 255, 255, 0.1)',
-							border: '1px solid rgba(255, 255, 255, 0.15)',
-							padding: '4px 10px',
-							borderRadius: 6,
-							fontFamily: 'JetBrains Mono, monospace',
-							fontSize: 11,
-							color: '#93c5fd',
-						}}>
-							9 AI Pipelines Active
-						</span>
-						<span style={{
-							display: 'inline-flex',
-							alignItems: 'center',
-							gap: 6,
-							background: 'rgba(34, 197, 94, 0.15)',
-							border: '1px solid rgba(34, 197, 94, 0.3)',
-							padding: '4px 10px',
-							borderRadius: 20,
-							color: '#86efac',
-							fontWeight: 600,
-						}}>
-							<span style={{ width: 6, height: 6, backgroundColor: '#22c55e', borderRadius: '50%', boxShadow: '0 0 8px #22c55e' }} />
-							Core Server Online
-						</span>
-					</div>
-				</footer>
-
-				{/* LOGIN MODAL POPUP */}
+				{/* ── PROFESSIONAL ENTERPRISE LOGIN MODAL ── */}
 				{isLoginModalOpen && (
-					<div
-						style={{
-							position: 'fixed',
-							top: 0,
-							left: 0,
-							right: 0,
-							bottom: 0,
-							backgroundColor: 'rgba(15, 23, 42, 0.65)',
-							backdropFilter: 'blur(8px)',
-							zIndex: 1000,
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							padding: 20,
-						}}
-						onClick={() => setIsLoginModalOpen(false)}
-					>
-						<div
-							style={{
-								backgroundColor: '#ffffff',
-								borderRadius: 22,
-								width: '100%',
-								maxWidth: 480,
-								padding: '34px 30px',
-								boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.3)',
-								position: 'relative',
-								maxHeight: '90vh',
-								overflowY: 'auto',
-							}}
-							onClick={(e) => e.stopPropagation()}
-						>
-							<button
-								onClick={() => setIsLoginModalOpen(false)}
-								style={{
-									position: 'absolute',
-									top: 18,
-									right: 18,
-									background: '#f1f5f9',
-									border: 'none',
-									borderRadius: '50%',
-									width: 32,
-									height: 32,
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									color: '#64748b',
-									cursor: 'pointer',
-								}}
-							>
-								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-									<line x1="18" y1="6" x2="6" y2="18"></line>
-									<line x1="6" y1="6" x2="18" y2="18"></line>
-								</svg>
+					<div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.65)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={() => setIsLoginModalOpen(false)}>
+						<div style={{ backgroundColor: '#ffffff', borderRadius: 20, width: '100%', maxWidth: 440, padding: '36px 32px', boxShadow: '0 25px 60px -15px rgba(0,0,0,0.35)', position: 'relative', maxHeight: '92vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+							
+							{/* Close Button */}
+							<button onClick={() => setIsLoginModalOpen(false)} style={{ position: 'absolute', top: 18, right: 18, background: '#f1f5f9', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer', transition: 'background 0.15s' }}>
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 							</button>
 
-							<div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#0d3a58', color: '#ffffff', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 700, marginBottom: 12 }}>
-								<svg width="18" height="18" viewBox="0 0 30 30" fill="none">
-									<rect width="30" height="30" rx="7" fill="#062238"/>
-									<circle cx="15" cy="15" r="8.5" stroke="#38bdf8" strokeWidth="1.8"/>
-									<path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fillOpacity="0.5" stroke="#38bdf8" strokeWidth="1.5"/>
-								</svg>
+							{/* Brand Badge */}
+							<div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#0f172a', color: '#fff', padding: '5px 14px', borderRadius: 20, fontSize: 12, fontWeight: 700, marginBottom: 16 }}>
+								<Logo size={18} color="#ffffff" />
 								<span>ClaimVertex</span>
 							</div>
 
-							<h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.4px', marginBottom: 4 }}>
-								Sign In to Command Center
-							</h2>
-							<p style={{ fontSize: 13, color: '#64748b', marginBottom: 20, lineHeight: 1.45 }}>
-								Access autonomous Straight-Through Processing, 6-vector SIU fraud analysis, and AI policy copilot.
-							</p>
+							<h2 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px', margin: '0 0 6px 0' }}>Sign In to Command Center</h2>
+							<p style={{ fontSize: 13.5, color: '#64748b', margin: '0 0 24px 0', lineHeight: 1.5 }}>Enter your corporate credentials to access autonomous Straight-Through Processing and SIU risk intelligence.</p>
 
-							{/* 1-Click Fast-Track Persona Roles */}
-							<div style={{ marginBottom: 18 }}>
-								<div style={{ fontSize: 10.5, fontWeight: 800, color: '#64748b', letterSpacing: '0.6px', marginBottom: 10 }}>
-									SELECT ROLE (1-CLICK INSTANT ACCESS)
+							{/* Login Form */}
+							<form onSubmit={e => { e.preventDefault(); setActiveUser({ name: authName || 'Sarah Jenkins', email: authEmail, role: 'Senior Claims Adjuster', avatar: 'SJ' }); setView('dashboard'); setIsLoginModalOpen(false); }}>
+								
+								{/* Email Input */}
+								<div style={{ marginBottom: 16 }}>
+									<label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: '#475569', letterSpacing: '0.4px', textTransform: 'uppercase', marginBottom: 6 }}>
+										Work Email / Adjuster ID
+									</label>
+									<div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+										<span style={{ position: 'absolute', left: 12, color: '#94a3b8', fontSize: 14 }}>✉️</span>
+										<input
+											type="email"
+											value={authEmail}
+											onChange={e => setAuthEmail(e.target.value)}
+											placeholder="name@insurance-carrier.com"
+											style={{ width: '100%', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: 10, padding: '12px 14px 12px 38px', fontFamily: 'Inter, sans-serif', fontSize: 13.5, color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
+											required
+										/>
+									</div>
 								</div>
-								<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-									{[
-										{ name: 'Sarah Jenkins', role: 'Senior Adjuster', email: 'sarah@claimvertex.ai', avatar: 'SJ', bg: '#2563eb', tab: 'dashboard' },
-										{ name: 'Elena Rostova', role: 'SIU Lead Auditor', email: 'elena.siu@claimvertex.ai', avatar: 'ER', bg: '#dc2626', tab: 'siu' },
-										{ name: 'David Vance', role: 'PE Forensic Eng.', email: 'david.pe@engineering.com', avatar: 'DV', bg: '#059669', tab: 'scheduling' },
-										{ name: 'Marcus Vance', role: 'Policyholder', email: 'claimant@vance.io', avatar: 'MV', bg: '#d97706', tab: 'public_tracker' },
-									].map((p) => (
+
+								{/* Password Input */}
+								<div style={{ marginBottom: 18 }}>
+									<label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: '#475569', letterSpacing: '0.4px', textTransform: 'uppercase', marginBottom: 6 }}>
+										Password
+									</label>
+									<div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+										<span style={{ position: 'absolute', left: 12, color: '#94a3b8', fontSize: 14 }}>🔒</span>
+										<input
+											type={showPassword ? 'text' : 'password'}
+											value={authPassword}
+											onChange={e => setAuthPassword(e.target.value)}
+											placeholder="Enter your corporate password"
+											style={{ width: '100%', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: 10, padding: '12px 42px 12px 38px', fontFamily: 'Inter, sans-serif', fontSize: 13.5, color: '#0f172a', outline: 'none', boxSizing: 'border-box' }}
+											required
+										/>
 										<button
-											key={p.name}
 											type="button"
-											onClick={() => {
-												setActiveUser({ name: p.name, email: p.email, role: p.role, avatar: p.avatar });
-												setView('dashboard');
-												setActiveTab(p.tab as any);
-												setIsLoginModalOpen(false);
-											}}
-											style={{
-												display: 'flex',
-												alignItems: 'center',
-												gap: 10,
-												background: '#f8fafc',
-												border: '1px solid #e2e8f0',
-												borderRadius: 12,
-												padding: '10px 12px',
-												textAlign: 'left',
-												cursor: 'pointer',
-												width: '100%',
-											}}
+											onClick={() => setShowPassword(!showPassword)}
+											style={{ position: 'absolute', right: 12, background: 'transparent', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}
 										>
-											<div style={{ width: 32, height: 32, borderRadius: '50%', color: '#fff', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, backgroundColor: p.bg }}>
-												{p.avatar}
-											</div>
-											<div style={{ overflow: 'hidden' }}>
-												<div style={{ fontSize: 12, fontWeight: 700, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
-												<div style={{ fontSize: 10, color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.role}</div>
-											</div>
+											{showPassword ? 'Hide' : 'Show'}
 										</button>
-									))}
+									</div>
+								</div>
+
+								{/* Options Row */}
+								<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 22, fontSize: 12.5 }}>
+									<label style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#475569', cursor: 'pointer' }}>
+										<input type="checkbox" defaultChecked style={{ accentColor: '#0f172a' }} />
+										<span>Remember this session</span>
+									</label>
+									<span style={{ color: '#0f172a', fontWeight: 600, cursor: 'pointer' }}>
+										Forgot password?
+									</span>
+								</div>
+
+								{/* Primary Submit Button */}
+								<button
+									type="submit"
+									id="modal-submit-btn"
+									style={{ width: '100%', backgroundColor: '#0f172a', color: '#ffffff', fontSize: 14.5, fontWeight: 700, padding: '13px 0', borderRadius: 10, border: 'none', cursor: 'pointer', boxShadow: '0 4px 14px rgba(15,23,42,0.25)' }}
+								>
+									Sign In to Command Center →
+								</button>
+
+								{/* Divider */}
+								<div style={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '20px 0 16px', color: '#94a3b8', fontSize: 11, fontWeight: 700, letterSpacing: '0.4px' }}>
+									<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
+									<span style={{ padding: '0 12px' }}>SINGLE SIGN-ON</span>
+									<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
+								</div>
+
+								{/* Enterprise SSO Button */}
+								<button
+									type="button"
+									onClick={() => { setActiveUser({ name: 'Sarah Jenkins', email: authEmail || 'sarah@claimvertex.ai', role: 'Senior Claims Adjuster', avatar: 'SJ' }); setView('dashboard'); setIsLoginModalOpen(false); }}
+									style={{ width: '100%', backgroundColor: '#f8fafc', border: '1px solid #cbd5e1', color: '#334155', fontSize: 13, fontWeight: 600, padding: '11px 0', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+								>
+									<span>🏢 Continue with Enterprise SSO / SAML</span>
+								</button>
+							</form>
+
+							{/* Security Certifications Footer */}
+							<div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid #f1f5f9', textAlign: 'center', fontSize: 11, color: '#94a3b8' }}>
+								🔒 256-bit TLS Encryption • SOC-2 Type II Certified
+							</div>
+
+						</div>
+					</div>
+				)}
+			</>
+		);
+	}
+
+	// ─────────────────────────────────────────────────────────────────────────
+	// UNIFIED CORPORATE DASHBOARD (Constant Neutral Palette + Red strictly for Warnings/Security)
+	// ─────────────────────────────────────────────────────────────────────────
+	return (
+		<div style={{
+			display: 'flex',
+			flexDirection: 'column',
+			minHeight: '100vh',
+			backgroundColor: '#f8fafc',
+			color: '#0f172a',
+			fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+		}}>
+			{/* ── TOP HEADER ── */}
+			<header style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'space-between',
+				padding: '12px 32px',
+				backgroundColor: '#ffffff',
+				borderBottom: '1px solid #e2e8f0',
+				position: 'sticky',
+				top: 0,
+				zIndex: 100,
+				boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+			}}>
+				<div style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }} onClick={() => setView('landing')}>
+					<div style={{
+						width: 38,
+						height: 38,
+						borderRadius: 10,
+						backgroundColor: '#0f172a',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						boxShadow: '0 2px 8px rgba(15, 23, 42, 0.15)',
+						flexShrink: 0,
+					}}>
+						<Logo size={22} color="#ffffff" />
+					</div>
+					<div>
+						<div style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.4px', color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6 }}>
+							ClaimVertex <span style={{ fontSize: 11, color: '#475569', backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', padding: '2px 7px', borderRadius: 4, fontWeight: 700 }}>Enterprise 2.5</span>
+						</div>
+						<div style={{ fontSize: 10.5, color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+							AUTONOMOUS P&amp;C AI CLAIMS • SIU FRAUD ENGINE
+						</div>
+					</div>
+				</div>
+
+				{/* Right: User profile, Pipelines tag, and Status indicator */}
+				<div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+					{activeUser && (
+						<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+							<span style={{ width: 26, height: 26, backgroundColor: '#0f172a', color: '#ffffff', borderRadius: '50%', fontSize: 10.5, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+								{activeUser.avatar}
+							</span>
+							<span style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>{activeUser.name}</span>
+							<button
+								onClick={() => setView('landing')}
+								style={{ background: 'transparent', border: 'none', fontSize: 12, color: '#64748b', cursor: 'pointer', marginLeft: 4, fontWeight: 600 }}
+							>
+								Sign Out
+							</button>
+						</div>
+					)}
+					<span style={{ fontSize: 11.5, color: '#475569', background: '#f1f5f9', border: '1px solid #e2e8f0', padding: '4px 10px', borderRadius: 6, fontFamily: 'monospace', fontWeight: 600 }}>
+						9 AI Pipelines Active
+					</span>
+					<div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#0f172a', padding: '5px 12px', borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
+						<span style={{ width: 6, height: 6, backgroundColor: '#0f172a', borderRadius: '50%' }} />
+						Core Server Active
+					</div>
+				</div>
+			</header>
+
+			{/* ── MAIN CONTAINER ── */}
+			<div style={{ maxWidth: 1440, margin: '0 auto', padding: '24px 28px', width: '100%', display: 'flex', flexDirection: 'column', gap: 20, flex: 1, boxSizing: 'border-box' }}>
+				
+				{/* 5 KPI METRICS CARDS (Constant Neutral Text + Red strictly for Warning Queue) */}
+				<div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 14 }}>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 4, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 10.5, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px' }}>Total Claims Tracked</div>
+						<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>{claims.length}</div>
+						<div style={{ fontSize: 11, color: '#64748b', fontWeight: 500 }}>P&amp;C and Commercial</div>
+					</div>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 4, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 10.5, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px' }}>Gross Exposure</div>
+						<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>${totalPayouts.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+						<div style={{ fontSize: 11, color: '#64748b', fontWeight: 500 }}>Total reserve volume</div>
+					</div>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 4, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 10.5, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px' }}>STP Auto-Approval Rate</div>
+						<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>
+							{claims.length > 0 ? ((autoApprovedCount / claims.length) * 100).toFixed(1) : 100}%
+						</div>
+						<div style={{ fontSize: 11, color: '#64748b', fontWeight: 500 }}>Fast-track payout</div>
+					</div>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 4, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 10.5, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px' }}>Senior Adjuster Queue</div>
+						<div style={{ fontSize: 24, fontWeight: 800, color: '#b91c1c', letterSpacing: '-0.5px' }}>{escalatedCount} Case</div>
+						<div style={{ fontSize: 11, color: '#b91c1c', fontWeight: 600 }}>⚠️ SIU Warning Active</div>
+					</div>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 4, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 10.5, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.6px' }}>Avg Settlement Latency</div>
+						<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>0.9 Days</div>
+						<div style={{ fontSize: 11, color: '#64748b', fontWeight: 500 }}>vs Legacy 14.5 days</div>
+					</div>
+				</div>
+
+				{/* 11 NAVIGATION TABS */}
+				<div style={{ display: 'flex', gap: 4, background: '#f1f5f9', padding: '4px', borderRadius: 8, border: '1px solid #e2e8f0', overflowX: 'auto', whiteSpace: 'nowrap' }}>
+					{[
+						{ id: 'assessment', label: 'Claim Assessment' },
+						{ id: 'siu', label: 'SIU Fraud Hub' },
+						{ id: 'docs', label: 'Document Ingestion & Viewer' },
+						{ id: 'benchmarks', label: 'Cost Benchmarks' },
+						{ id: 'scheduling', label: 'Voice Scheduling' },
+						{ id: 'queue', label: 'Workload Queue' },
+						{ id: 'drift', label: 'Model Drift Monitor' },
+						{ id: 'public_tracker', label: 'Public Tracker' },
+						{ id: 'thresholds', label: 'STP Settings' },
+						{ id: 'pipelines', label: '9 AI Pipelines' },
+						{ id: 'history', label: 'Audit Trail' },
+					].map(t => (
+						<button
+							key={t.id}
+							onClick={() => setActiveTab(t.id as any)}
+							style={{
+								padding: '8px 14px',
+								borderRadius: 6,
+								border: 'none',
+								fontSize: 12.5,
+								fontWeight: 600,
+								cursor: 'pointer',
+								backgroundColor: activeTab === t.id ? '#0f172a' : 'transparent',
+								color: activeTab === t.id ? '#ffffff' : '#475569',
+								boxShadow: activeTab === t.id ? '0 2px 4px rgba(0,0,0,0.1)' : 'none',
+								transition: 'all 0.15s ease',
+							}}
+						>
+							{t.label}
+						</button>
+					))}
+				</div>
+
+				{/* ── TAB 1: CLAIM ASSESSMENT & EXPLAINABILITY ── */}
+				{activeTab === 'assessment' && (
+					<div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 20 }}>
+						
+						{/* Left: Input Form & Presets */}
+						<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, display: 'flex', flexDirection: 'column', gap: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+							<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e2e8f0', paddingBottom: 14 }}>
+								<div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', letterSpacing: '-0.2px' }}>Submit &amp; Evaluate Claim Record</div>
+								<span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 600, color: '#475569', background: '#f1f5f9', border: '1px solid #e2e8f0', padding: '3px 8px', borderRadius: 4 }}>
+									claim_analysis.pipe
+								</span>
+							</div>
+
+							{/* Presets */}
+							<div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+								<div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Real-World Case Templates:</div>
+								<div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+									<button type="button" onClick={() => loadPreset('water')} style={{ background: '#ffffff', border: '1px solid #e2e8f0', color: '#0f172a', padding: '6px 11px', borderRadius: 6, fontSize: 11.5, fontWeight: 600, cursor: 'pointer' }}>Water Burst ($8,450)</button>
+									<button type="button" onClick={() => loadPreset('fire')} style={{ background: '#ffffff', border: '1px solid #e2e8f0', color: '#0f172a', padding: '6px 11px', borderRadius: 6, fontSize: 11.5, fontWeight: 600, cursor: 'pointer' }}>Warehouse Fire ($142,000)</button>
+									<button type="button" onClick={() => loadPreset('auto')} style={{ background: '#ffffff', border: '1px solid #e2e8f0', color: '#0f172a', padding: '6px 11px', borderRadius: 6, fontSize: 11.5, fontWeight: 600, cursor: 'pointer' }}>Auto Hail ($3,200)</button>
+									<button type="button" onClick={() => loadPreset('roof')} style={{ background: '#ffffff', border: '1px solid #e2e8f0', color: '#0f172a', padding: '6px 11px', borderRadius: 6, fontSize: 11.5, fontWeight: 600, cursor: 'pointer' }}>Hurricane Roof ($38,750)</button>
+									<button type="button" onClick={() => loadPreset('commercial')} style={{ background: '#ffffff', border: '1px solid #e2e8f0', color: '#0f172a', padding: '6px 11px', borderRadius: 6, fontSize: 11.5, fontWeight: 600, cursor: 'pointer' }}>Commercial Spoilage ($24,500)</button>
 								</div>
 							</div>
 
-							<div style={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '16px 0', color: '#94a3b8', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.5px' }}>
-								<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
-								<span style={{ padding: '0 10px' }}>OR ENTER CREDENTIALS</span>
-								<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
-							</div>
-
-							{/* Traditional Credentials Form */}
-							<form
-								onSubmit={(e) => {
-									e.preventDefault();
-									setActiveUser({ name: authName || 'Sarah Jenkins', email: authEmail, role: 'Senior Claims Adjuster', avatar: 'SJ' });
-									setView('dashboard');
-									setIsLoginModalOpen(false);
-								}}
-							>
-								<div style={{ marginBottom: 14 }}>
-									<label style={{ display: 'block', fontSize: 10.5, fontWeight: 800, color: '#475569', letterSpacing: '0.5px', marginBottom: 6 }}>EMAIL / USERNAME</label>
+							<form onSubmit={handleCreateClaim} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+								<div>
+									<label style={{ display: 'block', fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>Claimant Name / Entity</label>
 									<input
-										type="email"
-										value={authEmail}
-										onChange={(e) => setAuthEmail(e.target.value)}
-										style={{
-											width: '100%',
-											background: '#f8fafc',
-											border: '1px solid #e2e8f0',
-											borderRadius: 10,
-											padding: '11px 12px',
-											fontFamily: 'Inter, sans-serif',
-											fontSize: 13,
-											color: '#0f172a',
-											outline: 'none',
-										}}
+										type="text"
+										value={claimant}
+										onChange={e => setClaimant(e.target.value)}
+										style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 6, padding: '9px 12px', color: '#0f172a', fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
 										required
 									/>
 								</div>
 
-								<div style={{ marginBottom: 14 }}>
-									<label style={{ display: 'block', fontSize: 10.5, fontWeight: 800, color: '#475569', letterSpacing: '0.5px', marginBottom: 6 }}>PASSWORD</label>
-									<input
-										type="password"
-										value={authPassword}
-										onChange={(e) => setAuthPassword(e.target.value)}
-										style={{
-											width: '100%',
-											background: '#f8fafc',
-											border: '1px solid #e2e8f0',
-											borderRadius: 10,
-											padding: '11px 12px',
-											fontFamily: 'Inter, sans-serif',
-											fontSize: 13,
-											color: '#0f172a',
-											outline: 'none',
-										}}
+								<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+									<div>
+										<label style={{ display: 'block', fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>Policy Number</label>
+										<input
+											type="text"
+											value={policyNo}
+											onChange={e => setPolicyNo(e.target.value)}
+											style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 6, padding: '9px 12px', color: '#0f172a', fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
+											required
+										/>
+									</div>
+									<div>
+										<label style={{ display: 'block', fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>Claimed Amount ($)</label>
+										<input
+											type="number"
+											value={claimAmount}
+											onChange={e => setClaimAmount(e.target.value)}
+											style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 6, padding: '9px 12px', color: '#0f172a', fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
+											required
+										/>
+									</div>
+								</div>
+
+								<div>
+									<label style={{ display: 'block', fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>Loss Description &amp; Incident Scope</label>
+									<textarea
+										rows={3}
+										value={description}
+										onChange={e => setDescription(e.target.value)}
+										style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 6, padding: '9px 12px', color: '#0f172a', fontSize: 13, outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
 										required
 									/>
 								</div>
 
 								<button
 									type="submit"
+									disabled={isSubmitting}
 									style={{
 										width: '100%',
-										backgroundColor: '#dc2626',
+										backgroundColor: '#0f172a',
 										color: '#ffffff',
 										border: 'none',
-										borderRadius: 10,
-										padding: '13px 16px',
-										fontSize: 14,
+										borderRadius: 6,
+										padding: '12px 16px',
+										fontSize: 13.5,
 										fontWeight: 700,
-										cursor: 'pointer',
+										cursor: isSubmitting ? 'not-allowed' : 'pointer',
 										display: 'flex',
 										alignItems: 'center',
 										justifyContent: 'center',
 										gap: 8,
-										boxShadow: '0 4px 14px rgba(220, 38, 38, 0.35)',
-										marginTop: 18,
+										boxShadow: '0 2px 6px rgba(15, 23, 42, 0.2)',
 									}}
 								>
-									Sign In to Dashboard &rarr;
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+									<span>{isSubmitting ? 'Evaluating AI Pipelines...' : 'Run Autonomous AI Damage & SIU Assessment'}</span>
 								</button>
 							</form>
 						</div>
-					</div>
-				)}
 
-				{/* LEARN MORE MODAL */}
-				{isLearnMoreModalOpen && (
-					<div
-						style={{
-							position: 'fixed',
-							top: 0,
-							left: 0,
-							right: 0,
-							bottom: 0,
-							backgroundColor: 'rgba(15, 23, 42, 0.65)',
-							backdropFilter: 'blur(8px)',
-							zIndex: 1000,
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							padding: 20,
-						}}
-						onClick={() => setIsLearnMoreModalOpen(false)}
-					>
-						<div
-							style={{
-								backgroundColor: '#ffffff',
-								borderRadius: 22,
-								width: '100%',
-								maxWidth: 640,
-								padding: '36px 32px',
-								boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.3)',
-								position: 'relative',
-								maxHeight: '90vh',
-								overflowY: 'auto',
-							}}
-							onClick={(e) => e.stopPropagation()}
-						>
-							<button
-								onClick={() => setIsLearnMoreModalOpen(false)}
-								style={{
-									position: 'absolute',
-									top: 18,
-									right: 18,
-									background: '#f1f5f9',
-									border: 'none',
-									borderRadius: '50%',
-									width: 32,
-									height: 32,
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									color: '#64748b',
-									cursor: 'pointer',
-								}}
-							>
-								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-									<line x1="18" y1="6" x2="6" y2="18"></line>
-									<line x1="6" y1="6" x2="18" y2="18"></line>
-								</svg>
-							</button>
-
-							<div style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '4px 10px', borderRadius: 6, letterSpacing: '0.5px', marginBottom: 12 }}>
-								PLATFORM ARCHITECTURE
-							</div>
-							<h2 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px', marginBottom: 8 }}>
-								Intelligent P&amp;C Claims Automation
-							</h2>
-							<p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.55, marginBottom: 24 }}>
-								ClaimVertex accelerates Property &amp; Casualty claim operations by combining 9 deterministic AI pipelines with real-time SIU fraud prevention.
-							</p>
-
-							<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 24 }}>
-								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
-									<div style={{ fontSize: 24, marginBottom: 8 }}>⚡</div>
-									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Straight-Through Processing</div>
-									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>Sub-second auto-payout authorizations for low-risk claims under $10k.</div>
-								</div>
-								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
-									<div style={{ fontSize: 24, marginBottom: 8 }}>🔍</div>
-									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>6-Vector SIU Fraud Matrix</div>
-									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>EXIF tampering, duplicate contractor receipts, and regional rate inflation checks.</div>
-								</div>
-								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
-									<div style={{ fontSize: 24, marginBottom: 8 }}>🎙️</div>
-									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>PE Forensic Dispatch</div>
-									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>Automated voice and calendar scheduling for licensed structural engineers.</div>
-								</div>
-								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
-									<div style={{ fontSize: 24, marginBottom: 8 }}>💬</div>
-									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Multi-Persona RAG Copilot</div>
-									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>Citation-backed policy QA with semantic retrieval from Qdrant vector store.</div>
-								</div>
-							</div>
-
-							<button
-								onClick={() => {
-									setIsLearnMoreModalOpen(false);
-									setIsLoginModalOpen(true);
-								}}
-								style={{
-									width: '100%',
-									backgroundColor: '#0d3a58',
-									color: '#ffffff',
-									border: 'none',
-									borderRadius: 10,
-									padding: '14px 20px',
-									fontSize: 14,
-									fontWeight: 700,
-									cursor: 'pointer',
-									boxShadow: '0 4px 14px rgba(13, 58, 88, 0.3)',
-								}}
-							>
-								Launch Command Center (Sign In) &rarr;
-							</button>
-						</div>
-					</div>
-				)}
-			</div>
-		);
-	}
-
-	return (
-		<div style={{
-			display: 'flex',
-			flexDirection: 'column',
-			minHeight: '100%',
-			backgroundColor: '#090d16',
-			color: '#f1f5f9',
-			fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-		}}>
-			{/* TOP HEADER */}
-			<header style={{
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'space-between',
-				padding: '12px 24px',
-				backgroundColor: '#0f172a',
-				borderBottom: '1px solid #1e293b',
-				position: 'sticky',
-				top: 0,
-				zIndex: 100,
-			}}>
-				<div style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }} onClick={() => setView('landing')}>
-					<div style={{
-						width: 36,
-						height: 36,
-						borderRadius: 8,
-						backgroundColor: '#0b1329',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-						fontWeight: 800,
-						color: '#ffffff',
-						fontSize: 15,
-						boxShadow: '0 2px 8px rgba(37,99,235,0.4)',
-					}}>
-						<svg viewBox="0 0 120 120" width="30" height="30">
-							<defs>
-								<linearGradient id="cpLogoG_hdr" x1="0%" y1="0%" x2="100%" y2="100%">
-									<stop offset="0%" stopColor="#2563eb" />
-									<stop offset="100%" stopColor="#06b6d4" />
-								</linearGradient>
-								<linearGradient id="cpGoldG_hdr" x1="0%" y1="0%" x2="100%" y2="100%">
-									<stop offset="0%" stopColor="#f59e0b" />
-									<stop offset="100%" stopColor="#fbbf24" />
-								</linearGradient>
-							</defs>
-							<rect width="120" height="120" rx="26" fill="#0f172a" />
-							<path d="M60 18 L92 32 V62 C92 84 60 102 60 102 C60 102 28 84 28 62 V32 Z" fill="url(#cpLogoG_hdr)" fillOpacity="0.2" stroke="url(#cpLogoG_hdr)" strokeWidth="4" strokeLinejoin="round" />
-							<path d="M60 32 L82 54 L68 54 L60 42 L52 54 L38 54 Z" fill="#ffffff" />
-							<polygon points="60,62 67,76 60,90 53,76" fill="url(#cpGoldG_hdr)" />
-						</svg>
-					</div>
-					<div>
-						<div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em', color: '#ffffff' }}>
-							Claim<span style={{ color: '#f59e0b' }}>Pilot</span> <span style={{ fontSize: 11, backgroundColor: '#1e293b', color: '#38bdf8', padding: '2px 6px', borderRadius: 4, marginLeft: 6 }}>v2.5 Enterprise</span>
-						</div>
-						<div style={{ fontSize: 11, color: '#94a3b8' }}>ClaimPilot Autonomous Insurance &amp; SIU Risk Command Center</div>
-					</div>
-				</div>
-
-				{/* User Badge & Return to Landing */}
-				<div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-					{activeUser && (
-						<div style={{ display: 'flex', alignItems: 'center', gap: 8, backgroundColor: '#1e293b', padding: '4px 10px', borderRadius: 6, border: '1px solid #334155' }}>
-							<span style={{ width: 22, height: 22, backgroundColor: '#2563eb', color: '#fff', borderRadius: '50%', fontSize: 10, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-								{activeUser.avatar}
-							</span>
-							<span style={{ fontSize: 11.5, fontWeight: 700, color: '#f1f5f9' }}>{activeUser.name}</span>
-							<button
-								onClick={() => setView('landing')}
-								style={{ background: 'transparent', border: 'none', fontSize: 11, color: '#f87171', cursor: 'pointer', marginLeft: 6, fontWeight: 600 }}
-							>
-								Sign Out
-							</button>
-						</div>
-					)}
-
-					{/* NAVIGATION TABS */}
-					<nav style={{ display: 'flex', gap: 4, backgroundColor: '#020617', padding: '4px', borderRadius: 8, overflowX: 'auto' }}>
-						{[
-							{ id: 'dashboard', label: 'Overview' },
-							{ id: 'assessment', label: 'Assessment' },
-							{ id: 'siu', label: 'SIU Fraud Hub' },
-							{ id: 'docs', label: 'Evidence & Viewer' },
-							{ id: 'benchmarks', label: 'Cost Benchmarks' },
-							{ id: 'scheduling', label: 'Voice Scheduling' },
-							{ id: 'queue', label: 'Workload Queue' },
-							{ id: 'drift', label: 'Model Drift' },
-							{ id: 'public_tracker', label: 'Public Tracker' },
-							{ id: 'thresholds', label: 'STP Settings' },
-							{ id: 'pipelines', label: '9 DAG Pipes' },
-						].map(t => (
-							<button
-								key={t.id}
-								onClick={() => setActiveTab(t.id as any)}
-								style={{
-									padding: '6px 11px',
-									borderRadius: 6,
-									border: 'none',
-									fontSize: 12,
-									fontWeight: activeTab === t.id ? 600 : 400,
-									cursor: 'pointer',
-									backgroundColor: activeTab === t.id ? '#2563eb' : 'transparent',
-									color: activeTab === t.id ? '#ffffff' : '#94a3b8',
-									transition: 'all 0.15s ease',
-									whiteSpace: 'nowrap',
-								}}
-							>
-								{t.label}
-							</button>
-						))}
-					</nav>
-				</div>
-			</header>
-
-			{/* MAIN BODY AREA */}
-			<main style={{ padding: '20px 24px', flex: 1, overflowY: 'auto' }}>
-				{/* 1. DASHBOARD OVERVIEW */}
-				{activeTab === 'dashboard' && (
-					<div>
-						{/* Stat Cards Bar */}
-						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14, marginBottom: 20 }}>
-							<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: 16 }}>
-								<div style={{ fontSize: 11, textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>Total Claims Processed</div>
-								<div style={{ fontSize: 26, fontWeight: 700, marginTop: 4, color: '#38bdf8' }}>{claims.length}</div>
-								<div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>Real-time event stream</div>
-							</div>
-							<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: 16 }}>
-								<div style={{ fontSize: 11, textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>Gross Exposure Evaluated</div>
-								<div style={{ fontSize: 26, fontWeight: 700, marginTop: 4, color: '#f8fafc' }}>${totalPayouts.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-								<div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>Across P&amp;C lines</div>
-							</div>
-							<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: 16 }}>
-								<div style={{ fontSize: 11, textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>STP Auto-Approval Rate</div>
-								<div style={{ fontSize: 26, fontWeight: 700, marginTop: 4, color: '#22c55e' }}>
-									{claims.length > 0 ? ((autoApprovedCount / claims.length) * 100).toFixed(1) : 100}%
-								</div>
-								<div style={{ fontSize: 11, color: '#22c55e', marginTop: 2 }}>{autoApprovedCount} claims fast-tracked</div>
-							</div>
-							<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: 16 }}>
-								<div style={{ fontSize: 11, textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>Senior Adjuster Queue</div>
-								<div style={{ fontSize: 26, fontWeight: 700, marginTop: 4, color: '#ef4444' }}>{escalatedCount} Pending</div>
-								<div style={{ fontSize: 11, color: '#ef4444', marginTop: 2 }}>Requiring human sign-off</div>
-							</div>
-							<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: 16 }}>
-								<div style={{ fontSize: 11, textTransform: 'uppercase', color: '#94a3b8', fontWeight: 600 }}>Average Cycle Time</div>
-								<div style={{ fontSize: 26, fontWeight: 700, marginTop: 4, color: '#a855f7' }}>0.9 Days</div>
-								<div style={{ fontSize: 11, color: '#a855f7', marginTop: 2 }}>vs Legacy 14.5 days (93% faster)</div>
-							</div>
-						</div>
-
-						{/* Split Layout: Claims Table & Detail Pane */}
-						<div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 20 }}>
-							<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 18 }}>
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-									<h3 style={{ fontSize: 15, fontWeight: 700, color: '#ffffff' }}>Live Claim Evaluation Stream</h3>
-									<span style={{ fontSize: 11, color: '#38bdf8', backgroundColor: '#020617', padding: '3px 8px', borderRadius: 4 }}>
-										claim_analysis.pipe
+						{/* Right: Assessment & Financial Budget Results */}
+						<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, display: 'flex', flexDirection: 'column', gap: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.06)', minHeight: 540 }}>
+							<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e2e8f0', paddingBottom: 14 }}>
+								<div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', letterSpacing: '-0.2px' }}>Assessment &amp; Financial Budget Results</div>
+								{selectedClaim && (
+									<span style={{
+										fontSize: 11.5,
+										fontWeight: 700,
+										padding: '4px 10px',
+										borderRadius: 20,
+										backgroundColor: selectedClaim.gate_status.includes('ESCALATED') || selectedClaim.gate_status.includes('SIU') ? '#fef2f2' : '#f1f5f9',
+										color: selectedClaim.gate_status.includes('ESCALATED') || selectedClaim.gate_status.includes('SIU') ? '#b91c1c' : '#334155',
+										border: `1px solid ${selectedClaim.gate_status.includes('ESCALATED') || selectedClaim.gate_status.includes('SIU') ? '#fecaca' : '#e2e8f0'}`,
+									}}>
+										{selectedClaim.gate_status}
 									</span>
-								</div>
-
-								<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-									{claims.map(c => {
-										const isSelected = selectedClaim?.id === c.id;
-										const isHighRisk = c.fraud_risk_score >= 50;
-										return (
-											<div
-												key={c.id}
-												onClick={() => setSelectedClaim(c)}
-												style={{
-													padding: '12px 14px',
-													borderRadius: 8,
-													border: isSelected ? '1px solid #3b82f6' : '1px solid #1e293b',
-													backgroundColor: isSelected ? '#1e293b' : '#090d16',
-													cursor: 'pointer',
-													display: 'flex',
-													justifyContent: 'space-between',
-													alignItems: 'center',
-													transition: 'all 0.15s ease',
-												}}
-											>
-												<div>
-													<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-														<span style={{ fontWeight: 700, fontSize: 13, color: '#ffffff' }}>{c.id}</span>
-														<span style={{ fontSize: 11, color: '#94a3b8' }}>• {c.claimant}</span>
-														<span style={{ fontSize: 10, color: '#64748b' }}>({c.policy_number})</span>
-													</div>
-													<div style={{ fontSize: 12, color: '#94a3b8', marginTop: 3 }}>
-														${c.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} — {c.peril}
-													</div>
-												</div>
-												<div style={{ textAlign: 'right' }}>
-													<span style={{
-														display: 'inline-block',
-														fontSize: 10.5,
-														fontWeight: 700,
-														padding: '3px 8px',
-														borderRadius: 4,
-														backgroundColor: isHighRisk ? '#450a0a' : '#052e16',
-														color: isHighRisk ? '#f87171' : '#4ade80',
-														border: `1px solid ${isHighRisk ? '#991b1b' : '#166534'}`,
-													}}>
-														SIU Risk: {c.fraud_risk_score}%
-													</span>
-												</div>
-											</div>
-										);
-									})}
-								</div>
+								)}
 							</div>
 
-							{/* Right: Selected Claim Full Details & Explainability */}
-							{selectedClaim ? (
-								<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 18 }}>
-									<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+							{selectedClaim && hasAnalyzed ? (
+								<div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+									{/* Claim Header Bar */}
+									<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
 										<div>
-											<div style={{ fontSize: 18, fontWeight: 800, color: '#ffffff' }}>{selectedClaim.id}</div>
-											<div style={{ fontSize: 12, color: '#94a3b8' }}>Policy: {selectedClaim.policy_number} | {selectedClaim.claimant}</div>
+											<div style={{ fontWeight: 800, fontSize: 14, color: '#0f172a' }}>{selectedClaim.id}</div>
+											<div style={{ fontSize: 11.5, color: '#64748b' }}>Policy #{selectedClaim.policy_number} • {selectedClaim.claimant}</div>
 										</div>
-										<span style={{
-											fontSize: 11,
-											fontWeight: 700,
-											padding: '4px 8px',
-											borderRadius: 4,
-											backgroundColor: selectedClaim.gate_status.includes('PASSED') || selectedClaim.gate_status.includes('APPROVED') ? '#052e16' : '#450a0a',
-											color: selectedClaim.gate_status.includes('PASSED') || selectedClaim.gate_status.includes('APPROVED') ? '#4ade80' : '#f87171',
-										}}>
-											{selectedClaim.gate_status}
-										</span>
-									</div>
-
-									<div style={{ fontSize: 12.5, lineHeight: 1.5, color: '#cbd5e1', marginBottom: 14, padding: 10, backgroundColor: '#090d16', borderRadius: 6 }}>
-										{selectedClaim.description}
-									</div>
-
-									{/* Financial Breakdown Cards */}
-									<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 14 }}>
-										<div style={{ padding: 8, backgroundColor: '#090d16', borderRadius: 6 }}>
-											<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase' }}>Replacement Cost (RCV)</div>
-											<div style={{ fontSize: 14, fontWeight: 700, color: '#38bdf8' }}>${selectedClaim.financials.replacement_cost_value.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-										</div>
-										<div style={{ padding: 8, backgroundColor: '#090d16', borderRadius: 6 }}>
-											<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase' }}>Deductible</div>
-											<div style={{ fontSize: 14, fontWeight: 700, color: '#f59e0b' }}>${selectedClaim.financials.policy_deductible.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-										</div>
-										<div style={{ padding: 8, backgroundColor: '#090d16', borderRadius: 6 }}>
-											<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase' }}>Net Initial Check</div>
-											<div style={{ fontSize: 14, fontWeight: 700, color: '#22c55e' }}>${selectedClaim.financials.net_payable_payout.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+										<div style={{ textAlign: 'right' }}>
+											<div style={{ fontSize: 11, color: '#64748b' }}>SIU Score</div>
+											<div style={{ fontSize: 15, fontWeight: 800, color: selectedClaim.fraud_risk_score >= 50 ? '#b91c1c' : '#0f172a' }}>
+												{selectedClaim.fraud_risk_score} / 100
+											</div>
 										</div>
 									</div>
 
-									{/* Itemized Lines with Explainability Tooltips */}
-									<div style={{ marginBottom: 14 }}>
-										<div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: '#94a3b8', marginBottom: 6 }}>
-											Itemized Scope &amp; Evidence Citations:
+									{/* Financial Snapshot (Clean Neutral Values) */}
+									<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+										<div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+											<div style={{ fontSize: 10, color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Gross RCV</div>
+											<div style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', marginTop: 2 }}>${selectedClaim.financials.replacement_cost_value.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
 										</div>
-										<div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 150, overflowY: 'auto' }}>
+										<div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+											<div style={{ fontSize: 10, color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Deductible</div>
+											<div style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', marginTop: 2 }}>${selectedClaim.financials.policy_deductible.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+										</div>
+										<div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+											<div style={{ fontSize: 10, color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Net Authorized</div>
+											<div style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', marginTop: 2 }}>${selectedClaim.financials.net_payable_payout.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+										</div>
+									</div>
+
+									{/* Itemized Line Scope */}
+									<div>
+										<div style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: 8 }}>
+											Itemized Scope Breakdown (Verified Line Items):
+										</div>
+										<div style={{ border: '1px solid #e2e8f0', borderRadius: 8, overflow: 'hidden', fontSize: 12 }}>
 											{selectedClaim.line_items.map((li, idx) => (
-												<div key={idx} style={{ padding: '6px 8px', backgroundColor: '#090d16', borderRadius: 6, fontSize: 11, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+												<div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 12px', borderBottom: idx < selectedClaim.line_items.length - 1 ? '1px solid #f1f5f9' : 'none', background: idx % 2 === 0 ? '#ffffff' : '#f8fafc' }}>
 													<div>
-														<span style={{ fontWeight: 600, color: '#f8fafc' }}>{li.item}</span>
-														<div style={{ fontSize: 10, color: '#64748b' }}>{li.qty} • {li.rate}</div>
+														<div style={{ fontWeight: 600, color: '#0f172a' }}>{li.item}</div>
+														<div style={{ fontSize: 11, color: '#64748b' }}>{li.qty} • {li.rate}</div>
 													</div>
 													<div style={{ textAlign: 'right' }}>
-														<span style={{ fontWeight: 700, color: '#38bdf8' }}>${li.total.toLocaleString()}</span>
+														<div style={{ fontWeight: 700, color: '#0f172a' }}>${li.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
 														{li.evidence_citation && (
-															<div
+															<span
 																onClick={() => setExplainCitation(li.evidence_citation || null)}
-																style={{ fontSize: 9.5, color: '#93c5fd', cursor: 'pointer', textDecoration: 'underline' }}
+																style={{ fontSize: 10, color: '#475569', cursor: 'pointer', textDecoration: 'underline' }}
 															>
 																View Citation
-															</div>
+															</span>
 														)}
 													</div>
 												</div>
@@ -1520,446 +1076,278 @@ export const App: React.FC = () => {
 										</div>
 									</div>
 
-									{/* Human Adjuster Controls */}
-									<div style={{ borderTop: '1px solid #1e293b', paddingTop: 12, display: 'flex', gap: 8 }}>
+									{/* Action Buttons: Neutral primary for Authorize, Red strictly for Warning Escalate */}
+									<div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
 										<button
 											onClick={() => handleApprove(selectedClaim.id)}
-											style={{ flex: 1, padding: '8px', borderRadius: 6, border: 'none', backgroundColor: '#16a34a', color: '#ffffff', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}
+											style={{ flex: 1, backgroundColor: '#0f172a', color: '#ffffff', border: 'none', borderRadius: 6, padding: '10px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
 										>
 											Authorize Payout
 										</button>
 										<button
 											onClick={() => handleEscalateSIU(selectedClaim.id)}
-											style={{ flex: 1, padding: '8px', borderRadius: 6, border: 'none', backgroundColor: '#dc2626', color: '#ffffff', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}
+											style={{ flex: 1, backgroundColor: '#dc2626', color: '#ffffff', border: 'none', borderRadius: 6, padding: '10px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
 										>
-											Escalate to SIU
+											Escalate to SIU (Warning)
 										</button>
 									</div>
 								</div>
 							) : (
-								<div style={{ padding: 40, textAlign: 'center', color: '#64748b' }}>Select a claim to review details</div>
+								<div style={{ textAlign: 'center', padding: '80px 20px', color: '#64748b' }}>
+									<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 12px' }}><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+									<div style={{ fontSize: 14.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>No Claim Evaluated in Current Session</div>
+									<div style={{ fontSize: 12, maxWidth: 360, margin: '0 auto' }}>Click a sample template or enter claim details, then click <strong>Run Autonomous AI Damage &amp; SIU Assessment</strong>.</div>
+								</div>
 							)}
 						</div>
+
 					</div>
 				)}
 
-				{/* 2. CLAIM ASSESSMENT TAB */}
-				{activeTab === 'assessment' && (
-					<div style={{ maxWidth: 680, margin: '0 auto', backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 24 }}>
-						<h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 6, color: '#ffffff' }}>Trigger New Claim Assessment</h3>
-						<p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 18 }}>
-							Executes multi-step reasoning via <code>claim_analysis.pipe</code> (Webhook &rarr; Parse &rarr; GPT-4-turbo &rarr; 6-Vector SIU Scorer &rarr; Threshold Gate &rarr; Response Answers).
-						</p>
-
-						<form onSubmit={handleCreateClaim} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-							<div>
-								<label style={{ fontSize: 11, color: '#94a3b8', display: 'block', marginBottom: 4, textTransform: 'uppercase', fontWeight: 600 }}>Claimant Name / Entity</label>
-								<input
-									type="text"
-									required
-									value={claimant}
-									onChange={e => setClaimant(e.target.value)}
-									placeholder="e.g. Jane Doe / Coastal Logistics Inc."
-									style={{ width: '100%', padding: '10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 13 }}
-								/>
-							</div>
-
-							<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-								<div>
-									<label style={{ fontSize: 11, color: '#94a3b8', display: 'block', marginBottom: 4, textTransform: 'uppercase', fontWeight: 600 }}>Policy Number</label>
-									<input
-										type="text"
-										value={policyNo}
-										onChange={e => setPolicyNo(e.target.value)}
-										placeholder="POL-994821"
-										style={{ width: '100%', padding: '10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 13 }}
-									/>
-								</div>
-								<div>
-									<label style={{ fontSize: 11, color: '#94a3b8', display: 'block', marginBottom: 4, textTransform: 'uppercase', fontWeight: 600 }}>Claimed Amount ($ USD)</label>
-									<input
-										type="number"
-										required
-										value={claimAmount}
-										onChange={e => setClaimAmount(e.target.value)}
-										placeholder="8450"
-										style={{ width: '100%', padding: '10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 13 }}
-									/>
-								</div>
-							</div>
-
-							<div>
-								<label style={{ fontSize: 11, color: '#94a3b8', display: 'block', marginBottom: 4, textTransform: 'uppercase', fontWeight: 600 }}>Loss Narrative &amp; Damage Description</label>
-								<textarea
-									rows={4}
-									required
-									value={description}
-									onChange={e => setDescription(e.target.value)}
-									placeholder="Describe the incident, damaged items, structural effects, and repair estimates..."
-									style={{ width: '100%', padding: '10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 13 }}
-								/>
-							</div>
-
-							<button
-								type="submit"
-								disabled={isSubmitting}
-								style={{
-									padding: '12px',
-									borderRadius: 6,
-									border: 'none',
-									backgroundColor: isSubmitting ? '#475569' : '#2563eb',
-									color: '#ffffff',
-									fontWeight: 700,
-									fontSize: 13,
-									cursor: isSubmitting ? 'not-allowed' : 'pointer',
-									marginTop: 4,
-								}}
-							>
-								{isSubmitting ? 'Running Autonomous AI Assessment...' : 'Submit Claim to Pipeline Engine'}
-							</button>
-						</form>
-					</div>
-				)}
-
-				{/* 3. SIU FRAUD HUB TAB (siu_dashboard.pipe) */}
+				{/* ── TAB 2: SIU FRAUD HUB ── */}
 				{activeTab === 'siu' && (
-					<div>
-						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, borderBottom: '1px solid #e2e8f0', paddingBottom: 14 }}>
 							<div>
-								<h3 style={{ fontSize: 16, fontWeight: 700, color: '#ffffff' }}>SIU Fraud Command Center &amp; Risk Matrix</h3>
-								<div style={{ fontSize: 12, color: '#94a3b8' }}>Powered by <code>siu_dashboard.pipe</code> with 6-Vector Anomaly Correlation</div>
+								<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>SIU Fraud Command Center &amp; Risk Matrix</div>
+								<div style={{ fontSize: 12, color: '#64748b' }}>Powered by <code>siu_dashboard.pipe</code> with 6-Vector Anomaly Correlation</div>
 							</div>
-							<div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-								<label style={{ fontSize: 12, color: '#94a3b8' }}>Filter Vector:</label>
-								<select
-									value={siuVectorFilter}
-									onChange={e => setSiuVectorFilter(e.target.value)}
-									style={{ padding: '6px 10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 12 }}
-								>
-									<option value="all">All 6 Risk Vectors</option>
-									<option value="V1">Vector 1: Policy Inception Proximity</option>
-									<option value="V2">Vector 2: Regional Rate Benchmark</option>
-									<option value="V3">Vector 3: Contractor Licensure &amp; TIN</option>
-									<option value="V4">Vector 4: Doppler Radar &amp; Weather</option>
-									<option value="V5">Vector 5: Loss History &amp; Frequency</option>
-									<option value="V6">Vector 6: Circumstantial Timing</option>
-								</select>
-							</div>
+							<select
+								value={siuVectorFilter}
+								onChange={e => setSiuVectorFilter(e.target.value)}
+								style={{ padding: '6px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: 6, color: '#0f172a', fontSize: 12, outline: 'none' }}
+							>
+								<option value="all">Filter: All 6 Vectors</option>
+								<option value="V1">Vector 1: Inception Proximity</option>
+								<option value="V2">Vector 2: Benchmark Markup</option>
+								<option value="V3">Vector 3: Contractor Licensure</option>
+								<option value="V4">Vector 4: Doppler Weather</option>
+								<option value="V5">Vector 5: Loss History</option>
+								<option value="V6">Vector 6: Timing &amp; Origin</option>
+							</select>
 						</div>
 
-						{/* SIU Claims Table */}
-						<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, overflow: 'hidden' }}>
-							<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-								<thead>
-									<tr style={{ backgroundColor: '#020617', borderBottom: '1px solid #1e293b', color: '#94a3b8', textAlign: 'left' }}>
-										<th style={{ padding: '10px 14px' }}>Claim ID</th>
-										<th style={{ padding: '10px 14px' }}>Policy &amp; Claimant</th>
-										<th style={{ padding: '10px 14px' }}>Amount</th>
-										<th style={{ padding: '10px 14px' }}>Peril</th>
-										<th style={{ padding: '10px 14px' }}>SIU Score</th>
-										<th style={{ padding: '10px 14px' }}>Assigned Investigator</th>
-										<th style={{ padding: '10px 14px' }}>Action</th>
+						<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12.5 }}>
+							<thead>
+								<tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#64748b', textAlign: 'left' }}>
+									<th style={{ padding: '10px 14px' }}>Claim ID</th>
+									<th style={{ padding: '10px 14px' }}>Policyholder</th>
+									<th style={{ padding: '10px 14px' }}>Peril</th>
+									<th style={{ padding: '10px 14px' }}>Claim Amount</th>
+									<th style={{ padding: '10px 14px' }}>SIU Score</th>
+									<th style={{ padding: '10px 14px' }}>Assigned Investigator</th>
+									<th style={{ padding: '10px 14px' }}>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{filteredSiuClaims.map(c => (
+									<tr key={c.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+										<td style={{ padding: '12px 14px', fontWeight: 700, color: '#0f172a' }}>{c.id}</td>
+										<td style={{ padding: '12px 14px' }}>{c.claimant} ({c.policy_number})</td>
+										<td style={{ padding: '12px 14px', color: '#475569' }}>{c.peril}</td>
+										<td style={{ padding: '12px 14px', fontWeight: 700, color: '#0f172a' }}>${c.amount.toLocaleString()}</td>
+										<td style={{ padding: '12px 14px' }}>
+											<span style={{
+												padding: '3px 8px',
+												borderRadius: 4,
+												fontSize: 11,
+												fontWeight: 700,
+												backgroundColor: c.fraud_risk_score >= 50 ? '#fef2f2' : '#f1f5f9',
+												color: c.fraud_risk_score >= 50 ? '#b91c1c' : '#475569',
+												border: `1px solid ${c.fraud_risk_score >= 50 ? '#fecaca' : '#e2e8f0'}`,
+											}}>
+												{c.fraud_risk_score}%
+											</span>
+										</td>
+										<td style={{ padding: '12px 14px', color: '#475569' }}>
+											{c.assigned_investigator || 'Unassigned'}
+										</td>
+										<td style={{ padding: '12px 14px' }}>
+											<button
+												onClick={() => setClaims(prev => prev.map(item => item.id === c.id ? { ...item, assigned_investigator: assignedInvestigatorInput, gate_status: 'SIU INVESTIGATION ACTIVE' } : item))}
+												style={{ padding: '5px 10px', backgroundColor: '#0f172a', color: '#ffffff', border: 'none', borderRadius: 4, fontSize: 11.5, fontWeight: 600, cursor: 'pointer' }}
+											>
+												Assign Investigator
+											</button>
+										</td>
 									</tr>
-								</thead>
-								<tbody>
-									{filteredSiuClaims.map(c => (
-										<tr key={c.id} style={{ borderBottom: '1px solid #1e293b' }}>
-											<td style={{ padding: '12px 14px', fontWeight: 700, color: '#ffffff' }}>{c.id}</td>
-											<td style={{ padding: '12px 14px' }}>{c.claimant} ({c.policy_number})</td>
-											<td style={{ padding: '12px 14px', fontWeight: 700, color: '#38bdf8' }}>${c.amount.toLocaleString()}</td>
-											<td style={{ padding: '12px 14px', color: '#cbd5e1' }}>{c.peril}</td>
-											<td style={{ padding: '12px 14px' }}>
-												<span style={{
-													padding: '3px 8px',
-													borderRadius: 4,
-													fontSize: 11,
-													fontWeight: 700,
-													backgroundColor: c.fraud_risk_score >= 50 ? '#450a0a' : '#052e16',
-													color: c.fraud_risk_score >= 50 ? '#f87171' : '#4ade80',
-												}}>
-													{c.fraud_risk_score}%
-												</span>
-											</td>
-											<td style={{ padding: '12px 14px', color: c.assigned_investigator ? '#38bdf8' : '#64748b' }}>
-												{c.assigned_investigator || 'Unassigned'}
-											</td>
-											<td style={{ padding: '12px 14px' }}>
-												<button
-													onClick={() => {
-														setClaims(prev => prev.map(item => item.id === c.id ? { ...item, assigned_investigator: assignedInvestigatorInput, gate_status: 'SIU INVESTIGATION ACTIVE' } : item));
-													}}
-													style={{ padding: '5px 10px', backgroundColor: '#2563eb', color: '#ffffff', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 600, cursor: 'pointer' }}
-												>
-													Assign Investigator
-												</button>
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
+								))}
+							</tbody>
+						</table>
 					</div>
 				)}
 
-				{/* 4. EVIDENCE & SIDE-BY-SIDE VIEWER (ingestion.pipe) */}
+				{/* ── TAB 3: DOCUMENT INGESTION & VIEWER ── */}
 				{activeTab === 'docs' && (
-					<div>
-						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-							<div>
-								<h3 style={{ fontSize: 16, fontWeight: 700, color: '#ffffff' }}>Side-by-Side Document Intelligence &amp; Duplicate Detector</h3>
-								<div style={{ fontSize: 12, color: '#94a3b8' }}>Processed via <code>ingestion.pipe</code> with Token Confidence &amp; Duplicate Invoicing Alerts</div>
+					<div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 20 }}>
+						<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+							<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+								<div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>Document Ingestion &amp; Duplicate Detector</div>
+								<span style={{ fontFamily: 'monospace', fontSize: 11, color: '#475569', background: '#f1f5f9', border: '1px solid #e2e8f0', padding: '3px 8px', borderRadius: 4 }}>ingestion.pipe</span>
 							</div>
-							<span style={{ fontSize: 12, color: '#38bdf8' }}>{docs.length} Documents Indexed</span>
+
+							<div style={{ border: '2px dashed #cbd5e1', borderRadius: 8, padding: 24, textAlign: 'center', background: '#f8fafc', cursor: 'pointer', marginBottom: 16 }}>
+								<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 6px' }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="17" x2="12" y2="15"></line></svg>
+								<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a' }}>Upload Invoices, Estimates &amp; Loss Proofs</div>
+								<div style={{ fontSize: 11.5, color: '#64748b' }}>Automated PII Strip • Token Confidence • Qdrant Indexing</div>
+							</div>
+
+							<div style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: 8 }}>Indexed Document Repository:</div>
+							<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+								{docs.map((d, i) => (
+									<div
+										key={i}
+										onClick={() => setSelectedDoc(d)}
+										style={{
+											padding: 12,
+											background: selectedDoc?.filename === d.filename ? '#f1f5f9' : '#f8fafc',
+											border: selectedDoc?.filename === d.filename ? '1px solid #0f172a' : '1px solid #e2e8f0',
+											borderRadius: 8,
+											cursor: 'pointer',
+										}}
+									>
+										<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+											<div style={{ fontWeight: 700, fontSize: 13, color: '#0f172a' }}>{d.filename}</div>
+											{d.duplicate_matches && <span style={{ fontSize: 10, fontWeight: 700, background: '#fef2f2', color: '#b91c1c', border: '1px solid #fecaca', padding: '2px 6px', borderRadius: 4 }}>⚠️ DUPLICATE ALERT</span>}
+										</div>
+										<div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>{d.doc_type} • Confidence: {d.field_confidence.overall}%</div>
+									</div>
+								))}
+							</div>
 						</div>
 
-						{/* Split View: Documents List on Left, Document Preview + Confidence on Right */}
-						<div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 20 }}>
-							{/* Document List */}
-							<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-								{docs.map((d, i) => {
-									const isSelected = selectedDoc?.filename === d.filename;
-									const isDup = d.duplicate_matches && d.duplicate_matches.length > 0;
-									return (
-										<div
-											key={i}
-											onClick={() => setSelectedDoc(d)}
-											style={{
-												padding: 14,
-												backgroundColor: isSelected ? '#1e293b' : '#0f172a',
-												border: isSelected ? '1px solid #3b82f6' : '1px solid #1e293b',
-												borderRadius: 8,
-												cursor: 'pointer',
-												transition: 'all 0.15s ease',
-											}}
-										>
-											<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-												<div>
-													<div style={{ fontWeight: 700, fontSize: 13, color: '#ffffff' }}>{d.filename}</div>
-													<div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>{d.doc_type}</div>
-												</div>
-												{isDup && (
-													<span style={{ fontSize: 10, fontWeight: 700, backgroundColor: '#450a0a', color: '#f87171', border: '1px solid #991b1b', padding: '2px 6px', borderRadius: 4 }}>
-														DUPLICATE ALERT
-													</span>
-												)}
-											</div>
+						{/* Detail */}
+						{selectedDoc && (
+							<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+								<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>{selectedDoc.filename}</div>
+								<div style={{ fontSize: 11.5, color: '#64748b', marginBottom: 14 }}>Policy #{selectedDoc.policy_number} • {selectedDoc.claimant}</div>
 
-											<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-												<span style={{ fontSize: 11, color: '#38bdf8' }}>Overall Confidence: {d.field_confidence.overall}%</span>
-												<span style={{ fontSize: 10, color: '#64748b' }}>{(d.size_bytes / 1024).toFixed(0)} KB • {d.timestamp}</span>
-											</div>
-										</div>
-									);
-								})}
-							</div>
-
-							{/* Side-by-Side Detail View */}
-							{selectedDoc ? (
-								<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 18 }}>
-									<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-										<div>
-											<div style={{ fontSize: 15, fontWeight: 700, color: '#ffffff' }}>{selectedDoc.filename}</div>
-											<div style={{ fontSize: 11, color: '#94a3b8' }}>Policy: {selectedDoc.policy_number} | Claimant: {selectedDoc.claimant}</div>
-										</div>
-										<span style={{ fontSize: 11, backgroundColor: '#052e16', color: '#4ade80', padding: '3px 8px', borderRadius: 4 }}>
-											{selectedDoc.status}
-										</span>
+								{selectedDoc.duplicate_matches && (
+									<div style={{ padding: 10, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, marginBottom: 14, fontSize: 11.5, color: '#b91c1c' }}>
+										<strong>⚠️ Duplicate Invoice Warning:</strong> Matches existing document <strong>{selectedDoc.duplicate_matches[0].matched_filename}</strong> on same policy ({selectedDoc.duplicate_matches[0].amount}).
 									</div>
+								)}
 
-									{/* Duplicate match alert banner if applicable */}
-									{selectedDoc.duplicate_matches && selectedDoc.duplicate_matches.length > 0 && (
-										<div style={{ padding: 10, backgroundColor: '#450a0a', border: '1px solid #991b1b', borderRadius: 6, marginBottom: 12, fontSize: 11.5 }}>
-											<div style={{ fontWeight: 700, color: '#f87171', marginBottom: 2 }}>⚠️ Duplicate Invoice Detector Warning:</div>
-											<div style={{ color: '#fca5a5' }}>
-												Matches existing document <strong>{selectedDoc.duplicate_matches[0].matched_filename}</strong> on same policy with identical amount (<strong>{selectedDoc.duplicate_matches[0].amount}</strong>).
+								<div style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: 8 }}>Extracted Line Items (OCR):</div>
+								<div style={{ border: '1px solid #e2e8f0', borderRadius: 8, overflow: 'hidden', fontSize: 12 }}>
+									{selectedDoc.line_items.map((li, idx) => (
+										<div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderBottom: '1px solid #f1f5f9' }}>
+											<div>
+												<div style={{ fontWeight: 600, color: '#0f172a' }}>{li.item}</div>
+												<div style={{ fontSize: 10.5, color: '#64748b' }}>{li.qty} • {li.rate}</div>
 											</div>
-											<div style={{ fontSize: 10.5, color: '#f87171', marginTop: 4 }}>
-												Risk Factor: {selectedDoc.duplicate_matches[0].risk_impact}
-											</div>
+											<div style={{ fontWeight: 700, color: '#0f172a' }}>{li.total}</div>
 										</div>
-									)}
-
-									{/* Field Confidence Score Matrix Chips */}
-									<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 14 }}>
-										<div style={{ padding: 8, backgroundColor: '#090d16', borderRadius: 6 }}>
-											<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase' }}>Amount (${selectedDoc.extracted_amount})</div>
-											<div style={{ fontSize: 13, fontWeight: 700, color: '#4ade80' }}>{selectedDoc.field_confidence.amount}% Conf.</div>
-										</div>
-										<div style={{ padding: 8, backgroundColor: '#090d16', borderRadius: 6 }}>
-											<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase' }}>Policy # Match</div>
-											<div style={{ fontSize: 13, fontWeight: 700, color: '#4ade80' }}>{selectedDoc.field_confidence.policy_number}% Conf.</div>
-										</div>
-										<div style={{ padding: 8, backgroundColor: '#090d16', borderRadius: 6 }}>
-											<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase' }}>Classification</div>
-											<div style={{ fontSize: 13, fontWeight: 700, color: '#38bdf8' }}>{selectedDoc.field_confidence.classification}% Conf.</div>
-										</div>
-									</div>
-
-									{/* Extracted line items from document */}
-									<div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginBottom: 6 }}>
-										Extracted Scope Line Items (OCR + PII Anonymized):
-									</div>
-									<div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 180, overflowY: 'auto' }}>
-										{selectedDoc.line_items.map((li, idx) => (
-											<div key={idx} style={{ padding: '8px 10px', backgroundColor: '#090d16', borderRadius: 6, fontSize: 11.5, display: 'flex', justifyContent: 'space-between' }}>
-												<div>
-													<div style={{ fontWeight: 600, color: '#ffffff' }}>{li.item}</div>
-													<div style={{ fontSize: 10, color: '#64748b' }}>{li.qty} • {li.rate} • {li.audit}</div>
-												</div>
-												<div style={{ textAlign: 'right' }}>
-													<span style={{ fontWeight: 700, color: '#38bdf8' }}>{li.total}</span>
-													{li.confidence && <div style={{ fontSize: 9.5, color: '#4ade80' }}>{li.confidence}% Token Conf.</div>}
-												</div>
-											</div>
-										))}
-									</div>
+									))}
 								</div>
-							) : null}
-						</div>
+							</div>
+						)}
 					</div>
 				)}
 
-				{/* 5. REPAIR COST BENCHMARK EXPLORER (benchmark_explorer.pipe) */}
+				{/* ── TAB 4: COST BENCHMARKS ── */}
 				{activeTab === 'benchmarks' && (
-					<div>
-						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, borderBottom: '1px solid #e2e8f0', paddingBottom: 14 }}>
 							<div>
-								<h3 style={{ fontSize: 16, fontWeight: 700, color: '#ffffff' }}>Regional Repair Cost Benchmark Explorer</h3>
-								<div style={{ fontSize: 12, color: '#94a3b8' }}>Powered by <code>benchmark_explorer.pipe</code> and Regional Xactimate Cost Databases</div>
+								<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>Regional Repair Cost Benchmark Explorer</div>
+								<div style={{ fontSize: 12, color: '#64748b' }}>Powered by <code>benchmark_explorer.pipe</code> and Regional Xactimate Index</div>
 							</div>
-							<div style={{ display: 'flex', gap: 8 }}>
-								{['TX-Dallas', 'FL-Miami', 'CA-Los Angeles', 'IL-Chicago', 'GA-Atlanta'].map(reg => (
+							<div style={{ display: 'flex', gap: 6 }}>
+								{['TX-Dallas', 'FL-Miami', 'CA-Los Angeles', 'IL-Chicago', 'GA-Atlanta'].map(r => (
 									<button
-										key={reg}
-										onClick={() => setSelectedRegion(reg)}
+										key={r}
+										onClick={() => setSelectedRegion(r)}
 										style={{
 											padding: '6px 12px',
 											borderRadius: 6,
 											border: 'none',
-											fontSize: 11.5,
-											fontWeight: selectedRegion === reg ? 700 : 400,
-											backgroundColor: selectedRegion === reg ? '#2563eb' : '#0f172a',
-											color: '#ffffff',
+											fontSize: 12,
+											fontWeight: selectedRegion === r ? 700 : 500,
+											background: selectedRegion === r ? '#0f172a' : '#f1f5f9',
+											color: selectedRegion === r ? '#ffffff' : '#475569',
 											cursor: 'pointer',
 										}}
 									>
-										{reg}
+										{r}
 									</button>
 								))}
 							</div>
 						</div>
 
-						<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, overflow: 'hidden' }}>
-							<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-								<thead>
-									<tr style={{ backgroundColor: '#020617', borderBottom: '1px solid #1e293b', color: '#94a3b8', textAlign: 'left' }}>
-										<th style={{ padding: '10px 14px' }}>Region</th>
-										<th style={{ padding: '10px 14px' }}>Trade Category</th>
-										<th style={{ padding: '10px 14px' }}>Benchmark Average</th>
-										<th style={{ padding: '10px 14px' }}>Allowable Range</th>
-										<th style={{ padding: '10px 14px' }}>Standard Deviation</th>
-										<th style={{ padding: '10px 14px' }}>Labor Index</th>
+						<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12.5 }}>
+							<thead>
+								<tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#64748b', textAlign: 'left' }}>
+									<th style={{ padding: '10px 14px' }}>Region</th>
+									<th style={{ padding: '10px 14px' }}>Trade Category</th>
+									<th style={{ padding: '10px 14px' }}>Benchmark Average</th>
+									<th style={{ padding: '10px 14px' }}>Allowable Range</th>
+									<th style={{ padding: '10px 14px' }}>Standard Deviation</th>
+									<th style={{ padding: '10px 14px' }}>Labor Index</th>
+								</tr>
+							</thead>
+							<tbody>
+								{REGIONAL_BENCHMARKS.filter(b => b.region === selectedRegion).map((bm, idx) => (
+									<tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+										<td style={{ padding: '12px 14px', fontWeight: 700, color: '#0f172a' }}>{bm.name}</td>
+										<td style={{ padding: '12px 14px', color: '#475569' }}>{bm.category}</td>
+										<td style={{ padding: '12px 14px', fontWeight: 700, color: '#0f172a' }}>{bm.avg}</td>
+										<td style={{ padding: '12px 14px', color: '#475569' }}>{bm.range}</td>
+										<td style={{ padding: '12px 14px', color: '#64748b' }}>{bm.variance}</td>
+										<td style={{ padding: '12px 14px' }}>{bm.labor_idx}x</td>
 									</tr>
-								</thead>
-								<tbody>
-									{REGIONAL_BENCHMARKS.filter(b => b.region === selectedRegion).map((bm, i) => (
-										<tr key={i} style={{ borderBottom: '1px solid #1e293b' }}>
-											<td style={{ padding: '12px 14px', fontWeight: 700, color: '#ffffff' }}>{bm.name}</td>
-											<td style={{ padding: '12px 14px', color: '#38bdf8' }}>{bm.category}</td>
-											<td style={{ padding: '12px 14px', fontWeight: 700, color: '#4ade80' }}>{bm.avg}</td>
-											<td style={{ padding: '12px 14px', color: '#cbd5e1' }}>{bm.range}</td>
-											<td style={{ padding: '12px 14px', color: '#f59e0b' }}>{bm.variance}</td>
-											<td style={{ padding: '12px 14px' }}>{bm.labor_idx}x</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
+								))}
+							</tbody>
+						</table>
 					</div>
 				)}
 
-				{/* 6. INSPECTION SCHEDULING & VOICE TELEPHONY (inspection_scheduling.pipe) */}
+				{/* ── TAB 5: VOICE SCHEDULING ── */}
 				{activeTab === 'scheduling' && (
 					<div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 20 }}>
-						{/* Schedule Call Form */}
-						<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 20 }}>
-							<h3 style={{ fontSize: 15, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Automated Field Inspection Scheduling</h3>
-							<p style={{ fontSize: 11.5, color: '#94a3b8', marginBottom: 16 }}>
-								Executes candidate slot selection and simulated outbound AI voice telephony confirmation via <code>inspection_scheduling.pipe</code>.
-							</p>
+						<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+							<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>Automated Field Inspection Scheduling</div>
+							<div style={{ fontSize: 12, color: '#64748b', marginBottom: 16 }}>Executes AI voice telephony confirmation via <code>inspection_scheduling.pipe</code>.</div>
 
 							<div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 								<div>
-									<label style={{ fontSize: 10.5, color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>Claim ID</label>
-									<input
-										type="text"
-										value={inspClaimId}
-										onChange={e => setInspClaimId(e.target.value)}
-										style={{ width: '100%', padding: '8px 10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 12.5 }}
-									/>
+									<label style={{ display: 'block', fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>Claim ID</label>
+									<input type="text" value={inspClaimId} onChange={e => setInspClaimId(e.target.value)} style={{ width: '100%', padding: '9px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13, boxSizing: 'border-box' }} />
 								</div>
 								<div>
-									<label style={{ fontSize: 10.5, color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>Policyholder Phone</label>
-									<input
-										type="text"
-										value={inspPhone}
-										onChange={e => setInspPhone(e.target.value)}
-										style={{ width: '100%', padding: '8px 10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 12.5 }}
-									/>
+									<label style={{ display: 'block', fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>Policyholder Phone</label>
+									<input type="text" value={inspPhone} onChange={e => setInspPhone(e.target.value)} style={{ width: '100%', padding: '9px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13, boxSizing: 'border-box' }} />
 								</div>
 								<div>
-									<label style={{ fontSize: 10.5, color: '#94a3b8', textTransform: 'uppercase', fontWeight: 600 }}>Proposed Slot</label>
-									<input
-										type="text"
-										value={inspDate}
-										onChange={e => setInspDate(e.target.value)}
-										style={{ width: '100%', padding: '8px 10px', backgroundColor: '#090d16', border: '1px solid #334155', borderRadius: 6, color: '#ffffff', fontSize: 12.5 }}
-									/>
+									<label style={{ display: 'block', fontSize: 11, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4 }}>Proposed Slot</label>
+									<input type="text" value={inspDate} onChange={e => setInspDate(e.target.value)} style={{ width: '100%', padding: '9px 12px', border: '1px solid #cbd5e1', borderRadius: 6, fontSize: 13, boxSizing: 'border-box' }} />
 								</div>
-
 								<button
 									onClick={handleTriggerScheduleVoiceCall}
 									disabled={isCalling}
-									style={{
-										padding: '10px',
-										borderRadius: 6,
-										border: 'none',
-										backgroundColor: isCalling ? '#475569' : '#2563eb',
-										color: '#ffffff',
-										fontWeight: 700,
-										fontSize: 12.5,
-										cursor: isCalling ? 'not-allowed' : 'pointer',
-										marginTop: 6,
-									}}
+									style={{ backgroundColor: '#0f172a', color: '#ffffff', border: 'none', borderRadius: 6, padding: '11px', fontSize: 13, fontWeight: 700, cursor: isCalling ? 'not-allowed' : 'pointer' }}
 								>
 									{isCalling ? 'Placing AI Telephony Confirmation Call...' : 'Trigger Automated Voice Confirmation Call'}
 								</button>
 							</div>
 						</div>
 
-						{/* Confirmed Appointments & Transcript */}
-						<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 20 }}>
-							<h3 style={{ fontSize: 15, fontWeight: 700, color: '#ffffff', marginBottom: 12 }}>Confirmed Field Inspections &amp; Audio Transcripts</h3>
-
+						<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+							<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 12 }}>Confirmed Field Inspections &amp; Transcripts</div>
 							{activeCallTranscript && (
-								<div style={{ padding: 12, backgroundColor: '#052e16', border: '1px solid #166534', borderRadius: 6, marginBottom: 14 }}>
-									<div style={{ fontSize: 11, fontWeight: 700, color: '#4ade80', marginBottom: 6 }}>📞 LIVE CALL COMPLETED &amp; TRANSCRIBED:</div>
-									<pre style={{ fontSize: 11, color: '#dcfce7', whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
-										{activeCallTranscript}
-									</pre>
+								<div style={{ padding: 12, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, marginBottom: 14, fontSize: 11.5, color: '#0f172a' }}>
+									<strong>📞 LIVE CALL COMPLETED &amp; TRANSCRIBED:</strong>
+									<pre style={{ margin: '6px 0 0', whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{activeCallTranscript}</pre>
 								</div>
 							)}
-
 							<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
 								{inspections.map(insp => (
-									<div key={insp.id} style={{ padding: 12, backgroundColor: '#090d16', border: '1px solid #1e293b', borderRadius: 6 }}>
-										<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-											<span style={{ fontWeight: 700, fontSize: 12.5, color: '#ffffff' }}>{insp.id} • {insp.claim_id}</span>
-											<span style={{ fontSize: 10, fontWeight: 700, backgroundColor: '#052e16', color: '#4ade80', padding: '2px 6px', borderRadius: 4 }}>{insp.status}</span>
+									<div key={insp.id} style={{ padding: 12, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6 }}>
+										<div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: 13, color: '#0f172a' }}>
+											<span>{insp.id} • {insp.claim_id}</span>
+											<span style={{ fontSize: 10.5, color: '#0f172a', background: '#f1f5f9', border: '1px solid #e2e8f0', padding: '2px 6px', borderRadius: 4 }}>{insp.status}</span>
 										</div>
-										<div style={{ fontSize: 11, color: '#94a3b8', marginTop: 4 }}>
-											{insp.inspector} — Scheduled: <strong>{insp.scheduled_date}</strong>
-										</div>
+										<div style={{ fontSize: 11.5, color: '#64748b', marginTop: 3 }}>{insp.inspector} — Scheduled: <strong>{insp.scheduled_date}</strong></div>
 									</div>
 								))}
 							</div>
@@ -1967,161 +1355,120 @@ export const App: React.FC = () => {
 					</div>
 				)}
 
-				{/* 7. ADJUSTER WORKLOAD QUEUE (adjuster_queue.pipe) */}
+				{/* ── TAB 6: WORKLOAD QUEUE ── */}
 				{activeTab === 'queue' && (
-					<div>
-						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-							<div>
-								<h3 style={{ fontSize: 16, fontWeight: 700, color: '#ffffff' }}>Adjuster Priority Workload Queue</h3>
-								<div style={{ fontSize: 12, color: '#94a3b8' }}>
-									Ranked by Priority Score = (Age in Days &times; 1.5) + (Amount / 5000) + (SIU Risk &times; 0.8)
-								</div>
-							</div>
-							<span style={{ fontSize: 12, color: '#38bdf8' }}>{prioritizedQueue.length} Priority Items</span>
-						</div>
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>Adjuster Priority Workload Queue</div>
+						<div style={{ fontSize: 12, color: '#64748b', marginBottom: 16 }}>Ranked by Priority Score = (Age in Days × 1.5) + (Amount / 5000) + (SIU Risk × 0.8)</div>
 
-						<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, overflow: 'hidden' }}>
-							<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-								<thead>
-									<tr style={{ backgroundColor: '#020617', borderBottom: '1px solid #1e293b', color: '#94a3b8', textAlign: 'left' }}>
-										<th style={{ padding: '10px 14px' }}>Rank &amp; Score</th>
-										<th style={{ padding: '10px 14px' }}>Claim ID</th>
-										<th style={{ padding: '10px 14px' }}>Claimant</th>
-										<th style={{ padding: '10px 14px' }}>Peril</th>
-										<th style={{ padding: '10px 14px' }}>Exposure Amount</th>
-										<th style={{ padding: '10px 14px' }}>Risk Score</th>
-										<th style={{ padding: '10px 14px' }}>Age</th>
-										<th style={{ padding: '10px 14px' }}>Action</th>
+						<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12.5 }}>
+							<thead>
+								<tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#64748b', textAlign: 'left' }}>
+									<th style={{ padding: '10px 14px' }}>Rank &amp; Score</th>
+									<th style={{ padding: '10px 14px' }}>Claim ID</th>
+									<th style={{ padding: '10px 14px' }}>Claimant</th>
+									<th style={{ padding: '10px 14px' }}>Peril</th>
+									<th style={{ padding: '10px 14px' }}>Exposure</th>
+									<th style={{ padding: '10px 14px' }}>Risk Score</th>
+									<th style={{ padding: '10px 14px' }}>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{prioritizedQueue.map((c, i) => (
+									<tr key={c.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+										<td style={{ padding: '12px 14px' }}>
+											<span style={{ padding: '3px 8px', borderRadius: 4, fontSize: 11, fontWeight: 800, background: c.priority_badge === 'CRITICAL' || c.priority_badge === 'HIGH' ? '#fef2f2' : '#f1f5f9', color: c.priority_badge === 'CRITICAL' || c.priority_badge === 'HIGH' ? '#b91c1c' : '#475569', border: `1px solid ${c.priority_badge === 'CRITICAL' || c.priority_badge === 'HIGH' ? '#fecaca' : '#e2e8f0'}` }}>
+												#{i + 1} {c.priority_badge} ({c.priority_score})
+											</span>
+										</td>
+										<td style={{ padding: '12px 14px', fontWeight: 700, color: '#0f172a' }}>{c.id}</td>
+										<td style={{ padding: '12px 14px' }}>{c.claimant}</td>
+										<td style={{ padding: '12px 14px', color: '#64748b' }}>{c.peril}</td>
+										<td style={{ padding: '12px 14px', fontWeight: 700, color: '#0f172a' }}>${c.amount.toLocaleString()}</td>
+										<td style={{ padding: '12px 14px' }}>
+											<span style={{ color: c.fraud_risk_score >= 50 ? '#b91c1c' : '#0f172a', fontWeight: c.fraud_risk_score >= 50 ? 700 : 500 }}>
+												{c.fraud_risk_score}%
+											</span>
+										</td>
+										<td style={{ padding: '12px 14px' }}>
+											<button
+												onClick={() => { setSelectedClaim(c); setActiveTab('assessment'); }}
+												style={{ padding: '4px 10px', background: '#0f172a', color: '#ffffff', border: 'none', borderRadius: 4, fontSize: 11.5, cursor: 'pointer' }}
+											>
+												Open Audit
+											</button>
+										</td>
 									</tr>
-								</thead>
-								<tbody>
-									{prioritizedQueue.map((c, i) => (
-										<tr key={c.id} style={{ borderBottom: '1px solid #1e293b' }}>
-											<td style={{ padding: '12px 14px' }}>
-												<span style={{
-													padding: '3px 8px',
-													borderRadius: 4,
-													fontSize: 11,
-													fontWeight: 800,
-													backgroundColor: c.priority_badge === 'CRITICAL' ? '#450a0a' : c.priority_badge === 'HIGH' ? '#431407' : '#172554',
-													color: c.priority_badge === 'CRITICAL' ? '#f87171' : c.priority_badge === 'HIGH' ? '#fb923c' : '#60a5fa',
-												}}>
-													#{i + 1} {c.priority_badge} ({c.priority_score})
-												</span>
-											</td>
-											<td style={{ padding: '12px 14px', fontWeight: 700, color: '#ffffff' }}>{c.id}</td>
-											<td style={{ padding: '12px 14px' }}>{c.claimant}</td>
-											<td style={{ padding: '12px 14px', color: '#94a3b8' }}>{c.peril}</td>
-											<td style={{ padding: '12px 14px', fontWeight: 700, color: '#38bdf8' }}>${c.amount.toLocaleString()}</td>
-											<td style={{ padding: '12px 14px' }}>{c.fraud_risk_score}%</td>
-											<td style={{ padding: '12px 14px', color: '#f59e0b' }}>{c.created_at_days || 2}d</td>
-											<td style={{ padding: '12px 14px' }}>
-												<button
-													onClick={() => {
-														setSelectedClaim(c);
-														setActiveTab('dashboard');
-													}}
-													style={{ padding: '4px 10px', backgroundColor: '#2563eb', color: '#ffffff', border: 'none', borderRadius: 4, fontSize: 11, cursor: 'pointer' }}
-												>
-													Open Desk Audit
-												</button>
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				)}
-
-				{/* 8. MODEL DRIFT & FEEDBACK LOOP (feedback_loop.pipe) */}
-				{activeTab === 'drift' && (
-					<div>
-						<h3 style={{ fontSize: 16, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Model Drift &amp; Retraining Feedback Monitor</h3>
-						<p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 18 }}>
-							Monitors variance between original AI decisions and final adjuster sign-offs via <code>feedback_loop.pipe</code>.
-						</p>
-
-						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 20 }}>
-							<div style={{ padding: 16, backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8 }}>
-								<div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase' }}>Rolling Precision</div>
-								<div style={{ fontSize: 24, fontWeight: 700, color: '#22c55e', marginTop: 4 }}>96.8%</div>
-							</div>
-							<div style={{ padding: 16, backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8 }}>
-								<div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase' }}>Human Overrides</div>
-								<div style={{ fontSize: 24, fontWeight: 700, color: '#38bdf8', marginTop: 4 }}>14 Logged</div>
-							</div>
-							<div style={{ padding: 16, backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8 }}>
-								<div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase' }}>Mean Dollar Variance</div>
-								<div style={{ fontSize: 24, fontWeight: 700, color: '#f59e0b', marginTop: 4 }}>$240 (±2.8%)</div>
-							</div>
-							<div style={{ padding: 16, backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8 }}>
-								<div style={{ fontSize: 11, color: '#94a3b8', textTransform: 'uppercase' }}>Model Version</div>
-								<div style={{ fontSize: 24, fontWeight: 700, color: '#a855f7', marginTop: 4 }}>GPT-4 Turbo</div>
-							</div>
-						</div>
-
-						{/* Audit Trail List */}
-						<div style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 18 }}>
-							<h4 style={{ fontSize: 14, fontWeight: 700, color: '#ffffff', marginBottom: 12 }}>Immutable Field-Level Audit Trail (Roadmap Section 5.2)</h4>
-							<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-								{auditTrail.map(at => (
-									<div key={at.id} style={{ padding: 10, backgroundColor: '#090d16', border: '1px solid #1e293b', borderRadius: 6, fontSize: 11.5 }}>
-										<div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
-											<span><strong>{at.id}</strong> • Claim {at.claim_id} • Field: <code style={{ color: '#38bdf8' }}>{at.field_name}</code></span>
-											<span>{at.timestamp}</span>
-										</div>
-										<div style={{ marginTop: 4, color: '#ffffff' }}>
-											Changed: <span style={{ color: '#f87171' }}>{at.old_value}</span> &rarr; <span style={{ color: '#4ade80' }}>{at.new_value}</span>
-										</div>
-										<div style={{ fontSize: 10.5, color: '#64748b', marginTop: 2 }}>
-											User: {at.user} | Reason: {at.reason}
-										</div>
-									</div>
 								))}
+							</tbody>
+						</table>
+					</div>
+				)}
+
+				{/* ── TAB 7: MODEL DRIFT ── */}
+				{activeTab === 'drift' && (
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>Model Drift &amp; Retraining Feedback Monitor</div>
+						<div style={{ fontSize: 12, color: '#64748b', marginBottom: 16 }}>Monitors variance between original AI decisions and final adjuster sign-offs via <code>feedback_loop.pipe</code>.</div>
+
+						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+							<div style={{ padding: 16, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+								<div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Rolling Precision</div>
+								<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', marginTop: 4 }}>96.8%</div>
+							</div>
+							<div style={{ padding: 16, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+								<div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Human Overrides</div>
+								<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', marginTop: 4 }}>14 Logged</div>
+							</div>
+							<div style={{ padding: 16, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+								<div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Drift Status</div>
+								<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', marginTop: 4 }}>NORMAL</div>
+							</div>
+							<div style={{ padding: 16, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+								<div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 700 }}>Retraining Trigger</div>
+								<div style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', marginTop: 4 }}>&gt; 5.0% Var</div>
 							</div>
 						</div>
 					</div>
 				)}
 
-				{/* 9. PUBLIC STATUS TRACKER (claim_status.pipe) */}
+				{/* ── TAB 8: PUBLIC STATUS TRACKER ── */}
 				{activeTab === 'public_tracker' && (
-					<div style={{ maxWidth: 650, margin: '0 auto', backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 24 }}>
+					<div style={{ maxWidth: 650, margin: '0 auto', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
 						<div style={{ textAlign: 'center', marginBottom: 20 }}>
-							<div style={{ fontSize: 18, fontWeight: 800, color: '#ffffff' }}>ClaimPilot Policyholder Portal</div>
-							<div style={{ fontSize: 12, color: '#94a3b8' }}>Sanitized External Status Tracking (claim_status.pipe)</div>
+							<div style={{ fontSize: 18, fontWeight: 800, color: '#0f172a' }}>ClaimVertex Policyholder Portal</div>
+							<div style={{ fontSize: 12, color: '#64748b' }}>Sanitized External Status Tracking (claim_status.pipe)</div>
 						</div>
 
-						<div style={{ padding: 16, backgroundColor: '#090d16', borderRadius: 8, marginBottom: 20 }}>
-							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-								<span style={{ fontSize: 12, color: '#94a3b8' }}>Claim Number:</span>
-								<span style={{ fontSize: 12, fontWeight: 700, color: '#ffffff' }}>CP-2026-88412</span>
+						<div style={{ padding: 16, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, marginBottom: 20 }}>
+							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 13 }}>
+								<span style={{ color: '#64748b' }}>Claim Number:</span>
+								<strong style={{ color: '#0f172a' }}>CP-2026-88412</strong>
 							</div>
-							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-								<span style={{ fontSize: 12, color: '#94a3b8' }}>Policyholder:</span>
-								<span style={{ fontSize: 12, fontWeight: 700, color: '#ffffff' }}>Jane Doe (POL-***821)</span>
+							<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 13 }}>
+								<span style={{ color: '#64748b' }}>Policyholder:</span>
+								<strong style={{ color: '#0f172a' }}>Jane Doe (POL-***821)</strong>
 							</div>
-							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<span style={{ fontSize: 12, color: '#94a3b8' }}>Current Stage:</span>
-								<span style={{ fontSize: 12, fontWeight: 700, color: '#4ade80' }}>Disbursement Authorized ($6,436.00)</span>
+							<div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
+								<span style={{ color: '#64748b' }}>Current Stage:</span>
+								<strong style={{ color: '#0f172a' }}>Disbursement Authorized ($6,436.00)</strong>
 							</div>
 						</div>
 
-						{/* 4-Step Progress Tracker */}
 						<div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 							{[
-								{ title: '1. First Notice of Loss Intake', desc: 'Received and verified', state: 'complete' },
-								{ title: '2. Evidence & Invoice Processing', desc: 'Plumber invoice parsed & PII protected', state: 'complete' },
-								{ title: '3. Scope & Damage Review', desc: 'IICRC drying & materials verified', state: 'complete' },
-								{ title: '4. Electronic Payout Disbursement', desc: 'Authorized for direct ACH deposit', state: 'complete' },
+								{ title: '1. First Notice of Loss Intake', desc: 'Received and verified' },
+								{ title: '2. Evidence & Invoice Processing', desc: 'Plumber invoice parsed & PII protected' },
+								{ title: '3. Scope & Damage Review', desc: 'IICRC drying & materials verified' },
+								{ title: '4. Electronic Payout Disbursement', desc: 'Authorized for direct ACH deposit' },
 							].map((st, idx) => (
-								<div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, backgroundColor: '#090d16', borderRadius: 6 }}>
-									<div style={{ width: 24, height: 24, borderRadius: '50%', backgroundColor: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#ffffff', fontWeight: 700 }}>
+								<div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6 }}>
+									<div style={{ width: 24, height: 24, borderRadius: '50%', backgroundColor: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#ffffff', fontWeight: 700 }}>
 										✓
 									</div>
 									<div>
-										<div style={{ fontSize: 12.5, fontWeight: 700, color: '#ffffff' }}>{st.title}</div>
-										<div style={{ fontSize: 11, color: '#94a3b8' }}>{st.desc}</div>
+										<div style={{ fontSize: 12.5, fontWeight: 700, color: '#0f172a' }}>{st.title}</div>
+										<div style={{ fontSize: 11, color: '#64748b' }}>{st.desc}</div>
 									</div>
 								</div>
 							))}
@@ -2129,101 +1476,107 @@ export const App: React.FC = () => {
 					</div>
 				)}
 
-				{/* 10. STP THRESHOLD SETTINGS */}
+				{/* ── TAB 9: STP SETTINGS ── */}
 				{activeTab === 'thresholds' && (
-					<div style={{ maxWidth: 650, margin: '0 auto', backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 10, padding: 24 }}>
-						<h3 style={{ fontSize: 16, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>Configurable Auto-Approval (STP) Thresholds</h3>
-						<p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 20 }}>
-							Adjust straight-through processing limits dynamically without code deployment (Roadmap Section 5.3).
-						</p>
+					<div style={{ maxWidth: 650, margin: '0 auto', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Configurable Auto-Approval (STP) Thresholds</div>
+						<div style={{ fontSize: 12, color: '#64748b', marginBottom: 20 }}>Adjust straight-through processing limits dynamically without code deployment.</div>
 
 						<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 							<div>
-								<label style={{ fontSize: 12, color: '#94a3b8', display: 'block', marginBottom: 6 }}>
-									Max Automated Payout Amount Limit: <strong style={{ color: '#38bdf8' }}>${globalMaxSTP.toLocaleString()}</strong>
+								<label style={{ fontSize: 12, color: '#475569', display: 'block', marginBottom: 6, fontWeight: 600 }}>
+									Max Automated Payout Amount Limit: <strong style={{ color: '#0f172a' }}>${globalMaxSTP.toLocaleString()}</strong>
 								</label>
-								<input
-									type="range"
-									min="1000"
-									max="50000"
-									step="1000"
-									value={globalMaxSTP}
-									onChange={e => setGlobalMaxSTP(Number(e.target.value))}
-									style={{ width: '100%' }}
-								/>
+								<input type="range" min="1000" max="50000" step="1000" value={globalMaxSTP} onChange={e => setGlobalMaxSTP(Number(e.target.value))} style={{ width: '100%', accentColor: '#0f172a' }} />
 							</div>
 
 							<div>
-								<label style={{ fontSize: 12, color: '#94a3b8', display: 'block', marginBottom: 6 }}>
-									Max Permissible SIU Fraud Risk Score: <strong style={{ color: '#f59e0b' }}>{globalMaxRisk}%</strong>
+								<label style={{ fontSize: 12, color: '#475569', display: 'block', marginBottom: 6, fontWeight: 600 }}>
+									Max Permissible SIU Fraud Risk Score: <strong style={{ color: '#b91c1c' }}>{globalMaxRisk}% (Warning Threshold)</strong>
 								</label>
-								<input
-									type="range"
-									min="10"
-									max="80"
-									step="5"
-									value={globalMaxRisk}
-									onChange={e => setGlobalMaxRisk(Number(e.target.value))}
-									style={{ width: '100%' }}
-								/>
+								<input type="range" min="10" max="80" step="5" value={globalMaxRisk} onChange={e => setGlobalMaxRisk(Number(e.target.value))} style={{ width: '100%', accentColor: '#b91c1c' }} />
 							</div>
 
-							<div style={{ padding: 12, backgroundColor: '#090d16', borderRadius: 6, fontSize: 12, color: '#cbd5e1' }}>
-								Current Rule: Claims under ${globalMaxSTP.toLocaleString()} with Fraud Risk Score under {globalMaxRisk}% automatically receive <strong>AUTOMATED APPROVAL PASSED</strong>. High-severity fire and claims above threshold trigger supervisory escalation.
+							<div style={{ padding: 12, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, fontSize: 12, color: '#475569' }}>
+								Current Rule: Claims under <strong>${globalMaxSTP.toLocaleString()}</strong> with Fraud Risk Score under <strong>{globalMaxRisk}%</strong> automatically receive <strong>AUTOMATED APPROVAL PASSED</strong>.
 							</div>
 						</div>
 					</div>
 				)}
 
-				{/* 11. PIPELINES TAB (All 9 DAGs) */}
+				{/* ── TAB 10: 9 AI PIPELINES ── */}
 				{activeTab === 'pipelines' && (
 					<div>
-						<h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#ffffff' }}>ClaimPilot AI Pipelines (9 Roadmap .pipe DAGs)</h3>
+						<h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#0f172a' }}>ClaimVertex AI Pipelines (9 Roadmap .pipe DAGs)</h3>
 						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
 							{[
-								{ name: '1. ingestion.pipe', desc: 'Webhook &rarr; Parse &rarr; Anonymize Text &rarr; Chunker &rarr; OpenAI Embeddings &rarr; Qdrant Vector DB', comps: 6, mode: 'Ingestion' },
-								{ name: '2. claim_analysis.pipe', desc: 'Webhook &rarr; Parse &rarr; GPT-4 Turbo Reasoning &rarr; Response Answers', comps: 4, mode: 'Analysis' },
-								{ name: '3. claim_chat.pipe', desc: 'Chat &rarr; Embeddings &rarr; Qdrant ANN Search &rarr; Prompt Engine &rarr; LLM Synthesizer', comps: 6, mode: 'RAG Chat' },
-								{ name: '4. siu_dashboard.pipe', desc: 'Webhook &rarr; Parse &rarr; Qdrant 6-Vector Query &rarr; Response Answers', comps: 4, mode: 'SIU Hub' },
-								{ name: '5. benchmark_explorer.pipe', desc: 'Webhook &rarr; Parse &rarr; Qdrant Repair Benchmark Query &rarr; Response Answers', comps: 4, mode: 'Benchmarks' },
-								{ name: '6. inspection_scheduling.pipe', desc: 'Webhook &rarr; Parse &rarr; LLM Voice Telephony &rarr; Calendar Response', comps: 4, mode: 'Scheduling' },
-								{ name: '7. claim_status.pipe', desc: 'Webhook &rarr; Parse &rarr; Qdrant Status Query &rarr; Sanitized Response', comps: 4, mode: 'Public API' },
-								{ name: '8. adjuster_queue.pipe', desc: 'Webhook &rarr; Parse &rarr; Priority Sort &rarr; Response Answers', comps: 3, mode: 'Queue' },
-								{ name: '9. feedback_loop.pipe', desc: 'Webhook &rarr; Parse &rarr; Drift Aggregator &rarr; Response Answers', comps: 3, mode: 'Drift Monitor' },
+								{ name: '1. ingestion.pipe', desc: 'Webhook → Parse → Anonymize Text → Chunker → Embeddings → Qdrant Vector DB', comps: 6, mode: 'Ingestion' },
+								{ name: '2. claim_analysis.pipe', desc: 'Webhook → Parse → Reasoning Engine → Response Answers', comps: 4, mode: 'Analysis' },
+								{ name: '3. claim_chat.pipe', desc: 'Chat → Embeddings → Qdrant Search → Prompt Engine → Synthesizer', comps: 6, mode: 'RAG Chat' },
+								{ name: '4. siu_dashboard.pipe', desc: 'Webhook → Parse → Qdrant 6-Vector Query → Response Answers', comps: 4, mode: 'SIU Hub' },
+								{ name: '5. benchmark_explorer.pipe', desc: 'Webhook → Parse → Qdrant Benchmark Query → Response Answers', comps: 4, mode: 'Benchmarks' },
+								{ name: '6. inspection_scheduling.pipe', desc: 'Webhook → Parse → Voice Telephony → Calendar Response', comps: 4, mode: 'Scheduling' },
+								{ name: '7. claim_status.pipe', desc: 'Webhook → Parse → Status Query → Sanitized Response', comps: 4, mode: 'Public API' },
+								{ name: '8. adjuster_queue.pipe', desc: 'Webhook → Parse → Priority Sort → Response Answers', comps: 3, mode: 'Queue' },
+								{ name: '9. feedback_loop.pipe', desc: 'Webhook → Parse → Drift Aggregator → Response Answers', comps: 3, mode: 'Drift Monitor' },
 							].map((p, idx) => (
-								<div key={idx} style={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8, padding: 16 }}>
-									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#38bdf8', marginBottom: 4 }}>{p.name}</div>
-									<div style={{ fontSize: 11.5, color: '#94a3b8', lineHeight: 1.4, marginBottom: 8 }}>{p.desc}</div>
-									<div style={{ fontSize: 10.5, color: '#64748b' }}>Components: {p.comps} | Mode: {p.mode}</div>
+								<div key={idx} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 16, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>{p.name}</div>
+									<div style={{ fontSize: 11.5, color: '#64748b', lineHeight: 1.4, marginBottom: 8 }}>{p.desc}</div>
+									<div style={{ fontSize: 10.5, color: '#94a3b8' }}>Components: {p.comps} | Mode: {p.mode}</div>
 								</div>
 							))}
 						</div>
 					</div>
 				)}
-			</main>
+
+				{/* ── TAB 11: AUDIT TRAIL ── */}
+				{activeTab === 'history' && (
+					<div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 22, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+						<div style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>Immutable Audit Trail &amp; Adjuster Sign-Off History</div>
+						<div style={{ fontSize: 12, color: '#64748b', marginBottom: 16 }}>All manual line item overrides and supervisor payout approvals are logged with timestamps.</div>
+
+						<div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+							{auditTrail.map(at => (
+								<div key={at.id} style={{ padding: 12, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, fontSize: 12 }}>
+									<div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b' }}>
+										<span><strong>{at.id}</strong> • Claim {at.claim_id} • Field: <code style={{ color: '#0f172a' }}>{at.field_name}</code></span>
+										<span>{at.timestamp}</span>
+									</div>
+									<div style={{ marginTop: 4, color: '#0f172a', fontWeight: 600 }}>
+										Changed: <span style={{ color: '#b91c1c' }}>{at.old_value}</span> → <span style={{ color: '#0f172a' }}>{at.new_value}</span>
+									</div>
+									<div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>
+										User: {at.user} | Reason: {at.reason}
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+
+			</div>
 
 			{/* Explainability Citation Modal */}
 			{explainCitation && (
 				<div style={{
 					position: 'fixed',
-					top: 0,
-					left: 0,
-					right: 0,
-					bottom: 0,
-					backgroundColor: 'rgba(0,0,0,0.7)',
+					inset: 0,
+					backgroundColor: 'rgba(15, 23, 42, 0.6)',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
 					zIndex: 1000,
-				}}>
-					<div style={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: 10, padding: 20, maxWidth: 500, width: '90%' }}>
-						<div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>Evidence &amp; Forensic Attribution Citation</div>
-						<div style={{ padding: 12, backgroundColor: '#090d16', borderRadius: 6, fontSize: 12, color: '#93c5fd', fontFamily: 'JetBrains Mono, monospace', marginBottom: 16 }}>
+					padding: 20,
+				}} onClick={() => setExplainCitation(null)}>
+					<div style={{ backgroundColor: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 10, padding: 24, maxWidth: 500, width: '100%', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }} onClick={e => e.stopPropagation()}>
+						<div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Evidence &amp; Forensic Attribution Citation</div>
+						<div style={{ padding: 12, backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, fontSize: 12.5, color: '#0f172a', fontFamily: 'monospace', marginBottom: 16 }}>
 							{explainCitation}
 						</div>
 						<button
 							onClick={() => setExplainCitation(null)}
-							style={{ padding: '8px 16px', backgroundColor: '#2563eb', color: '#ffffff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: 'pointer', float: 'right' }}
+							style={{ padding: '8px 18px', backgroundColor: '#0f172a', color: '#ffffff', border: 'none', borderRadius: 6, fontSize: 12.5, fontWeight: 700, cursor: 'pointer', float: 'right' }}
 						>
 							Close Citation
 						</button>

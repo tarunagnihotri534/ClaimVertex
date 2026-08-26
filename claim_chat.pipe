@@ -79,7 +79,7 @@
       "name": "Prompt",
       "config": {
         "instructions": [
-          "You are ClaimPilot AI, an intelligent insurance claim assistant.",
+          "You are ClaimVertex AI, an intelligent insurance claim assistant.",
           "Use the provided context documents to answer questions accurately and cite claim details clearly."
         ],
         "parameters": {}
