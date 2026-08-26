@@ -1061,54 +1061,6 @@ export const App: React.FC = () => {
 							</div>
 						</div>
 					</div>
-
-					{/* Bottom Information Banner */}
-					<div style={{ width: '100%', maxWidth: 980 }}>
-						<div style={{ fontSize: 30, fontWeight: 900, color: '#0f172a', letterSpacing: '-0.8px' }}>ClaimPilot</div>
-						<div style={{ fontSize: 16, fontWeight: 700, color: '#2563eb', marginTop: 4, marginBottom: 16 }}>AI-Powered Insurance Operations Platform</div>
-
-						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
-							<div
-								style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: '14px 16px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)' }}
-							>
-								<div style={{ fontSize: 12, fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-									<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-									Straight-Through Payouts
-								</div>
-								<div style={{ fontSize: 11, color: '#64748b', lineHeight: 1.4 }}>Automated sub-second claim authorization with explainability citations.</div>
-							</div>
-
-							<div
-								style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: '14px 16px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)' }}
-							>
-								<div style={{ fontSize: 12, fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-									<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-									6-Vector SIU Anomaly Hub
-								</div>
-								<div style={{ fontSize: 11, color: '#64748b', lineHeight: 1.4 }}>Multi-vector forensic fraud screening and investigator dispatch.</div>
-							</div>
-
-							<div
-								style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: '14px 16px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)' }}
-							>
-								<div style={{ fontSize: 12, fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-									<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-									Autonomous Voice Dispatch
-								</div>
-								<div style={{ fontSize: 11, color: '#64748b', lineHeight: 1.4 }}>Telephony voice node for licensed PE engineer inspection appointments.</div>
-							</div>
-
-							<div
-								style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: '14px 16px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)' }}
-							>
-								<div style={{ fontSize: 12, fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-									<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#15803d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-									Regional Cost Benchmarks
-								</div>
-								<div style={{ fontSize: 11, color: '#64748b', lineHeight: 1.4 }}>Real-time local market repair rate indices and materials variance.</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		);
