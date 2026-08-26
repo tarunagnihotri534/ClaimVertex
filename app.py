@@ -24,7 +24,7 @@ load_dotenv()
 
 import uvicorn
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Query
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -56,10 +56,41 @@ class StandalonePipelineEngine:
 
 app = FastAPI(title="ClaimVertex AI Enterprise Dashboard", version="2.5.0")
 
-# Mount static folder
+# Static assets directory
 static_dir = Path(__file__).parent / "static"
 static_dir.mkdir(exist_ok=True)
 app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+async def get_root_index():
+    index_file = static_dir / "index.html"
+    if index_file.exists():
+        with open(index_file, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>ClaimVertex Web Dashboard</h1>")
+
+@app.get("/HIGH.png")
+@app.get("/hero-scanner.png")
+async def get_hero_scanner_image():
+    for name in ["HIGH.png", "hero-scanner.png"]:
+        img_path = static_dir / name
+        if img_path.exists():
+            return FileResponse(str(img_path), media_type="image/png")
+    raise HTTPException(status_code=404, detail="Image not found")
+
+@app.get("/logo.png")
+async def get_logo_png():
+    img_path = static_dir / "logo.png"
+    if img_path.exists():
+        return FileResponse(str(img_path), media_type="image/png")
+    raise HTTPException(status_code=404, detail="Logo not found")
+
+@app.get("/logo.svg")
+async def get_logo_svg():
+    img_path = static_dir / "logo.svg"
+    if img_path.exists():
+        return FileResponse(str(img_path), media_type="image/svg+xml")
+    raise HTTPException(status_code=404, detail="Logo not found")
 
 # Pipeline engine client instance
 client = StandalonePipelineEngine()

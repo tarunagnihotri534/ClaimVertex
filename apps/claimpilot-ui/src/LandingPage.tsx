@@ -1,6 +1,6 @@
 import React from 'react';
 import { Logo } from './Logo';
-import heroScannerImg from './hero-scanner.png';
+import heroScannerImg from './HIGH.png';
 import './index.css';
 
 interface LandingPageProps {
