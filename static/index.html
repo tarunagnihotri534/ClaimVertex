@@ -1274,16 +1274,21 @@
       </div>
     </nav>
 
+    <!-- Background Ambient Animated Orbs -->
+    <div style="position: absolute; border-radius: 50%; pointer-events: none; filter: blur(65px); z-index: 0; width: 440px; height: 440px; background: radial-gradient(circle, rgba(160, 229, 113, 0.4) 0%, rgba(160, 229, 113, 0) 70%); top: 8%; right: 4%; animation: subtleFloat 12s ease-in-out infinite;"></div>
+    <div style="position: absolute; border-radius: 50%; pointer-events: none; filter: blur(65px); z-index: 0; width: 480px; height: 480px; background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, rgba(56, 189, 248, 0) 70%); bottom: 15%; left: 4%; animation: subtleFloat 15s ease-in-out infinite 1s;"></div>
+
     <!-- Main Hero Stage matching Figma 1:1 -->
-    <section class="figma-hero-stage" style="display: flex; align-items: center; justify-content: space-between; gap: 48px; max-width: 1280px; margin: 0 auto; padding: 48px 48px; flex-wrap: wrap;">
+    <section class="figma-hero-stage" style="display: flex; align-items: center; justify-content: space-between; gap: 48px; max-width: 1280px; margin: 0 auto; padding: 40px 48px 24px; flex-wrap: wrap; position: relative; z-index: 2;">
       <!-- Left Column: Headline & Action -->
       <div class="figma-hero-content" style="flex: 1 1 500px; max-width: 580px;">
-        <div style="display: inline-block; background: rgba(17,75,95,0.09); color: #114b5f; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(17,75,95,0.22); margin-bottom: 16px;">
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(17,75,95,0.09); color: #114b5f; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(17,75,95,0.22); margin-bottom: 16px;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #114b5f; display: inline-block;"></span>
           AI-POWERED P&amp;C INSURANCE
         </div>
 
-        <h1 class="figma-hero-headline" style="font-family: 'Segoe UI', -apple-system, sans-serif; font-size: 38px; font-weight: 700; line-height: 1.25; color: #0d1f2d; letter-spacing: -0.5px; margin-bottom: 16px;">
-          Transforming Claims from Manual Workflows to Intelligent Decisions
+        <h1 class="figma-hero-headline" style="font-family: 'Segoe UI', -apple-system, sans-serif; font-size: 40px; font-weight: 800; line-height: 1.22; color: #0d1f2d; letter-spacing: -0.8px; margin-bottom: 16px;">
+          Transforming Claims from Manual Workflows to <span style="background: linear-gradient(135deg, #114b5f 0%, #0d9488 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Intelligent Decisions</span>
         </h1>
 
         <p style="font-size: 15.5px; line-height: 1.65; color: #4a5568; margin-bottom: 24px;">
@@ -1291,20 +1296,80 @@
         </p>
 
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-          <button class="figma-learn-more-btn" onclick="openLoginModal()" style="font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 14.5px; color: #0d1f2d; background-color: #a0e571; border: none; border-radius: 24px; padding: 12px 28px; cursor: pointer; box-shadow: 0 4px 14px rgba(160,229,113,0.5);">
+          <button class="figma-learn-more-btn" onclick="openLoginModal()" style="font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 14.5px; color: #0d1f2d; background-color: #a0e571; border: none; border-radius: 24px; padding: 12px 30px; cursor: pointer; box-shadow: 0 4px 14px rgba(160,229,113,0.5);">
             Learn More
           </button>
-          <button onclick="openLoginModal()" style="font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 14.5px; color: #ffffff; background-color: #114b5f; border: none; border-radius: 24px; padding: 12px 28px; cursor: pointer; box-shadow: 0 4px 14px rgba(17,75,95,0.35);">
+          <button onclick="openLoginModal()" style="font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 14.5px; color: #ffffff; background-color: #114b5f; border: none; border-radius: 24px; padding: 12px 30px; cursor: pointer; box-shadow: 0 4px 14px rgba(17,75,95,0.35);">
             Launch Dashboard →
           </button>
         </div>
       </div>
 
-      <!-- Right Column: Exact Figma Hero Illustration PNG -->
-      <div style="flex: 1 1 420px; max-width: 480px; display: flex; justify-content: center; align-items: center;">
-        <img src="HIGH.png" alt="Claim Document & Smartphone Scanner" onerror="this.onerror=null; this.src='/static/HIGH.png';" style="max-width: 100%; width: 380px; height: auto; display: block; filter: drop-shadow(0 15px 30px rgba(17, 75, 95, 0.15)) drop-shadow(0 5px 12px rgba(0,0,0,0.08));" />
+      <!-- Right Column: Exact Figma Hero Illustration PNG with Ambient Glow & Floating Chips -->
+      <div style="flex: 1 1 440px; max-width: 520px; display: flex; justify-content: center; align-items: center; position: relative;">
+        
+        <!-- Ambient Glowing Aura Behind Image -->
+        <div style="position: absolute; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(160, 229, 113, 0.4) 0%, rgba(56, 189, 248, 0.25) 50%, transparent 75%); filter: blur(35px); pointer-events: none; z-index: 0;"></div>
+
+        <!-- Floating Live Chip 1 (Top Right) -->
+        <div style="position: absolute; top: 10px; right: -8px; background: #ffffff; border: 1px solid rgba(34, 197, 94, 0.35); border-radius: 12px; padding: 8px 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(34,197,94,0.15); display: flex; align-items: center; gap: 8px; z-index: 4; animation: subtleFloat 4.2s ease-in-out infinite;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #22c55e; box-shadow: 0 0 8px #22c55e;"></span>
+          <div>
+            <div style="font-size: 12px; font-weight: 800; color: #0f172a;">⚡ STP &lt; 0.9s</div>
+            <div style="font-size: 10px; color: #16a34a; font-weight: 600;">Instant Auto-Disbursement</div>
+          </div>
+        </div>
+
+        <!-- Floating Live Chip 2 (Bottom Left) -->
+        <div style="position: absolute; bottom: 15px; left: -15px; background: #0b1329; border: 1px solid #1e3a5f; border-radius: 12px; padding: 8px 14px; box-shadow: 0 10px 28px rgba(0,0,0,0.25); display: flex; align-items: center; gap: 8px; z-index: 4; color: #ffffff; animation: subtleFloat 5s ease-in-out infinite 0.5s;">
+          <span style="font-size: 16px;">🛡️</span>
+          <div>
+            <div style="font-size: 12px; font-weight: 800; color: #ffffff;">SIU Clean • 14/100</div>
+            <div style="font-size: 10px; color: #94a3b8; font-weight: 600;">6-Vector Risk Passed</div>
+          </div>
+        </div>
+
+        <!-- Floating Live Chip 3 (Top Left) -->
+        <div style="position: absolute; top: 35px; left: -20px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 6px 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 6px; z-index: 4; animation: subtleFloat 4.6s ease-in-out infinite 1s;">
+          <span style="font-size: 14px;">📄</span>
+          <span style="font-size: 11px; color: #334155;">OCR Accuracy <strong>99.4%</strong></span>
+        </div>
+
+        <!-- Hero Sticker Image -->
+        <img src="HIGH.png" alt="Claim Document & Smartphone Scanner" onerror="this.onerror=null; this.src='/static/HIGH.png';" style="max-width: 100%; width: 390px; height: auto; display: block; position: relative; z-index: 2; filter: drop-shadow(0 20px 35px rgba(17, 75, 95, 0.2)) drop-shadow(0 6px 14px rgba(0,0,0,0.1)); animation: subtleFloat 5.5s ease-in-out infinite;" />
       </div>
     </section>
+
+    <!-- ── 3 EXECUTIVE FEATURE PILLAR CARDS (Fills space with balanced elegance) ── -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1280px; margin: 10px auto 36px; padding: 0 48px; width: 100%; box-sizing: border-box; position: relative; z-index: 2;">
+      <!-- Pillar 1 -->
+      <div style="background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(17, 75, 95, 0.12); border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 20px rgba(17, 75, 95, 0.05); display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 20px;">⚡</span>
+          <span style="font-size: 10.5px; font-weight: 800; color: #114b5f; background: rgba(17,75,95,0.08); padding: 3px 8px; border-radius: 12px; font-family: monospace;">&lt; 0.9s LATENCY</span>
+        </div>
+        <div style="font-size: 15px; font-weight: 700; color: #0d1f2d;">Autonomous STP Payouts</div>
+        <div style="font-size: 12.5px; color: #64748b; line-height: 1.5;">Sub-second deterministic coverage validation and immediate electronic check disbursement for qualified clean claims.</div>
+      </div>
+      <!-- Pillar 2 -->
+      <div style="background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(17, 75, 95, 0.12); border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 20px rgba(17, 75, 95, 0.05); display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 20px;">🛡️</span>
+          <span style="font-size: 10.5px; font-weight: 800; color: #114b5f; background: rgba(17,75,95,0.08); padding: 3px 8px; border-radius: 12px; font-family: monospace;">6-VECTOR SCAN</span>
+        </div>
+        <div style="font-size: 15px; font-weight: 700; color: #0d1f2d;">Forensic SIU Fraud Matrix</div>
+        <div style="font-size: 12.5px; color: #64748b; line-height: 1.5;">Multi-carrier duplicate contractor billing detection, NOAA Doppler weather validation, and EXIF metadata tampering audit.</div>
+      </div>
+      <!-- Pillar 3 -->
+      <div style="background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(17, 75, 95, 0.12); border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 20px rgba(17, 75, 95, 0.05); display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 20px;">🎙️</span>
+          <span style="font-size: 10.5px; font-weight: 800; color: #114b5f; background: rgba(17,75,95,0.08); padding: 3px 8px; border-radius: 12px; font-family: monospace;">VOICE TELEPHONY</span>
+        </div>
+        <div style="font-size: 15px; font-weight: 700; color: #0d1f2d;">Forensic PE Dispatch</div>
+        <div style="font-size: 12.5px; color: #64748b; line-height: 1.5;">Autonomous AI voice telephony scheduling with policyholders and calendar reservation for licensed structural engineers.</div>
+      </div>
+    </div>
 
     <!-- Bottom Dark Banner -->
     <footer class="figma-bottom-bar" style="background-color: #000000; padding: 0 40px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 100%; box-sizing: border-box;">

@@ -108,6 +108,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
       </main>
 
+      {/* ── 3 EXECUTIVE FEATURE PILLAR CARDS ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20, maxWidth: 1280, margin: '10px auto 36px', padding: '0 48px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 2 }}>
+        {/* Pillar 1 */}
+        <div style={{ background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(12px)', border: '1px solid rgba(17, 75, 95, 0.12)', borderRadius: 14, padding: '20px 22px', boxShadow: '0 4px 20px rgba(17, 75, 95, 0.05)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: 20 }}>⚡</span>
+            <span style={{ fontSize: 10.5, fontWeight: 800, color: '#114b5f', background: 'rgba(17,75,95,0.08)', padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace' }}>&lt; 0.9s LATENCY</span>
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#0d1f2d' }}>Autonomous STP Payouts</div>
+          <div style={{ fontSize: 12.5, color: '#64748b', lineHeight: 1.5 }}>Sub-second deterministic coverage validation and immediate electronic check disbursement for qualified clean claims.</div>
+        </div>
+        {/* Pillar 2 */}
+        <div style={{ background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(12px)', border: '1px solid rgba(17, 75, 95, 0.12)', borderRadius: 14, padding: '20px 22px', boxShadow: '0 4px 20px rgba(17, 75, 95, 0.05)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: 20 }}>🛡️</span>
+            <span style={{ fontSize: 10.5, fontWeight: 800, color: '#114b5f', background: 'rgba(17,75,95,0.08)', padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace' }}>6-VECTOR SCAN</span>
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#0d1f2d' }}>Forensic SIU Fraud Matrix</div>
+          <div style={{ fontSize: 12.5, color: '#64748b', lineHeight: 1.5 }}>Multi-carrier duplicate contractor billing detection, NOAA Doppler weather validation, and EXIF metadata tampering audit.</div>
+        </div>
+        {/* Pillar 3 */}
+        <div style={{ background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(12px)', border: '1px solid rgba(17, 75, 95, 0.12)', borderRadius: 14, padding: '20px 22px', boxShadow: '0 4px 20px rgba(17, 75, 95, 0.05)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: 20 }}>🎙️</span>
+            <span style={{ fontSize: 10.5, fontWeight: 800, color: '#114b5f', background: 'rgba(17,75,95,0.08)', padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace' }}>VOICE TELEPHONY</span>
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#0d1f2d' }}>Forensic PE Dispatch</div>
+          <div style={{ fontSize: 12.5, color: '#64748b', lineHeight: 1.5 }}>Autonomous AI voice telephony scheduling with policyholders and calendar reservation for licensed structural engineers.</div>
+        </div>
+      </div>
+
       {/* ── DARK BLACK FOOTER BAR (Edge-to-Edge Touching Corners, Centered Bright Text) ── */}
       <footer style={styles.footerBar}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
