@@ -26,8 +26,7 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rocketride": "file:../../.rocketride/client/rocketride.tgz"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@module-federation/rsbuild-plugin": "2.5.1",

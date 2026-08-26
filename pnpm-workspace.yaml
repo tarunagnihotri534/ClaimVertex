@@ -1,3 +1,4 @@
-# RocketRide app workspace — one root install links every app under apps/.
+# ClaimPilot workspace — root install links apps under apps/.
 packages:
   - 'apps/*'
+

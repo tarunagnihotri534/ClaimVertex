@@ -345,7 +345,7 @@ const INITIAL_DOCS: DocItem[] = [
 				risk_impact: '+25% to Vector 5 Loss Frequency / Duplicate Billing Audit',
 			},
 		],
-		summary: 'Secondary contractor submission with identical dollar total ($8,450.00) on policy POL-994821. Flagged by RocketRide ingestion.pipe duplicate detector node.',
+		summary: 'Secondary contractor submission with identical dollar total ($8,450.00) on policy POL-994821. Flagged by ClaimPilot ingestion.pipe duplicate detector node.',
 		line_items: [
 			{ item: 'Emergency Extraction Crew Callout', qty: '1 LS', rate: '$1,260.00', total: '$1,260.00', audit: 'Possible Duplicate Charge', confidence: 88 },
 			{ item: 'Hardwood Floor Reconstruction', qty: '240 SF', rate: '$18.50/SF', total: '$4,440.00', audit: 'Duplicate Scope Alert', confidence: 85 },
@@ -395,7 +395,7 @@ const INITIAL_AUDIT_TRAIL: AuditEntry[] = [
 		field_name: 'gate_status',
 		old_value: 'AUTOMATED_PENDING',
 		new_value: 'ESCALATED TO SENIOR ADJUSTER',
-		user: 'RocketRide claim_analysis.pipe',
+		user: 'ClaimPilot claim_analysis.pipe',
 		reason: 'Exceeded $10k STP limit ($142,000) and triggered SIU overnight fire vector.',
 		timestamp: '2026-08-23 22:15:02',
 	},
@@ -715,7 +715,7 @@ export const App: React.FC = () => {
 								</span>
 							</div>
 							<div style={{ fontSize: 11, color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-								RocketRide AI Claims &bull; SIU Fraud Engine
+								Autonomous P&amp;C AI Claims &bull; SIU Fraud Engine
 							</div>
 						</div>
 					</div>
@@ -1122,7 +1122,7 @@ export const App: React.FC = () => {
 						<div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em', color: '#ffffff' }}>
 							Claim<span style={{ color: '#f59e0b' }}>Pilot</span> <span style={{ fontSize: 11, backgroundColor: '#1e293b', color: '#38bdf8', padding: '2px 6px', borderRadius: 4, marginLeft: 6 }}>v2.5 Enterprise</span>
 						</div>
-						<div style={{ fontSize: 11, color: '#94a3b8' }}>RocketRide AI Multi-Pipeline Insurance &amp; SIU Risk Command Center</div>
+						<div style={{ fontSize: 11, color: '#94a3b8' }}>ClaimPilot Autonomous Insurance &amp; SIU Risk Command Center</div>
 					</div>
 				</div>
 
@@ -1440,7 +1440,7 @@ export const App: React.FC = () => {
 									marginTop: 4,
 								}}
 							>
-								{isSubmitting ? 'Running RocketRide AI Assessment...' : 'Submit Claim to RocketRide Pipeline'}
+								{isSubmitting ? 'Running Autonomous AI Assessment...' : 'Submit Claim to Pipeline Engine'}
 							</button>
 						</form>
 					</div>
@@ -1594,7 +1594,7 @@ export const App: React.FC = () => {
 									{/* Duplicate match alert banner if applicable */}
 									{selectedDoc.duplicate_matches && selectedDoc.duplicate_matches.length > 0 && (
 										<div style={{ padding: 10, backgroundColor: '#450a0a', border: '1px solid #991b1b', borderRadius: 6, marginBottom: 12, fontSize: 11.5 }}>
-											<div style={{ fontWeight: 700, color: '#f87171', marginBottom: 2 }}>⚠️ RocketRide Duplicate Invoice Detector Warning:</div>
+											<div style={{ fontWeight: 700, color: '#f87171', marginBottom: 2 }}>⚠️ Duplicate Invoice Detector Warning:</div>
 											<div style={{ color: '#fca5a5' }}>
 												Matches existing document <strong>{selectedDoc.duplicate_matches[0].matched_filename}</strong> on same policy with identical amount (<strong>{selectedDoc.duplicate_matches[0].amount}</strong>).
 											</div>
@@ -2003,7 +2003,7 @@ export const App: React.FC = () => {
 				{/* 11. PIPELINES TAB (All 9 DAGs) */}
 				{activeTab === 'pipelines' && (
 					<div>
-						<h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#ffffff' }}>RocketRide AI Pipelines (9 Roadmap .pipe DAGs)</h3>
+						<h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#ffffff' }}>ClaimPilot AI Pipelines (9 Roadmap .pipe DAGs)</h3>
 						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
 							{[
 								{ name: '1. ingestion.pipe', desc: 'Webhook &rarr; Parse &rarr; Anonymize Text &rarr; Chunker &rarr; OpenAI Embeddings &rarr; Qdrant Vector DB', comps: 6, mode: 'Ingestion' },

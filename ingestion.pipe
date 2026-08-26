@@ -76,7 +76,7 @@
 			"config": {
 				"profile": "text-embedding-3-small",
 				"text-embedding-3-small": {
-					"apikey": "${ROCKETRIDE_OPENAI_KEY}"
+					"apikey": "${OPENAI_API_KEY}"
 				},
 				"parameters": {}
 			},
@@ -96,9 +96,9 @@
 			"config": {
 				"profile": "local",
 				"local": {
-					"host": "${ROCKETRIDE_QDRANT_HOST}",
+					"host": "${QDRANT_HOST}",
 					"port": 6333,
-					"collection": "${ROCKETRIDE_COLLECTION_NAME}"
+					"collection": "${QDRANT_COLLECTION}"
 				},
 				"parameters": {}
 			},

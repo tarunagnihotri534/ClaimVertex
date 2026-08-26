@@ -1,6 +1,6 @@
 # 🛡️ ClaimPilot — Enterprise AI Insurance Claims & SIU Fraud Engine
 
-ClaimPilot is an enterprise-grade AI insurance platform orchestrating **9 deterministic RocketRide AI pipelines** for Property & Casualty carriers, forensic structural engineers, and Special Investigation Units (SIU).
+ClaimPilot is an enterprise-grade AI insurance platform orchestrating **9 deterministic AI pipelines** for Property & Casualty carriers, forensic structural engineers, and Special Investigation Units (SIU).
 
 ## 🚀 Key Platform Features
 - **⚡ Straight-Through Processing (STP)**: Sub-second auto-payout authorizations for qualified low-risk claims.
@@ -22,4 +22,5 @@ ClaimPilot is an enterprise-grade AI insurance platform orchestrating **9 determ
 9. `feedback_loop.pipe` — Adjuster correction & RLHF prompt tuning
 
 ## 💻 Development & Integration
-Built with **React 18**, **TypeScript**, and **Rsbuild Module Federation** (`tarun.claimpilot`), ready to mount seamlessly inside the RocketRide platform shell.
+Built with **React 18**, **TypeScript**, and **Rsbuild**.
+

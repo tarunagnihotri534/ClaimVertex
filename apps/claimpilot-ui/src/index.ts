@@ -1,2 +1,2 @@
-// Entry point for ClaimPilot RocketRide App
+// Entry point for ClaimPilot App
 import('./AppDescriptor');

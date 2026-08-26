@@ -58,7 +58,7 @@
 			"config": {
 				"profile": "openai-4o",
 				"openai-4o": {
-					"apikey": "${ROCKETRIDE_OPENAI_KEY}"
+					"apikey": "${OPENAI_API_KEY}"
 				},
 				"parameters": {}
 			},

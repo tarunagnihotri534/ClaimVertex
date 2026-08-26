@@ -38,7 +38,7 @@
 			"config": {
 				"profile": "local",
 				"local": {
-					"host": "${ROCKETRIDE_QDRANT_HOST}",
+					"host": "${QDRANT_HOST}",
 					"port": 6333,
 					"collection": "claim_evidence"
 				},

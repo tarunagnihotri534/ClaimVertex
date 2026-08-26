@@ -2,7 +2,6 @@
 
 <div align="center">
 
-[![RocketRide](https://img.shields.io/badge/Orchestrated_By-RocketRide_AI-3B82F6?style=for-the-badge&logo=rocket&logoColor=white)](https://staging.rocketride.ai)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/Frontend-React_18_%2B_Module_Federation-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![Vercel](https://img.shields.io/badge/Deployment-Vercel_Live-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://claim-pilot-orcin.vercel.app)
@@ -10,7 +9,7 @@
 
 **An autonomous, load-bearing AI platform for property & casualty insurance carriers, forensic engineering units, and Special Investigation Units (SIU).**
 
-[Live Web Demo](https://claim-pilot-orcin.vercel.app) • [RocketRide Staging](https://staging.rocketride.ai) • [Architecture](#-system-architecture) • [9 AI Pipelines](#-the-9-rocketride-ai-pipelines) • [Quick Start](#-quick-start)
+[Live Web Demo](https://claim-pilot-orcin.vercel.app) • [Architecture](#-system-architecture) • [9 AI Pipelines](#-the-9-ai-pipelines) • [Quick Start](#-quick-start)
 
 </div>
 
@@ -18,7 +17,7 @@
 
 ## 🌟 Executive Summary
 
-**ClaimPilot** revolutionizes property & casualty insurance claim operations by combining **9 deterministic RocketRide AI pipelines** with a modern dual-panel command center. It eliminates manual claim triage bottlenecks, slashes Straight-Through Processing (STP) payout latency to under 0.9s, anonymizes sensitive claimant PII in real-time, and exposes a 6-vector forensic fraud matrix to catch syndicated billing anomalies.
+**ClaimPilot** revolutionizes property & casualty insurance claim operations by combining **9 deterministic AI pipelines** with a modern dual-panel command center. It eliminates manual claim triage bottlenecks, slashes Straight-Through Processing (STP) payout latency to under 0.9s, anonymizes sensitive claimant PII in real-time, and exposes a 6-vector forensic fraud matrix to catch syndicated billing anomalies.
 
 ---
 
@@ -57,15 +56,15 @@
 flowchart TD
     subgraph ClientLayer["🖥️ Frontend & Client Layer"]
         A[Claimant / Adjuster] -->|Auth & Role Selection| B[Landing Portal / Auth Gate]
-        B --> C[FastAPI UI / React Module Federation App]
+        B --> C[FastAPI UI / React Standalone App]
     end
 
     subgraph CoreEngine["⚙️ ClaimPilot Orchestration Gateway"]
         C -->|REST / SSE / WebSockets| D[FastAPI API Router]
-        D -->|RocketRideClient SDK| E[RocketRide AI Runtime]
+        D -->|Autonomous Engine| E[ClaimPilot AI Runtime]
     end
 
-    subgraph RocketRideDAGs["🚀 9 RocketRide AI Pipelines"]
+    subgraph PipelineDAGs["🚀 9 Declarative AI Pipelines"]
         E --> P1["1. ingestion.pipe\n(Webhook → Parse → Anonymize PII → Chunk → Qdrant Vector)"]
         E --> P2["2. claim_analysis.pipe\n(LLM GPT-4-turbo → Policy Rule Engine → STP Score)"]
         E --> P3["3. claim_chat.pipe\n(Chat Source → Embedding → Vector Search → RAG Response)"]
@@ -93,7 +92,7 @@ flowchart TD
 
 ---
 
-## 🧩 The 9 RocketRide AI Pipelines
+## 🧩 The 9 AI Pipelines
 
 | # | Pipeline File | Description | Trigger / Source | Primary Components |
 |---|---|---|---|---|
@@ -114,26 +113,26 @@ flowchart TD
 ```text
 ClaimPilot/
 ├── app.py                      # FastAPI core backend & REST endpoints
-├── main.py                     # CLI verification & RocketRide Client test script
-├── check.py                    # RocketRide setup & pipeline diagnostic tool
+├── main.py                     # CLI verification & standalone pipeline test script
+├── check.py                    # Standalone setup & pipeline diagnostic tool
 ├── run_gui.py                  # Cross-platform GUI runner (auto-port allocation)
 ├── run_gui.bat                 # Windows 1-click execution batch script
 ├── vercel.json                 # Vercel cloud serverless deployment config
 │
 ├── apps/
-│   └── claimpilot-ui/          # React + Rsbuild Module Federation remote app
+│   └── claimpilot-ui/          # React + Rsbuild frontend
 │       ├── package.json        # App manifest: "tarun.claimpilot"
-│       ├── rsbuild.config.mts  # Module Federation remoteEntry configuration
+│       ├── rsbuild.config.mts  # Build configuration
 │       ├── icon.svg            # Custom supersonic shield SVG logo
 │       └── src/
 │           ├── App.tsx         # Full ClaimPilot React frontend
-│           └── AppDescriptor.ts# RocketRide shell descriptor
+│           └── AppDescriptor.ts# App descriptor
 │
 ├── static/
 │   └── index.html              # Standalone enterprise single-page web app
 │
-├── *.pipe                      # 9 RocketRide declarative pipeline definition files
-├── .env                        # RocketRide staging URI & API keys (masked in repo)
+├── *.pipe                      # 9 declarative pipeline definition files
+├── .env                        # Environment configuration
 ├── env.example                 # Environment template
 └── requirements.txt            # Python dependencies
 ```
@@ -156,12 +155,12 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-### 2. Configure Environment Variables
-Copy `env.example` to `.env` and add your RocketRide staging credentials:
+### 2. Configure Environment (Optional)
+ClaimPilot runs completely standalone out of the box with zero setup. Optional parameters can be added to `.env` (copy from `env.example`):
 ```env
-ROCKETRIDE_URI=https://staging.rocketride.ai
-ROCKETRIDE_APIKEY=your-rocketride-api-key
-ROCKETRIDE_OPENAI_KEY=your-openai-api-key
+CLAIMPILOT_URI=http://127.0.0.1:8000
+OPENAI_API_KEY=your-openai-api-key
+QDRANT_HOST=localhost
 ```
 
 ### 3. Run Diagnostic Verification
@@ -184,8 +183,6 @@ Open **[http://localhost:8000](http://localhost:8000)** in your browser.
 | Deployment Target | URL | Description |
 |---|---|---|
 | 🚀 **Live Web App (Vercel)** | [https://claim-pilot-orcin.vercel.app](https://claim-pilot-orcin.vercel.app) | Public production deployment linked to `main` branch |
-| ⚡ **RocketRide Staging** | [https://staging.rocketride.ai](https://staging.rocketride.ai) | Cloud orchestration console, pipeline monitoring & API keys |
-| 📦 **Module Federation Remote** | `http://localhost:3000/remoteEntry.js` | Micro-frontend remote bundle for the RocketRide shell |
 | 💻 **Local Core Server** | `http://localhost:8000` | Local full-stack development environment |
 
 ---
@@ -199,6 +196,7 @@ Open **[http://localhost:8000](http://localhost:8000)** in your browser.
 ---
 
 <div align="center">
-  <b>Built for the RocketRide AI Hackathon 2026</b><br/>
+  <b>ClaimPilot Enterprise 2026</b><br/>
   <i>Engineered for Autonomous Insurance Claims & Forensic Governance.</i>
 </div>
+
