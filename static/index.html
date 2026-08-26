@@ -130,233 +130,444 @@
     }
 
     /* =========================================================================
-       LANDING PAGE PRESENTATION (Matches Screenshot Exact Layout)
+       FIGMA LANDING PAGE PRESENTATION (Exact 1:1 Match to Figma Reference)
        ========================================================================= */
     #landing-view {
-      background: linear-gradient(180deg, #f1f5f9 0%, #e8edf3 50%, #f1f5f9 100%);
-      flex: 1;
-      padding: 30px 20px 60px;
+      background-color: #f3f2eb;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      width: 100%;
     }
 
-    /* Top Portfolio / Category Nav Pills */
-    .landing-nav-pills {
+    /* Top Navigation Bar */
+    .figma-navbar {
+      background-color: #0d3a58;
+      height: 68px;
+      padding: 0 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      z-index: 20;
+    }
+
+    .figma-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .figma-logo-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .figma-brand-name {
+      color: #ffffff;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    .figma-login-btn {
+      background-color: #dc2626;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 24px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .figma-login-btn:hover {
+      background-color: #b91c1c;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(220, 38, 38, 0.45);
+    }
+    .figma-login-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Hero Stage */
+    .figma-hero-stage {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 60px 48px 70px;
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    @media (max-width: 900px) {
+      .figma-hero-stage {
+        grid-template-columns: 1fr;
+        padding: 40px 24px;
+        text-align: center;
+      }
+      .figma-hero-content {
+        margin: 0 auto;
+      }
+      .figma-navbar {
+        padding: 0 20px;
+      }
+      .figma-bottom-bar {
+        padding: 0 20px;
+      }
+    }
+
+    .figma-hero-content {
+      max-width: 600px;
+    }
+
+    .figma-hero-headline {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 44px;
+      font-weight: 800;
+      line-height: 1.22;
+      color: #18181b;
+      letter-spacing: -0.8px;
+      margin-bottom: 34px;
+    }
+
+    @media (max-width: 768px) {
+      .figma-hero-headline {
+        font-size: 32px;
+        line-height: 1.25;
+      }
+    }
+
+    .figma-learn-more-btn {
+      background-color: #8cb369;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 13px 34px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(140, 179, 105, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .figma-learn-more-btn:hover {
+      background-color: #7ba258;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(140, 179, 105, 0.45);
+    }
+    .figma-learn-more-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Illustration container */
+    .figma-hero-illustration {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .figma-illustration-svg {
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.08));
+      animation: subtleFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes laserScan {
+      0% { transform: translateY(0); opacity: 0.8; }
+      50% { transform: translateY(50px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0.8; }
+    }
+
+    .scan-laser-line {
+      animation: laserScan 2.4s ease-in-out infinite;
+    }
+
+    /* Bottom Bar */
+    .figma-bottom-bar {
+      background-color: #3f3d3d;
+      min-height: 64px;
+      padding: 14px 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 10;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .figma-footer-left {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 24px;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      padding: 6px 12px;
-      border-radius: 30px;
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    }
-    .landing-pill {
-      background: transparent;
-      border: none;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: #64748b;
-      padding: 7px 18px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .landing-pill.active {
-      background: #2563eb;
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
-    }
-    .landing-pill:hover:not(.active) {
-      color: #0f172a;
-      background: #f1f5f9;
+      color: #cbd5e1;
     }
 
-    /* Outer Dual-Panel Hero Card */
-    .hero-outer-card {
-      width: 100%;
-      max-width: 980px;
-      background: #ffffff;
-      border-radius: 24px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(15, 23, 42, 0.04);
-      display: grid;
-      grid-template-columns: 1.15fr 0.95fr;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 36px;
-    }
-
-    /* Top Left Number Badge "01" */
-    .hero-num-badge {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      background: #0f172a;
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 800;
-      padding: 5px 14px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    }
-
-    /* Left Panel: Dark Canvas */
-    .hero-left-panel {
-      background: radial-gradient(circle at 20% 30%, #1e293b 0%, #0f172a 60%, #080d1a 100%);
-      padding: 70px 42px 48px 42px;
+    .figma-footer-right {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      color: #ffffff;
+      align-items: center;
+      gap: 14px;
     }
 
-    /* Background Orbital Curves */
-    .hero-orbital-arcs {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      opacity: 0.18;
+    .figma-pipeline-tag {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #93c5fd;
     }
 
-    /* Official Portal Tag */
-    .hero-official-badge {
+    .figma-status-tag {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      gap: 6px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 4px 10px;
       border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #cbd5e1;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-      width: fit-content;
-      backdrop-filter: blur(4px);
-    }
-    .hero-official-badge svg {
-      width: 13px;
-      height: 13px;
-      color: var(--accent-gold);
-    }
-
-    /* Welcome Typography */
-    .hero-headline-sub {
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -0.8px;
-      color: #ffffff;
-      line-height: 1.1;
-      margin-bottom: 4px;
-      font-family: 'Playfair Display', Georgia, serif;
-    }
-    .hero-headline-main {
-      font-size: 42px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      color: var(--accent-gold);
-      line-height: 1.1;
-      margin-bottom: 18px;
-      font-family: 'Playfair Display', Georgia, serif;
-    }
-    .hero-headline-main span.white {
-      color: #ffffff;
-    }
-
-    .hero-left-desc {
-      font-size: 13.5px;
-      color: #94a3b8;
-      line-height: 1.6;
-      max-width: 380px;
-      margin-bottom: 24px;
-    }
-
-    .hero-left-stats {
-      display: flex;
-      gap: 16px;
-      margin-top: auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 18px;
-    }
-    .hero-left-stat-item {
-      display: flex;
-      flex-direction: column;
-    }
-    .hero-left-stat-num {
-      font-size: 15px;
-      font-weight: 800;
-      color: #38bdf8;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .hero-left-stat-lbl {
-      font-size: 10px;
-      color: #64748b;
-      text-transform: uppercase;
+      color: #86efac;
       font-weight: 600;
     }
 
-    /* Right Panel: Floating Clean White Card */
-    .hero-right-panel {
-      background: #f8fafc;
-      padding: 36px 32px;
+    .figma-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    /* =========================================================================
+       LOGIN POPUP MODAL & LEARN MORE MODAL STYLES
+       ========================================================================= */
+    .login-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .login-modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .login-modal-card {
+      background: #ffffff;
+      border-radius: 22px;
+      width: 100%;
+      max-width: 480px;
+      padding: 34px 30px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transform: scale(0.94);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .login-modal-overlay.active .login-modal-card {
+      transform: scale(1);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #f1f5f9;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .modal-close-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
     }
 
-    .auth-floating-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 32px 28px;
-      width: 100%;
-      border: 1px solid #f1f5f9;
-      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 0 1px 1px rgba(15, 23, 42, 0.03);
+    .modal-brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0d3a58;
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
-    .auth-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 26px;
+    .modal-title {
+      font-size: 22px;
       font-weight: 800;
       color: #0f172a;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.4px;
       margin-bottom: 4px;
     }
-    .auth-subtitle {
-      font-size: 12.5px;
+
+    .modal-subtitle {
+      font-size: 13px;
       color: #64748b;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
+      line-height: 1.45;
     }
 
-    .auth-form-group {
-      margin-bottom: 14px;
-    }
-    .auth-form-label {
-      display: block;
-      font-size: 10px;
+    .modal-section-label {
+      font-size: 10.5px;
       font-weight: 800;
       color: #64748b;
-      text-transform: uppercase;
       letter-spacing: 0.6px;
+      margin-bottom: 10px;
+    }
+
+    .modal-personas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .modal-persona-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      width: 100%;
+    }
+    .modal-persona-card:hover {
+      background: #ffffff;
+      border-color: #38bdf8;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .persona-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .persona-info {
+      overflow: hidden;
+    }
+    .persona-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .persona-role {
+      font-size: 10px;
+      color: #64748b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .modal-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 16px 0;
+      color: #94a3b8;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .modal-divider::before, .modal-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .modal-divider span {
+      padding: 0 10px;
+    }
+
+    .modal-input-group {
+      margin-bottom: 14px;
+    }
+
+    .modal-input-label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #475569;
+      letter-spacing: 0.5px;
       margin-bottom: 6px;
     }
-    .auth-input-wrapper {
+
+    .modal-input-box {
       position: relative;
       display: flex;
       align-items: center;
     }
-    .auth-input-icon {
+
+    .modal-input-icon {
       position: absolute;
       left: 12px;
       color: #94a3b8;
@@ -364,11 +575,12 @@
       height: 16px;
       pointer-events: none;
     }
-    .auth-input {
+
+    .modal-text-input {
       width: 100%;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 9px;
+      border-radius: 10px;
       padding: 11px 12px 11px 36px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
@@ -377,12 +589,13 @@
       outline: none;
       transition: all 0.15s ease;
     }
-    .auth-input:focus {
+    .modal-text-input:focus {
       background: #ffffff;
-      border-color: #0f172a;
-      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+      border-color: #0d3a58;
+      box-shadow: 0 0 0 3px rgba(13, 58, 88, 0.1);
     }
-    .auth-input-toggle {
+
+    .modal-eye-btn {
       position: absolute;
       right: 12px;
       color: #94a3b8;
@@ -393,19 +606,45 @@
       display: flex;
       align-items: center;
     }
-    .auth-input-toggle:hover {
+    .modal-eye-btn:hover {
       color: #0f172a;
     }
 
-    .auth-submit-btn {
+    .modal-options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+
+    .modal-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .modal-forgot-link {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .modal-forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .modal-submit-btn {
       width: 100%;
-      background: #0f172a;
+      background: #dc2626;
       color: #ffffff;
       border: none;
-      border-radius: 9px;
-      padding: 12px 16px;
+      border-radius: 10px;
+      padding: 13px 16px;
       font-family: 'Inter', sans-serif;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -413,126 +652,118 @@
       justify-content: center;
       gap: 8px;
       transition: all 0.2s ease;
-      margin-top: 18px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
     }
-    .auth-submit-btn:hover {
-      background: #1e293b;
+    .modal-submit-btn:hover {
+      background: #b91c1c;
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.3);
+      box-shadow: 0 6px 18px rgba(220, 38, 38, 0.45);
     }
-    .auth-submit-btn:active {
+    .modal-submit-btn:active {
       transform: translateY(0);
     }
 
-    .auth-switch-link {
-      text-align: center;
-      margin-top: 14px;
-      font-size: 12px;
-      color: #64748b;
-    }
-    .auth-switch-link a {
-      color: #2563eb;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .auth-switch-link a:hover {
-      text-decoration: underline;
+    /* Learn More Modal Card */
+    .learn-more-modal-card {
+      background: #ffffff;
+      border-radius: 22px;
+      width: 100%;
+      max-width: 640px;
+      padding: 36px 32px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3);
+      position: relative;
+      transform: scale(0.94);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
-    /* Quick 1-Click Demo Profiles */
-    .quick-profiles-wrap {
-      margin-top: 18px;
-      padding-top: 14px;
-      border-top: 1px dashed #e2e8f0;
+    .login-modal-overlay.active .learn-more-modal-card {
+      transform: scale(1);
     }
-    .quick-profiles-lbl {
-      font-size: 10px;
+
+    .learn-more-badge {
+      display: inline-block;
+      font-size: 11px;
       font-weight: 800;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
     }
-    .quick-profiles-grid {
+
+    .learn-more-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .learn-more-desc {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    .learn-more-features-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
-    .quick-profile-btn {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 6px 8px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #334155;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s ease;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .quick-profile-btn:hover {
-      background: #eff6ff;
-      border-color: #93c5fd;
-      color: #1d4ed8;
+      gap: 14px;
+      margin-bottom: 24px;
     }
 
-    /* Bottom Information Banner */
-    .landing-bottom-info {
-      width: 100%;
-      max-width: 980px;
+    @media (max-width: 600px) {
+      .learn-more-features-grid {
+        grid-template-columns: 1fr;
+      }
     }
-    .landing-bottom-title {
-      font-size: 30px;
-      font-weight: 900;
-      color: #0f172a;
-      letter-spacing: -0.8px;
-    }
-    .landing-bottom-subtitle {
-      font-size: 16px;
-      font-weight: 700;
-      color: #2563eb;
-      margin-top: 4px;
-      margin-bottom: 16px;
-    }
-    .landing-bottom-features {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-    .landing-feature-pill {
-      background: #ffffff;
+
+    .feature-card {
+      background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
-      padding: 14px 16px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      transition: all 0.2s ease;
+      padding: 16px;
     }
-    .landing-feature-pill:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
-      border-color: #cbd5e1;
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
     }
-    .landing-feature-title {
-      font-size: 12px;
-      font-weight: 800;
+
+    .feature-title {
+      font-size: 13.5px;
+      font-weight: 700;
       color: #0f172a;
-      display: flex;
-      align-items: center;
-      gap: 6px;
       margin-bottom: 4px;
     }
-    .landing-feature-desc {
-      font-size: 11px;
+
+    .feature-text {
+      font-size: 12px;
       color: #64748b;
-      line-height: 1.4;
+      line-height: 1.45;
+    }
+
+    .learn-more-cta-btn {
+      width: 100%;
+      background: #0d3a58;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(13, 58, 88, 0.3);
+    }
+    .learn-more-cta-btn:hover {
+      background: #08263a;
+      transform: translateY(-1px);
     }
 
     /* =========================================================================
@@ -982,8 +1213,8 @@
 </head>
 <body>
 
-  <!-- GLOBAL APPLICATION HEADER -->
-  <header>
+  <!-- GLOBAL DASHBOARD HEADER (Shown only when in Dashboard view) -->
+  <header id="dashboard-header" style="display: none;">
     <div class="brand" onclick="exitToLanding()">
       <!-- Custom SVG Logo -->
       <div class="brand-mark-svg">
@@ -1020,7 +1251,7 @@
     </div>
 
     <div class="header-status">
-      <div id="user-profile-badge" style="display: none; align-items: center; gap: 8px; background: #f1f5f9; padding: 4px 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
+      <div id="user-profile-badge" style="display: flex; align-items: center; gap: 8px; background: #f1f5f9; padding: 4px 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
         <span style="width: 22px; height: 22px; background: #2563eb; color: #fff; border-radius: 50%; font-size: 10px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;" id="user-avatar-tag">SJ</span>
         <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;" id="user-name-tag">Sarah Jenkins</span>
         <button onclick="exitToLanding()" style="background: transparent; border: none; font-size: 11px; color: #dc2626; cursor: pointer; margin-left: 6px; font-weight: 600;">Sign Out</button>
@@ -1034,146 +1265,325 @@
   </header>
 
   <!-- =======================================================================
-       1. LANDING VIEW (Professional Enterprise Authentication Portal)
+       1. FIGMA LANDING VIEW (Exact 1:1 Match to Figma Reference)
        ======================================================================= -->
   <main id="landing-view">
-
-    <!-- Outer Dual-Panel Hero Card -->
-    <div class="hero-outer-card">
-
-      <!-- Left Side: Dark Hero Panel -->
-      <div class="hero-left-panel">
-        
-        <!-- Subtle Orbital Background SVGs -->
-        <svg class="hero-orbital-arcs" viewBox="0 0 400 400" fill="none">
-          <circle cx="200" cy="200" r="160" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 8" />
-          <ellipse cx="200" cy="200" rx="190" ry="110" stroke="#818cf8" stroke-width="1.2" transform="rotate(-25 200 200)" />
-          <ellipse cx="200" cy="200" rx="140" ry="80" stroke="#f59e0b" stroke-width="1" transform="rotate(35 200 200)" />
-        </svg>
-
-        <!-- Official Enterprise Portal Tag -->
-        <div class="hero-official-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    <!-- Top Navigation Bar -->
+    <nav class="figma-navbar">
+      <div class="figma-brand" onclick="openLoginModal()">
+        <div class="figma-logo-icon">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect width="30" height="30" rx="7" fill="#062238" stroke="#0e4b77" stroke-width="1.2"/>
+            <circle cx="15" cy="15" r="8.5" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="2 3"/>
+            <path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fill-opacity="0.3" stroke="#38bdf8" stroke-width="1.5"/>
+            <circle cx="15" cy="15" r="3.2" fill="#38bdf8"/>
+            <line x1="6" y1="15" x2="9.5" y2="15" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="20.5" y1="15" x2="24" y2="15" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="15" y1="6" x2="15" y2="9.5" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="15" y1="20.5" x2="15" y2="24" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
-          <span>OFFICIAL ENTERPRISE PORTAL</span>
         </div>
-
-        <!-- Headline Typography (Matched to Reference Layout) -->
-        <div class="hero-headline-sub">Welcome to</div>
-        <div class="hero-headline-main">Claim<span class="white">Pilot</span></div>
-
-        <!-- Description -->
-        <div class="hero-left-desc">
-          Your one-stop gateway to autonomous insurance claims, real-time SIU fraud detection, and policy compliance governance.
-        </div>
-
-        <!-- Bottom Left KPI Counters -->
-        <div class="hero-left-stats">
-          <div class="hero-left-stat-item">
-            <div class="hero-left-stat-num">9</div>
-            <div class="hero-left-stat-lbl">AI Pipelines</div>
-          </div>
-          <div class="hero-left-stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 14px;">
-            <div class="hero-left-stat-num">&lt; 0.9s</div>
-            <div class="hero-left-stat-lbl">STP Latency</div>
-          </div>
-          <div class="hero-left-stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 14px;">
-            <div class="hero-left-stat-num">6-Vector</div>
-            <div class="hero-left-stat-lbl">SIU Matrix</div>
-          </div>
-        </div>
+        <span class="figma-brand-name">ClaimVertex</span>
       </div>
 
-      <!-- Right Side: Floating Clean White Card -->
-      <div class="hero-right-panel">
-        <div class="auth-floating-card">
-          <div class="auth-title" id="auth-card-title">Get Started</div>
-          <div class="auth-subtitle" id="auth-card-sub">Create your digital identity today.</div>
+      <div class="figma-nav-actions">
+        <button class="figma-login-btn" onclick="openLoginModal()" id="figma-header-login-btn">Login</button>
+      </div>
+    </nav>
 
-          <form id="landing-auth-form" onsubmit="handleAuthSubmit(event)">
+    <!-- Main Hero Stage -->
+    <section class="figma-hero-stage">
+      <!-- Left Column: Headline & Action -->
+      <div class="figma-hero-content">
+        <h1 class="figma-hero-headline">
+          Transforming Claims from Manual Workflows to Intelligent Decisions
+        </h1>
+        <button class="figma-learn-more-btn" onclick="openLearnMoreModal()">
+          Learn More
+        </button>
+      </div>
+
+      <!-- Right Column: Smartphone & Claim Document Scanner SVG Illustration -->
+      <div class="figma-hero-illustration">
+        <svg class="figma-illustration-svg" viewBox="0 0 500 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="docShadow" x="-10%" y="-10%" width="130%" height="130%" filterUnits="userSpaceOnUse">
+              <feDropShadow dx="3" dy="6" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.1" />
+            </filter>
+            <filter id="phoneShadow" x="-15%" y="-15%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+              <feDropShadow dx="6" dy="12" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.2" />
+            </filter>
+            <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#081e30" />
+              <stop offset="100%" stop-color="#04121d" />
+            </linearGradient>
+            <linearGradient id="laserGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0" />
+              <stop offset="25%" stop-color="#38bdf8" stop-opacity="0.85" />
+              <stop offset="50%" stop-color="#0ea5e9" stop-opacity="1" />
+              <stop offset="75%" stop-color="#38bdf8" stop-opacity="0.85" />
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="phoneBody" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1e293b" />
+              <stop offset="100%" stop-color="#0f172a" />
+            </linearGradient>
+          </defs>
+
+          <!-- 1. Background Cascading Document Sheets -->
+          <g class="doc-stack">
+            <!-- Doc 1 (Back Left) -->
+            <g transform="translate(60, 45) rotate(-14)" filter="url(#docShadow)">
+              <rect width="130" height="175" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5" />
+              <rect x="12" y="14" width="60" height="10" rx="3" fill="#93c5fd" stroke="#60a5fa" stroke-width="1" />
+              <rect x="12" y="32" width="106" height="5" rx="2" fill="#cbd5e1" />
+              <rect x="12" y="44" width="96" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="12" y="56" width="100" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="12" y="68" width="70" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="12" y="86" width="106" height="5" rx="2" fill="#cbd5e1" />
+              <rect x="12" y="98" width="90" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="12" y="110" width="80" height="5" rx="2" fill="#e2e8f0" />
+            </g>
+
+            <!-- Doc 2 (Middle) -->
+            <g transform="translate(95, 30) rotate(-4)" filter="url(#docShadow)">
+              <rect width="135" height="180" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2.5" />
+              <rect x="14" y="14" width="70" height="12" rx="3" fill="#60a5fa" />
+              <rect x="14" y="34" width="107" height="6" rx="2" fill="#cbd5e1" />
+              <rect x="14" y="48" width="95" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="14" y="60" width="100" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="14" y="72" width="85" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="14" y="92" width="107" height="18" rx="3" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+              <rect x="20" y="98" width="40" height="6" rx="2" fill="#94a3b8" />
+              <rect x="75" y="98" width="38" height="6" rx="2" fill="#3b82f6" />
+              <rect x="14" y="118" width="107" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="14" y="130" width="75" height="5" rx="2" fill="#e2e8f0" />
+            </g>
+
+            <!-- Doc 3 (Front Sheet) -->
+            <g transform="translate(130, 25) rotate(6)" filter="url(#docShadow)">
+              <rect width="135" height="180" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2.5" />
+              <rect x="14" y="14" width="65" height="12" rx="3" fill="#3b82f6" />
+              <rect x="88" y="14" width="33" height="12" rx="3" fill="#22c55e" fill-opacity="0.3" stroke="#22c55e" stroke-width="1" />
+              <rect x="14" y="34" width="107" height="6" rx="2" fill="#94a3b8" />
+              <rect x="14" y="48" width="95" height="5" rx="2" fill="#cbd5e1" />
+              <rect x="14" y="60" width="107" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="14" y="72" width="80" height="5" rx="2" fill="#e2e8f0" />
+              <rect x="14" y="92" width="107" height="40" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+              <circle cx="30" cy="112" r="8" fill="#e2e8f0" />
+              <rect x="46" y="105" width="65" height="5" rx="2" fill="#cbd5e1" />
+              <rect x="46" y="115" width="50" height="4" rx="2" fill="#e2e8f0" />
+            </g>
+          </g>
+
+          <!-- 2. Smartphone in Foreground with Glowing HUD Scanner -->
+          <g transform="translate(230, 68) rotate(9)" filter="url(#phoneShadow)">
+            <rect width="125" height="210" rx="24" fill="url(#phoneBody)" stroke="#334155" stroke-width="3.5" />
+            <rect x="6" y="8" width="113" height="194" rx="18" fill="url(#screenGrad)" />
+            <rect x="47" y="12" width="31" height="5" rx="2.5" fill="#0f172a" stroke="#334155" stroke-width="0.8" />
             
-            <div class="auth-form-group" id="name-field-group">
-              <label class="auth-form-label">FULL NAME</label>
-              <div class="auth-input-wrapper">
-                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <input type="text" id="auth-name" class="auth-input" placeholder="Sarah Jenkins" value="Sarah Jenkins" />
-              </div>
+            <!-- Scanner Area -->
+            <g transform="translate(18, 38)">
+              <path d="M6 18 V6 H18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <path d="M72 6 H84 V18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <path d="M6 72 V84 H18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <path d="M72 84 H84 V72" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              
+              <rect x="22" y="22" width="46" height="46" rx="8" fill="#0369a1" fill-opacity="0.25" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="3 3" />
+              <path d="M35 32 H55 M35 40 H55 M35 48 H47 M35 56 H51" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" />
+              <circle cx="45" cy="45" r="14" stroke="#0ea5e9" stroke-width="1.2" stroke-opacity="0.6" />
+              
+              <!-- Laser Scan Line Animation -->
+              <g class="scan-laser-line">
+                <line x1="10" y1="20" x2="80" y2="20" stroke="url(#laserGrad)" stroke-width="3" stroke-linecap="round" />
+                <ellipse cx="45" cy="20" rx="35" ry="3" fill="#38bdf8" fill-opacity="0.3" />
+              </g>
+            </g>
+
+            <!-- UI Verification Card on Phone -->
+            <g transform="translate(14, 145)">
+              <rect width="97" height="44" rx="8" fill="#0f172a" fill-opacity="0.85" stroke="#0284c7" stroke-width="1.2" />
+              <circle cx="22" cy="22" r="9" fill="#059669" />
+              <path d="M18 22 L21 25 L27 19" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <text x="36" y="18" fill="#38bdf8" font-size="7.5" font-family="Inter, sans-serif" font-weight="700">CLAIM VERIFIED</text>
+              <text x="36" y="30" fill="#94a3b8" font-size="6.5" font-family="JetBrains Mono, monospace">STP &lt; 0.9s | 100%</text>
+            </g>
+          </g>
+
+          <!-- 3. Stylized Hand Holding the Smartphone -->
+          <g id="hand-grip" transform="translate(325, 175)">
+            <path d="M30 40 C45 35, 75 45, 95 65 C115 85, 115 125, 95 145 C80 160, 45 160, 20 145 C-5 130, -10 90, 5 60 Z" fill="#fab287" stroke="#1e293b" stroke-width="3.5" stroke-linejoin="round" />
+            <path d="M-15 15 C-25 15, -45 25, -45 42 C-45 55, -30 65, -15 65 C-5 65, 10 50, 10 35 C10 20, 0 15, -15 15 Z" fill="#fbc093" stroke="#1e293b" stroke-width="3.5" stroke-linejoin="round" />
+            <path d="M-40 45 C-55 45, -65 55, -60 68 C-55 78, -40 80, -25 75" fill="#fbc093" stroke="#1e293b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M75 125 C85 140, 115 165, 140 185" stroke="#1e293b" stroke-width="4" stroke-linecap="round" />
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Bottom Dark Banner -->
+    <footer class="figma-bottom-bar">
+      <div class="figma-footer-left">
+        <span>ClaimVertex • Autonomous Insurance &amp; SIU Fraud Matrix</span>
+      </div>
+      <div class="figma-footer-right">
+        <span class="figma-pipeline-tag">9 AI Pipelines Active</span>
+        <span class="figma-status-tag"><span class="figma-dot"></span> Core Server Online</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- =======================================================================
+       LOGIN POPUP MODAL (Triggers when user taps "Login")
+       ======================================================================= -->
+  <div id="login-modal-overlay" class="login-modal-overlay" onclick="handleModalOverlayClick(event)">
+    <div class="login-modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeLoginModal()" title="Close (Esc)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-brand-badge">
+        <svg width="18" height="18" viewBox="0 0 30 30" fill="none">
+          <rect width="30" height="30" rx="7" fill="#062238"/>
+          <circle cx="15" cy="15" r="8.5" stroke="#38bdf8" stroke-width="1.8"/>
+          <path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fill-opacity="0.5" stroke="#38bdf8" stroke-width="1.5"/>
+        </svg>
+        <span>ClaimVertex</span>
+      </div>
+
+      <h2 class="modal-title">Sign In to Command Center</h2>
+      <p class="modal-subtitle">Access autonomous Straight-Through Processing, 6-vector SIU fraud analysis, and AI policy copilot.</p>
+
+      <!-- 1-Click Fast-Track Persona Roles -->
+      <div class="modal-personas-section">
+        <div class="modal-section-label">SELECT ROLE (1-CLICK INSTANT ACCESS)</div>
+        <div class="modal-personas-grid">
+          <button type="button" class="modal-persona-card" onclick="quickLoginAndClose('Sarah Jenkins', 'sarah@claimvertex.ai', 'Senior Claims Adjuster', 'SJ')">
+            <div class="persona-avatar" style="background:#2563eb;">SJ</div>
+            <div class="persona-info">
+              <div class="persona-name">Sarah Jenkins</div>
+              <div class="persona-role">Senior Adjuster</div>
             </div>
-
-            <div class="auth-form-group">
-              <label class="auth-form-label">EMAIL</label>
-              <div class="auth-input-wrapper">
-                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-                <input type="email" id="auth-email" class="auth-input" placeholder="name@example.com" value="adjuster@claimpilot.ai" required />
-              </div>
+          </button>
+          <button type="button" class="modal-persona-card" onclick="quickLoginAndClose('Elena Rostova', 'elena.siu@claimvertex.ai', 'SIU Lead Auditor', 'ER')">
+            <div class="persona-avatar" style="background:#dc2626;">ER</div>
+            <div class="persona-info">
+              <div class="persona-name">Elena Rostova</div>
+              <div class="persona-role">SIU Lead Auditor</div>
             </div>
-
-            <div class="auth-form-group">
-              <label class="auth-form-label">PASSWORD</label>
-              <div class="auth-input-wrapper">
-                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                <input type="password" id="auth-password" class="auth-input" placeholder="••••••••" value="demo-pilot-2026" required />
-                <button type="button" class="auth-input-toggle" onclick="togglePasswordVisibility()">
-                  <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                </button>
-              </div>
+          </button>
+          <button type="button" class="modal-persona-card" onclick="quickLoginAndClose('David Vance', 'david.pe@engineering.com', 'Licensed PE Engineer', 'DV')">
+            <div class="persona-avatar" style="background:#059669;">DV</div>
+            <div class="persona-info">
+              <div class="persona-name">David Vance</div>
+              <div class="persona-role">PE Forensic Eng.</div>
             </div>
-
-            <button type="submit" class="auth-submit-btn" id="auth-btn">
-              <span id="auth-btn-label">Create Account &rarr;</span>
-            </button>
-          </form>
-
-          <div class="auth-switch-link">
-            <span id="switch-prompt">Already have an account?</span> 
-            <a href="javascript:void(0)" id="switch-link" onclick="toggleAuthMode()">Log In</a>
-          </div>
-
-          <!-- Quick 1-Click Demo Profiles -->
-          <div class="quick-profiles-wrap">
-            <div class="quick-profiles-lbl">
-              <span>Quick Access Roles</span>
-              <span style="color:#2563eb; font-weight:700;">Demo Login</span>
+          </button>
+          <button type="button" class="modal-persona-card" onclick="quickLoginAndClose('Marcus Vance', 'claimant@vance.io', 'Policyholder Claimant', 'MV')">
+            <div class="persona-avatar" style="background:#d97706;">MV</div>
+            <div class="persona-info">
+              <div class="persona-name">Marcus Vance</div>
+              <div class="persona-role">Policyholder</div>
             </div>
-            <div class="quick-profiles-grid">
-              <button class="quick-profile-btn" onclick="quickLogin('Sarah Jenkins', 'sarah@claimpilot.ai', 'Senior Claims Adjuster')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-1px; margin-right:4px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                Senior Adjuster
-              </button>
-              <button class="quick-profile-btn" onclick="quickLogin('Elena Rostova', 'elena.siu@claimpilot.ai', 'SIU Lead Auditor')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-1px; margin-right:4px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                SIU Lead Auditor
-              </button>
-              <button class="quick-profile-btn" onclick="quickLogin('David Vance', 'david.pe@engineering.com', 'Licensed PE Engineer')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-1px; margin-right:4px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-                PE Forensic Eng.
-              </button>
-              <button class="quick-profile-btn" onclick="quickLogin('Marcus Vance', 'claimant@vance.io', 'Policyholder Claimant')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                Policyholder
-              </button>
-            </div>
-          </div>
-
+          </button>
         </div>
       </div>
 
-    </div>
+      <div class="modal-divider"><span>OR ENTER CREDENTIALS</span></div>
 
-  </main>
+      <!-- Traditional Credentials Form -->
+      <form class="modal-login-form" onsubmit="handleModalLoginSubmit(event)">
+        <div class="modal-input-group">
+          <label class="modal-input-label">EMAIL / USERNAME</label>
+          <div class="modal-input-box">
+            <svg class="modal-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input type="email" id="modal-login-email" class="modal-text-input" placeholder="adjuster@claimvertex.ai" value="sarah@claimvertex.ai" required />
+          </div>
+        </div>
+
+        <div class="modal-input-group">
+          <label class="modal-input-label">PASSWORD</label>
+          <div class="modal-input-box">
+            <svg class="modal-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="modal-login-password" class="modal-text-input" placeholder="••••••••" value="demo-vertex-2026" required />
+            <button type="button" class="modal-eye-btn" onclick="toggleModalPasswordVisibility()">
+              <svg id="modal-eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-options-row">
+          <label class="modal-checkbox-label">
+            <input type="checkbox" checked />
+            <span>Remember this session</span>
+          </label>
+          <a href="javascript:void(0)" class="modal-forgot-link" onclick="quickLoginAndClose('Sarah Jenkins', 'sarah@claimvertex.ai', 'Senior Claims Adjuster', 'SJ')">Auto-fill demo</a>
+        </div>
+
+        <button type="submit" class="modal-submit-btn">
+          <span>Sign In to Dashboard &rarr;</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       LEARN MORE FEATURE PREVIEW MODAL
+       ======================================================================= -->
+  <div id="learn-more-modal-overlay" class="login-modal-overlay" onclick="handleLearnMoreOverlayClick(event)">
+    <div class="learn-more-modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeLearnMoreModal()" title="Close (Esc)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="learn-more-badge">PLATFORM ARCHITECTURE</div>
+      <h2 class="learn-more-title">Intelligent P&amp;C Claims Automation</h2>
+      <p class="learn-more-desc">ClaimVertex accelerates Property &amp; Casualty claim operations by combining 9 deterministic AI pipelines with real-time SIU fraud prevention.</p>
+      
+      <div class="learn-more-features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-title">Straight-Through Processing</div>
+          <div class="feature-text">Sub-second auto-payout authorizations for low-risk claims under $10k.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <div class="feature-title">6-Vector SIU Fraud Matrix</div>
+          <div class="feature-text">EXIF tampering, duplicate contractor receipts, and regional rate inflation checks.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎙️</div>
+          <div class="feature-title">PE Forensic Dispatch</div>
+          <div class="feature-text">Automated voice and calendar scheduling for licensed structural engineers.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <div class="feature-title">Multi-Persona RAG Copilot</div>
+          <div class="feature-text">Citation-backed policy QA with semantic retrieval from Qdrant vector store.</div>
+        </div>
+      </div>
+
+      <div class="learn-more-footer">
+        <button class="learn-more-cta-btn" onclick="closeLearnMoreModal(); openLoginModal();">
+          Launch Command Center (Sign In) &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- =======================================================================
        2. DASHBOARD VIEW (All 11 Roadmap Inner Functionalities Intact)
@@ -1627,12 +2037,44 @@
     let activeUser = null;
 
     // =========================================================================
-    // VIEW SWITCHING & AUTHENTICATION
+    // MODAL POPUPS & AUTHENTICATION
     // =========================================================================
 
-    function togglePasswordVisibility() {
-      const pwd = document.getElementById('auth-password');
-      const icon = document.getElementById('eye-icon');
+    function openLoginModal() {
+      const modal = document.getElementById('login-modal-overlay');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('login-modal-overlay');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target && e.target.id === 'login-modal-overlay') {
+        closeLoginModal();
+      }
+    }
+
+    function openLearnMoreModal() {
+      const modal = document.getElementById('learn-more-modal-overlay');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeLearnMoreModal() {
+      const modal = document.getElementById('learn-more-modal-overlay');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function handleLearnMoreOverlayClick(e) {
+      if (e.target && e.target.id === 'learn-more-modal-overlay') {
+        closeLearnMoreModal();
+      }
+    }
+
+    function toggleModalPasswordVisibility() {
+      const pwd = document.getElementById('modal-login-password');
+      const icon = document.getElementById('modal-eye-icon');
       if (pwd.type === 'password') {
         pwd.type = 'text';
         icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
@@ -1642,65 +2084,64 @@
       }
     }
 
-    function toggleAuthMode() {
-      isLoginMode = !isLoginMode;
-      const title = document.getElementById('auth-card-title');
-      const sub = document.getElementById('auth-card-sub');
-      const nameGrp = document.getElementById('name-field-group');
-      const btnLbl = document.getElementById('auth-btn-label');
-      const prompt = document.getElementById('switch-prompt');
-      const link = document.getElementById('switch-link');
-
-      if (isLoginMode) {
-        title.innerText = 'Adjuster Sign In';
-        sub.innerText = 'Enter your enterprise credentials to access the console.';
-        nameGrp.style.display = 'none';
-        btnLbl.innerText = 'Sign In &rarr;';
-        prompt.innerText = "Don't have an account?";
-        link.innerText = 'Get Started';
-      } else {
-        title.innerText = 'Get Started';
-        sub.innerText = 'Create your digital identity today.';
-        nameGrp.style.display = 'block';
-        btnLbl.innerText = 'Create Account &rarr;';
-        prompt.innerText = 'Already have an account?';
-        link.innerText = 'Log In';
-      }
-    }
-
-    function quickLogin(name, email, role) {
-      document.getElementById('auth-name').value = name;
-      document.getElementById('auth-email').value = email;
+    function quickLoginAndClose(name, email, role, avatar) {
+      closeLoginModal();
+      closeLearnMoreModal();
       enterDashboard({
         name: name,
         email: email,
         role: role,
-        avatar: name.split(' ').map(n=>n[0]).join('')
+        avatar: avatar || name.split(' ').map(n=>n[0]).join('')
       });
     }
 
-    function handleAuthSubmit(e) {
+    function handleModalLoginSubmit(e) {
       e.preventDefault();
-      const name = document.getElementById('auth-name').value.trim() || 'Claims Adjuster';
-      const email = document.getElementById('auth-email').value.trim() || 'adjuster@claimpilot.ai';
-      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'CP';
+      const email = document.getElementById('modal-login-email').value.trim() || 'adjuster@claimvertex.ai';
+      let name = 'Sarah Jenkins';
+      let role = 'Senior Claims Adjuster';
+      let avatar = 'SJ';
 
+      if (email.includes('elena') || email.includes('siu')) {
+        name = 'Elena Rostova';
+        role = 'SIU Lead Auditor';
+        avatar = 'ER';
+      } else if (email.includes('david') || email.includes('pe')) {
+        name = 'David Vance';
+        role = 'Licensed PE Engineer';
+        avatar = 'DV';
+      } else if (email.includes('marcus') || email.includes('claimant')) {
+        name = 'Marcus Vance';
+        role = 'Policyholder Claimant';
+        avatar = 'MV';
+      }
+
+      closeLoginModal();
       enterDashboard({
         name: name,
         email: email,
-        role: 'Senior Claims Adjuster',
-        avatar: initials
+        role: role,
+        avatar: avatar
       });
     }
 
+    // Keyboard navigation (Esc to close modal)
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLoginModal();
+        closeLearnMoreModal();
+      }
+    });
+
     function enterDashboard(user) {
-      activeUser = user || { name: 'Sarah Jenkins', email: 'sarah@claimpilot.ai', avatar: 'SJ' };
+      activeUser = user || { name: 'Sarah Jenkins', email: 'sarah@claimvertex.ai', avatar: 'SJ' };
       
       document.getElementById('user-name-tag').innerText = activeUser.name;
-      document.getElementById('user-avatar-tag').innerText = activeUser.avatar || 'CP';
+      document.getElementById('user-avatar-tag').innerText = activeUser.avatar || 'CV';
       document.getElementById('user-profile-badge').style.display = 'flex';
 
       document.getElementById('landing-view').style.display = 'none';
+      document.getElementById('dashboard-header').style.display = 'flex';
       document.getElementById('dashboard-view').style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -1709,20 +2150,20 @@
     }
 
     function enterDashboardWithPreset(preset) {
-      enterDashboard({ name: 'Sarah Jenkins', email: 'sarah@claimpilot.ai', avatar: 'SJ' });
+      enterDashboard({ name: 'Sarah Jenkins', email: 'sarah@claimvertex.ai', avatar: 'SJ' });
       if (preset === 'SIU Fraud') showTab('siu');
       else if (preset === 'AI & ML') showTab('assessment');
       else showTab('dashboard');
     }
 
     function enterDashboardWithTab(tabId) {
-      enterDashboard({ name: 'Sarah Jenkins', email: 'sarah@claimpilot.ai', avatar: 'SJ' });
+      enterDashboard({ name: 'Sarah Jenkins', email: 'sarah@claimvertex.ai', avatar: 'SJ' });
       showTab(tabId);
     }
 
     function exitToLanding() {
       document.getElementById('dashboard-view').style.display = 'none';
-      document.getElementById('user-profile-badge').style.display = 'none';
+      document.getElementById('dashboard-header').style.display = 'none';
       document.getElementById('landing-view').style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

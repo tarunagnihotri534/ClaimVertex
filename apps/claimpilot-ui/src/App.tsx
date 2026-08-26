@@ -656,412 +656,587 @@ export const App: React.FC = () => {
 		})
 		.sort((a, b) => b.priority_score - a.priority_score);
 
+	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+	const [isLearnMoreModalOpen, setIsLearnMoreModalOpen] = useState(false);
+
 	if (view === 'landing') {
 		return (
 			<div style={{
 				minHeight: '100vh',
-				backgroundColor: '#f1f5f9',
-				backgroundImage: 'linear-gradient(180deg, #f1f5f9 0%, #e8edf3 50%, #f1f5f9 100%)',
-				color: '#0f172a',
+				backgroundColor: '#f3f2eb',
+				color: '#18181b',
 				fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
 				display: 'flex',
 				flexDirection: 'column',
+				justifyContent: 'space-between',
+				position: 'relative',
+				overflowX: 'hidden',
 			}}>
-				{/* Top Global Header */}
-				<header style={{
-					padding: '12px 28px',
-					backgroundColor: '#ffffff',
-					borderBottom: '1px solid #e2e8f0',
+				{/* Top Navigation Bar (Figma Exact Match) */}
+				<nav style={{
+					backgroundColor: '#0d3a58',
+					height: 68,
+					padding: '0 44px',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'space-between',
-					boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)',
+					boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
+					zIndex: 20,
 				}}>
-					<div style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }} onClick={() => setView('landing')}>
-						<div style={{
-							width: 38,
-							height: 38,
-							borderRadius: 10,
-							backgroundColor: '#0b1329',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							boxShadow: '0 2px 8px rgba(15, 23, 42, 0.15)',
-						}}>
-							<svg viewBox="0 0 120 120" width="34" height="34">
-								<defs>
-									<linearGradient id="cpLogoG_r" x1="0%" y1="0%" x2="100%" y2="100%">
-										<stop offset="0%" stopColor="#2563eb" />
-										<stop offset="100%" stopColor="#06b6d4" />
-									</linearGradient>
-									<linearGradient id="cpGoldG_r" x1="0%" y1="0%" x2="100%" y2="100%">
-										<stop offset="0%" stopColor="#f59e0b" />
-										<stop offset="100%" stopColor="#fbbf24" />
-									</linearGradient>
-								</defs>
-								<rect width="120" height="120" rx="26" fill="#0f172a" />
-								<path d="M60 18 L92 32 V62 C92 84 60 102 60 102 C60 102 28 84 28 62 V32 Z" fill="url(#cpLogoG_r)" fillOpacity="0.2" stroke="url(#cpLogoG_r)" strokeWidth="4" strokeLinejoin="round" />
-								<path d="M60 32 L82 54 L68 54 L60 42 L52 54 L38 54 Z" fill="#ffffff" />
-								<path d="M60 48 L76 68 L64 68 L60 60 L56 68 L44 68 Z" fill="url(#cpLogoG_r)" />
-								<polygon points="60,62 67,76 60,90 53,76" fill="url(#cpGoldG_r)" />
-								<circle cx="60" cy="76" r="3.5" fill="#ffffff" />
+					<div
+						style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
+						onClick={() => setIsLoginModalOpen(true)}
+					>
+						<div style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+							<svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+								<rect width="30" height="30" rx="7" fill="#062238" stroke="#0e4b77" strokeWidth="1.2"/>
+								<circle cx="15" cy="15" r="8.5" stroke="#38bdf8" strokeWidth="1.8" strokeDasharray="2 3"/>
+								<path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fillOpacity="0.3" stroke="#38bdf8" strokeWidth="1.5"/>
+								<circle cx="15" cy="15" r="3.2" fill="#38bdf8"/>
+								<line x1="6" y1="15" x2="9.5" y2="15" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
+								<line x1="20.5" y1="15" x2="24" y2="15" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
+								<line x1="15" y1="6" x2="15" y2="9.5" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
+								<line x1="15" y1="20.5" x2="15" y2="24" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round"/>
 							</svg>
 						</div>
-						<div>
-							<div style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-0.4px', color: '#0f172a' }}>
-								Claim<span style={{ color: '#f59e0b' }}>Pilot</span>
-								<span style={{ fontSize: 11, backgroundColor: '#eff6ff', color: '#2563eb', padding: '2px 6px', borderRadius: 4, marginLeft: 6, fontWeight: 700 }}>
-									Enterprise 2.5
-								</span>
-							</div>
-							<div style={{ fontSize: 11, color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-								Autonomous P&amp;C AI Claims &bull; SIU Fraud Engine
-							</div>
-						</div>
+						<span style={{ color: '#ffffff', fontSize: 20, fontWeight: 700, letterSpacing: '-0.4px' }}>
+							ClaimVertex
+						</span>
 					</div>
 
-					<div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-						<div style={{
-							fontSize: 11.5,
-							color: '#475569',
-							backgroundColor: '#f1f5f9',
-							border: '1px solid #e2e8f0',
+					<div>
+						<button
+							onClick={() => setIsLoginModalOpen(true)}
+							style={{
+								backgroundColor: '#dc2626',
+								color: '#ffffff',
+								fontSize: 14,
+								fontWeight: 700,
+								padding: '8px 24px',
+								borderRadius: 9999,
+								border: 'none',
+								cursor: 'pointer',
+								boxShadow: '0 4px 14px rgba(220, 38, 38, 0.35)',
+								transition: 'all 0.2s ease',
+							}}
+						>
+							Login
+						</button>
+					</div>
+				</nav>
+
+				{/* Main Hero Stage */}
+				<section style={{
+					flex: 1,
+					maxWidth: 1280,
+					width: '100%',
+					margin: '0 auto',
+					padding: '60px 48px 70px',
+					display: 'grid',
+					gridTemplateColumns: '1.25fr 1fr',
+					alignItems: 'center',
+					gap: 50,
+				}}>
+					{/* Left Content */}
+					<div style={{ maxWidth: 600 }}>
+						<h1 style={{
+							fontSize: 44,
+							fontWeight: 800,
+							lineHeight: 1.22,
+							color: '#18181b',
+							letterSpacing: '-0.8px',
+							marginBottom: 34,
+						}}>
+							Transforming Claims from Manual Workflows to Intelligent Decisions
+						</h1>
+						<button
+							onClick={() => setIsLearnMoreModalOpen(true)}
+							style={{
+								backgroundColor: '#8cb369',
+								color: '#ffffff',
+								fontSize: 15,
+								fontWeight: 700,
+								padding: '13px 34px',
+								borderRadius: 9999,
+								border: 'none',
+								cursor: 'pointer',
+								boxShadow: '0 4px 14px rgba(140, 179, 105, 0.35)',
+								transition: 'all 0.2s ease',
+								display: 'inline-flex',
+								alignItems: 'center',
+								gap: 8,
+							}}
+						>
+							Learn More
+						</button>
+					</div>
+
+					{/* Right Illustration: Smartphone & Claim Document Scanner */}
+					<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+						<svg style={{ width: '100%', maxWidth: 480, height: 'auto', filter: 'drop-shadow(0 15px 30px rgba(0, 0, 0, 0.08))' }} viewBox="0 0 500 380" fill="none">
+							<defs>
+								<filter id="docShadowR" x="-10%" y="-10%" width="130%" height="130%" filterUnits="userSpaceOnUse">
+									<feDropShadow dx="3" dy="6" stdDeviation="6" floodColor="#0f172a" floodOpacity="0.1" />
+								</filter>
+								<filter id="phoneShadowR" x="-15%" y="-15%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+									<feDropShadow dx="6" dy="12" stdDeviation="10" floodColor="#0f172a" floodOpacity="0.2" />
+								</filter>
+								<linearGradient id="screenGradR" x1="0%" y1="0%" x2="100%" y2="100%">
+									<stop offset="0%" stopColor="#081e30" />
+									<stop offset="100%" stopColor="#04121d" />
+								</linearGradient>
+								<linearGradient id="laserGradR" x1="0%" y1="0%" x2="100%" y2="0%">
+									<stop offset="0%" stopColor="#38bdf8" stopOpacity="0" />
+									<stop offset="25%" stopColor="#38bdf8" stopOpacity="0.85" />
+									<stop offset="50%" stopColor="#0ea5e9" stopOpacity="1" />
+									<stop offset="75%" stopColor="#38bdf8" stopOpacity="0.85" />
+									<stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
+								</linearGradient>
+								<linearGradient id="phoneBodyR" x1="0%" y1="0%" x2="100%" y2="100%">
+									<stop offset="0%" stopColor="#1e293b" />
+									<stop offset="100%" stopColor="#0f172a" />
+								</linearGradient>
+							</defs>
+
+							{/* Document Stack */}
+							<g>
+								<g transform="translate(60, 45) rotate(-14)" filter="url(#docShadowR)">
+									<rect width="130" height="175" rx="8" fill="#ffffff" stroke="#94a3b8" strokeWidth="2.5" />
+									<rect x="12" y="14" width="60" height="10" rx="3" fill="#93c5fd" stroke="#60a5fa" strokeWidth="1" />
+									<rect x="12" y="32" width="106" height="5" rx="2" fill="#cbd5e1" />
+									<rect x="12" y="44" width="96" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="12" y="56" width="100" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="12" y="68" width="70" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="12" y="86" width="106" height="5" rx="2" fill="#cbd5e1" />
+									<rect x="12" y="98" width="90" height="5" rx="2" fill="#e2e8f0" />
+								</g>
+
+								<g transform="translate(95, 30) rotate(-4)" filter="url(#docShadowR)">
+									<rect width="135" height="180" rx="8" fill="#ffffff" stroke="#94a3b8" strokeWidth="2.5" />
+									<rect x="14" y="14" width="70" height="12" rx="3" fill="#60a5fa" />
+									<rect x="14" y="34" width="107" height="6" rx="2" fill="#cbd5e1" />
+									<rect x="14" y="48" width="95" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="14" y="60" width="100" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="14" y="72" width="85" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="14" y="92" width="107" height="18" rx="3" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1" />
+									<rect x="20" y="98" width="40" height="6" rx="2" fill="#94a3b8" />
+									<rect x="75" y="98" width="38" height="6" rx="2" fill="#3b82f6" />
+								</g>
+
+								<g transform="translate(130, 25) rotate(6)" filter="url(#docShadowR)">
+									<rect width="135" height="180" rx="8" fill="#ffffff" stroke="#64748b" strokeWidth="2.5" />
+									<rect x="14" y="14" width="65" height="12" rx="3" fill="#3b82f6" />
+									<rect x="88" y="14" width="33" height="12" rx="3" fill="#22c55e" fillOpacity="0.3" stroke="#22c55e" strokeWidth="1" />
+									<rect x="14" y="34" width="107" height="6" rx="2" fill="#94a3b8" />
+									<rect x="14" y="48" width="95" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="14" y="60" width="107" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="14" y="72" width="80" height="5" rx="2" fill="#e2e8f0" />
+									<rect x="14" y="92" width="107" height="40" rx="4" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="1" />
+									<circle cx="30" cy="112" r="8" fill="#e2e8f0" />
+									<rect x="46" y="105" width="65" height="5" rx="2" fill="#cbd5e1" />
+								</g>
+							</g>
+
+							{/* Smartphone */}
+							<g transform="translate(230, 68) rotate(9)" filter="url(#phoneShadowR)">
+								<rect width="125" height="210" rx="24" fill="url(#phoneBodyR)" stroke="#334155" strokeWidth="3.5" />
+								<rect x="6" y="8" width="113" height="194" rx="18" fill="url(#screenGradR)" />
+								<rect x="47" y="12" width="31" height="5" rx="2.5" fill="#0f172a" stroke="#334155" strokeWidth="0.8" />
+								
+								<g transform="translate(18, 38)">
+									<path d="M6 18 V6 H18" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+									<path d="M72 6 H84 V18" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+									<path d="M6 72 V84 H18" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+									<path d="M72 84 H84 V72" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+									
+									<rect x="22" y="22" width="46" height="46" rx="8" fill="#0369a1" fillOpacity="0.25" stroke="#0ea5e9" strokeWidth="1.5" strokeDasharray="3 3" />
+									<path d="M35 32 H55 M35 40 H55 M35 48 H47 M35 56 H51" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" />
+									<circle cx="45" cy="45" r="14" stroke="#0ea5e9" strokeWidth="1.2" strokeOpacity="0.6" />
+								</g>
+
+								<g transform="translate(14, 145)">
+									<rect width="97" height="44" rx="8" fill="#0f172a" fillOpacity="0.85" stroke="#0284c7" strokeWidth="1.2" />
+									<circle cx="22" cy="22" r="9" fill="#059669" />
+									<path d="M18 22 L21 25 L27 19" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+									<text x="36" y="18" fill="#38bdf8" fontSize="7.5" fontFamily="Inter, sans-serif" fontWeight="700">CLAIM VERIFIED</text>
+									<text x="36" y="30" fill="#94a3b8" fontSize="6.5" fontFamily="JetBrains Mono, monospace">STP &lt; 0.9s | 100%</text>
+								</g>
+							</g>
+
+							{/* Hand holding phone */}
+							<g transform="translate(325, 175)">
+								<path d="M30 40 C45 35, 75 45, 95 65 C115 85, 115 125, 95 145 C80 160, 45 160, 20 145 C-5 130, -10 90, 5 60 Z" fill="#fab287" stroke="#1e293b" strokeWidth="3.5" strokeLinejoin="round" />
+								<path d="M-15 15 C-25 15, -45 25, -45 42 C-45 55, -30 65, -15 65 C-5 65, 10 50, 10 35 C10 20, 0 15, -15 15 Z" fill="#fbc093" stroke="#1e293b" strokeWidth="3.5" strokeLinejoin="round" />
+								<path d="M-40 45 C-55 45, -65 55, -60 68 C-55 78, -40 80, -25 75" fill="#fbc093" stroke="#1e293b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+								<path d="M75 125 C85 140, 115 165, 140 185" stroke="#1e293b" strokeWidth="4" strokeLinecap="round" />
+							</g>
+						</svg>
+					</div>
+				</section>
+
+				{/* Bottom Bar */}
+				<footer style={{
+					backgroundColor: '#3f3d3d',
+					minHeight: 64,
+					padding: '14px 44px',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'space-between',
+					color: '#e2e8f0',
+					fontSize: 12,
+					fontWeight: 500,
+					zIndex: 10,
+					flexWrap: 'wrap',
+					gap: 12,
+				}}>
+					<div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#cbd5e1' }}>
+						<span>ClaimVertex • Autonomous Insurance &amp; SIU Fraud Matrix</span>
+					</div>
+					<div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+						<span style={{
+							background: 'rgba(255, 255, 255, 0.1)',
+							border: '1px solid rgba(255, 255, 255, 0.15)',
 							padding: '4px 10px',
 							borderRadius: 6,
 							fontFamily: 'JetBrains Mono, monospace',
-							fontWeight: 600,
+							fontSize: 11,
+							color: '#93c5fd',
 						}}>
 							9 AI Pipelines Active
-						</div>
-					</div>
-				</header>
-
-				{/* Main Landing View Body */}
-				<div style={{ flex: 1, padding: '40px 20px 60px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
-					{/* Dual-Panel Hero Card */}
-					<div style={{
-						width: '100%',
-						maxWidth: 980,
-						backgroundColor: '#ffffff',
-						borderRadius: 24,
-						border: '1px solid #e2e8f0',
-						boxShadow: '0 25px 60px -15px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(15, 23, 42, 0.04)',
-						display: 'grid',
-						gridTemplateColumns: '1.15fr 0.95fr',
-						position: 'relative',
-						overflow: 'hidden',
-						marginBottom: 36,
-					}}>
-
-						{/* Left Side: Dark Hero Panel */}
-						<div style={{
-							background: 'radial-gradient(circle at 20% 30%, #1e293b 0%, #0f172a 60%, #080d1a 100%)',
-							padding: '70px 42px 48px 42px',
-							display: 'flex',
-							flexDirection: 'column',
-							justifyContent: 'center',
-							position: 'relative',
-							overflow: 'hidden',
-							color: '#ffffff',
+						</span>
+						<span style={{
+							display: 'inline-flex',
+							alignItems: 'center',
+							gap: 6,
+							background: 'rgba(34, 197, 94, 0.15)',
+							border: '1px solid rgba(34, 197, 94, 0.3)',
+							padding: '4px 10px',
+							borderRadius: 20,
+							color: '#86efac',
+							fontWeight: 600,
 						}}>
-							{/* Background Orbital Arcs */}
-							<svg style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', opacity: 0.18 }} viewBox="0 0 400 400" fill="none">
-								<circle cx="200" cy="200" r="160" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="4 8" />
-								<ellipse cx="200" cy="200" rx="190" ry="110" stroke="#818cf8" strokeWidth="1.2" transform="rotate(-25 200 200)" />
-								<ellipse cx="200" cy="200" rx="140" ry="80" stroke="#f59e0b" strokeWidth="1" transform="rotate(35 200 200)" />
-							</svg>
+							<span style={{ width: 6, height: 6, backgroundColor: '#22c55e', borderRadius: '50%', boxShadow: '0 0 8px #22c55e' }} />
+							Core Server Online
+						</span>
+					</div>
+				</footer>
 
-							{/* Official Enterprise Portal Tag */}
-							<div style={{
-								display: 'inline-flex',
-								alignItems: 'center',
-								gap: 7,
-								backgroundColor: 'rgba(255, 255, 255, 0.06)',
-								border: '1px solid rgba(255, 255, 255, 0.15)',
-								borderRadius: 20,
-								padding: '6px 14px',
-								fontSize: 10.5,
-								fontWeight: 700,
-								color: '#cbd5e1',
-								letterSpacing: '0.8px',
-								textTransform: 'uppercase',
-								marginBottom: 28,
-								width: 'fit-content',
-							}}>
-								<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-								</svg>
-								<span>OFFICIAL ENTERPRISE PORTAL</span>
-							</div>
-
-							{/* Headline Typography */}
-							<div style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-0.8px', color: '#ffffff', lineHeight: 1.1, marginBottom: 4 }}>
-								Welcome to
-							</div>
-							<div style={{ fontSize: 42, fontWeight: 900, letterSpacing: '-1px', color: '#f59e0b', lineHeight: 1.1, marginBottom: 18 }}>
-								Claim<span style={{ color: '#ffffff' }}>Pilot</span>
-							</div>
-
-							<div style={{ fontSize: 13.5, color: '#94a3b8', lineHeight: 1.6, maxWidth: 380, marginBottom: 24 }}>
-								Your one-stop gateway to autonomous insurance claims, real-time SIU fraud detection, and policy compliance governance.
-							</div>
-
-							{/* Bottom Left Counters */}
-							<div style={{ display: 'flex', gap: 16, marginTop: 'auto', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: 18 }}>
-								<div>
-									<div style={{ fontSize: 15, fontWeight: 800, color: '#38bdf8', fontFamily: 'JetBrains Mono, monospace' }}>9</div>
-									<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>AI Pipelines</div>
-								</div>
-								<div style={{ borderLeft: '1px solid rgba(255, 255, 255, 0.1)', paddingLeft: 14 }}>
-									<div style={{ fontSize: 15, fontWeight: 800, color: '#38bdf8', fontFamily: 'JetBrains Mono, monospace' }}>&lt; 0.9s</div>
-									<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>STP Latency</div>
-								</div>
-								<div style={{ borderLeft: '1px solid rgba(255, 255, 255, 0.1)', paddingLeft: 14 }}>
-									<div style={{ fontSize: 15, fontWeight: 800, color: '#38bdf8', fontFamily: 'JetBrains Mono, monospace' }}>6-Vector</div>
-									<div style={{ fontSize: 10, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>SIU Matrix</div>
-								</div>
-							</div>
-						</div>
-
-						{/* Right Side: Floating Clean White Card */}
-						<div style={{ backgroundColor: '#f8fafc', padding: '36px 32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-							<div style={{
+				{/* LOGIN MODAL POPUP */}
+				{isLoginModalOpen && (
+					<div
+						style={{
+							position: 'fixed',
+							top: 0,
+							left: 0,
+							right: 0,
+							bottom: 0,
+							backgroundColor: 'rgba(15, 23, 42, 0.65)',
+							backdropFilter: 'blur(8px)',
+							zIndex: 1000,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							padding: 20,
+						}}
+						onClick={() => setIsLoginModalOpen(false)}
+					>
+						<div
+							style={{
 								backgroundColor: '#ffffff',
-								borderRadius: 18,
-								padding: '32px 28px',
+								borderRadius: 22,
 								width: '100%',
-								border: '1px solid #f1f5f9',
-								boxShadow: '0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 0 1px 1px rgba(15, 23, 42, 0.03)',
-							}}>
-								<div style={{ fontSize: 26, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px', marginBottom: 4 }}>
-									{isLoginMode ? 'Adjuster Sign In' : 'Get Started'}
-								</div>
-								<div style={{ fontSize: 12.5, color: '#64748b', marginBottom: 22 }}>
-									{isLoginMode ? 'Enter your enterprise credentials to access console.' : 'Create your digital identity today.'}
-								</div>
+								maxWidth: 480,
+								padding: '34px 30px',
+								boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.3)',
+								position: 'relative',
+								maxHeight: '90vh',
+								overflowY: 'auto',
+							}}
+							onClick={(e) => e.stopPropagation()}
+						>
+							<button
+								onClick={() => setIsLoginModalOpen(false)}
+								style={{
+									position: 'absolute',
+									top: 18,
+									right: 18,
+									background: '#f1f5f9',
+									border: 'none',
+									borderRadius: '50%',
+									width: 32,
+									height: 32,
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									color: '#64748b',
+									cursor: 'pointer',
+								}}
+							>
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+									<line x1="18" y1="6" x2="6" y2="18"></line>
+									<line x1="6" y1="6" x2="18" y2="18"></line>
+								</svg>
+							</button>
 
-								<form onSubmit={(e) => {
-									e.preventDefault();
-									setActiveUser({
-										name: authName.trim() || 'Sarah Jenkins',
-										email: authEmail.trim() || 'sarah@claimpilot.ai',
-										role: 'Senior Claims Adjuster',
-										avatar: (authName.trim().split(' ').map(n=>n[0]).join('') || 'SJ').substring(0,2).toUpperCase(),
-									});
-									setView('dashboard');
-								}}>
-									{!isLoginMode && (
-										<div style={{ marginBottom: 14 }}>
-											<label style={{ display: 'block', fontSize: 10, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6 }}>
-												FULL NAME
-											</label>
-											<div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-												<svg style={{ position: 'absolute', left: 12, color: '#94a3b8' }} viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-													<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-													<circle cx="12" cy="7" r="4"></circle>
-												</svg>
-												<input
-													type="text"
-													value={authName}
-													onChange={(e) => setAuthName(e.target.value)}
-													placeholder="Sarah Jenkins"
-													style={{
-														width: '100%',
-														backgroundColor: '#f8fafc',
-														border: '1px solid #e2e8f0',
-														borderRadius: 9,
-														padding: '11px 12px 11px 36px',
-														fontSize: 13,
-														color: '#0f172a',
-														fontWeight: 500,
-														outline: 'none',
-													}}
-												/>
+							<div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#0d3a58', color: '#ffffff', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 700, marginBottom: 12 }}>
+								<svg width="18" height="18" viewBox="0 0 30 30" fill="none">
+									<rect width="30" height="30" rx="7" fill="#062238"/>
+									<circle cx="15" cy="15" r="8.5" stroke="#38bdf8" strokeWidth="1.8"/>
+									<path d="M15 8.5 L20.5 15 L15 21.5 L9.5 15 Z" fill="#0ea5e9" fillOpacity="0.5" stroke="#38bdf8" strokeWidth="1.5"/>
+								</svg>
+								<span>ClaimVertex</span>
+							</div>
+
+							<h2 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.4px', marginBottom: 4 }}>
+								Sign In to Command Center
+							</h2>
+							<p style={{ fontSize: 13, color: '#64748b', marginBottom: 20, lineHeight: 1.45 }}>
+								Access autonomous Straight-Through Processing, 6-vector SIU fraud analysis, and AI policy copilot.
+							</p>
+
+							{/* 1-Click Fast-Track Persona Roles */}
+							<div style={{ marginBottom: 18 }}>
+								<div style={{ fontSize: 10.5, fontWeight: 800, color: '#64748b', letterSpacing: '0.6px', marginBottom: 10 }}>
+									SELECT ROLE (1-CLICK INSTANT ACCESS)
+								</div>
+								<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+									{[
+										{ name: 'Sarah Jenkins', role: 'Senior Adjuster', email: 'sarah@claimvertex.ai', avatar: 'SJ', bg: '#2563eb', tab: 'dashboard' },
+										{ name: 'Elena Rostova', role: 'SIU Lead Auditor', email: 'elena.siu@claimvertex.ai', avatar: 'ER', bg: '#dc2626', tab: 'siu' },
+										{ name: 'David Vance', role: 'PE Forensic Eng.', email: 'david.pe@engineering.com', avatar: 'DV', bg: '#059669', tab: 'scheduling' },
+										{ name: 'Marcus Vance', role: 'Policyholder', email: 'claimant@vance.io', avatar: 'MV', bg: '#d97706', tab: 'public_tracker' },
+									].map((p) => (
+										<button
+											key={p.name}
+											type="button"
+											onClick={() => {
+												setActiveUser({ name: p.name, email: p.email, role: p.role, avatar: p.avatar });
+												setView('dashboard');
+												setActiveTab(p.tab as any);
+												setIsLoginModalOpen(false);
+											}}
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												gap: 10,
+												background: '#f8fafc',
+												border: '1px solid #e2e8f0',
+												borderRadius: 12,
+												padding: '10px 12px',
+												textAlign: 'left',
+												cursor: 'pointer',
+												width: '100%',
+											}}
+										>
+											<div style={{ width: 32, height: 32, borderRadius: '50%', color: '#fff', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, backgroundColor: p.bg }}>
+												{p.avatar}
 											</div>
-										</div>
-									)}
+											<div style={{ overflow: 'hidden' }}>
+												<div style={{ fontSize: 12, fontWeight: 700, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+												<div style={{ fontSize: 10, color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.role}</div>
+											</div>
+										</button>
+									))}
+								</div>
+							</div>
 
-									<div style={{ marginBottom: 14 }}>
-										<label style={{ display: 'block', fontSize: 10, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6 }}>
-											EMAIL
-										</label>
-										<div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-											<svg style={{ position: 'absolute', left: 12, color: '#94a3b8' }} viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-												<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-												<polyline points="22,6 12,13 2,6"></polyline>
-											</svg>
-											<input
-												type="email"
-												value={authEmail}
-												onChange={(e) => setAuthEmail(e.target.value)}
-												placeholder="name@example.com"
-												required
-												style={{
-													width: '100%',
-													backgroundColor: '#f8fafc',
-													border: '1px solid #e2e8f0',
-													borderRadius: 9,
-													padding: '11px 12px 11px 36px',
-													fontSize: 13,
-													color: '#0f172a',
-													fontWeight: 500,
-													outline: 'none',
-												}}
-											/>
-										</div>
-									</div>
+							<div style={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '16px 0', color: '#94a3b8', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.5px' }}>
+								<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
+								<span style={{ padding: '0 10px' }}>OR ENTER CREDENTIALS</span>
+								<span style={{ flex: 1, borderBottom: '1px solid #e2e8f0' }} />
+							</div>
 
-									<div style={{ marginBottom: 14 }}>
-										<label style={{ display: 'block', fontSize: 10, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6 }}>
-											PASSWORD
-										</label>
-										<div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-											<svg style={{ position: 'absolute', left: 12, color: '#94a3b8' }} viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-												<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-												<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-											</svg>
-											<input
-												type={showPassword ? 'text' : 'password'}
-												value={authPassword}
-												onChange={(e) => setAuthPassword(e.target.value)}
-												placeholder="••••••••"
-												required
-												style={{
-													width: '100%',
-													backgroundColor: '#f8fafc',
-													border: '1px solid #e2e8f0',
-													borderRadius: 9,
-													padding: '11px 36px 11px 36px',
-													fontSize: 13,
-													color: '#0f172a',
-													fontWeight: 500,
-													outline: 'none',
-												}}
-											/>
-											<button
-												type="button"
-												onClick={() => setShowPassword(!showPassword)}
-												style={{
-													position: 'absolute',
-													right: 12,
-													color: '#94a3b8',
-													cursor: 'pointer',
-													background: 'transparent',
-													border: 'none',
-													padding: 0,
-													display: 'flex',
-													alignItems: 'center',
-												}}
-											>
-												<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-													{showPassword ? (
-														<>
-															<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-															<line x1="1" y1="1" x2="23" y2="23"></line>
-														</>
-													) : (
-														<>
-															<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-															<circle cx="12" cy="12" r="3"></circle>
-														</>
-													)}
-												</svg>
-											</button>
-										</div>
-									</div>
-
-									<button
-										type="submit"
+							{/* Traditional Credentials Form */}
+							<form
+								onSubmit={(e) => {
+									e.preventDefault();
+									setActiveUser({ name: authName || 'Sarah Jenkins', email: authEmail, role: 'Senior Claims Adjuster', avatar: 'SJ' });
+									setView('dashboard');
+									setIsLoginModalOpen(false);
+								}}
+							>
+								<div style={{ marginBottom: 14 }}>
+									<label style={{ display: 'block', fontSize: 10.5, fontWeight: 800, color: '#475569', letterSpacing: '0.5px', marginBottom: 6 }}>EMAIL / USERNAME</label>
+									<input
+										type="email"
+										value={authEmail}
+										onChange={(e) => setAuthEmail(e.target.value)}
 										style={{
 											width: '100%',
-											backgroundColor: '#0f172a',
-											color: '#ffffff',
-											border: 'none',
-											borderRadius: 9,
-											padding: '12px 16px',
-											fontSize: 13.5,
-											fontWeight: 700,
-											cursor: 'pointer',
-											display: 'flex',
-											alignItems: 'center',
-											justifyContent: 'center',
-											gap: 8,
-											marginTop: 18,
-											boxShadow: '0 4px 12px rgba(15, 23, 42, 0.2)',
+											background: '#f8fafc',
+											border: '1px solid #e2e8f0',
+											borderRadius: 10,
+											padding: '11px 12px',
+											fontFamily: 'Inter, sans-serif',
+											fontSize: 13,
+											color: '#0f172a',
+											outline: 'none',
 										}}
-									>
-										{isLoginMode ? 'Sign In' : 'Create Account'} &rarr;
-									</button>
-								</form>
-
-								<div style={{ textAlign: 'center', marginTop: 14, fontSize: 12, color: '#64748b' }}>
-									<span>{isLoginMode ? "Don't have an account?" : 'Already have an account?'}</span>{' '}
-									<a
-										href="javascript:void(0)"
-										onClick={() => setIsLoginMode(!isLoginMode)}
-										style={{ color: '#2563eb', fontWeight: 700, textDecoration: 'none' }}
-									>
-										{isLoginMode ? 'Get Started' : 'Log In'}
-									</a>
+										required
+									/>
 								</div>
 
-								{/* Quick 1-Click Demo Profiles */}
-								<div style={{ marginTop: 18, paddingTop: 14, borderTop: '1px dashed #e2e8f0' }}>
-									<div style={{ fontSize: 10, fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8, display: 'flex', justifyContent: 'space-between' }}>
-										<span>Quick Access Roles</span>
-										<span style={{ color: '#2563eb', fontWeight: 700 }}>Demo Login</span>
-									</div>
-									<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-										<button
-											onClick={() => {
-												setActiveUser({ name: 'Sarah Jenkins', email: 'sarah@claimpilot.ai', role: 'Senior Claims Adjuster', avatar: 'SJ' });
-												setView('dashboard');
-											}}
-											style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '6px 8px', fontSize: 11, fontWeight: 600, color: '#334155', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 4 }}
-										>
-											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-											Senior Adjuster
-										</button>
-										<button
-											onClick={() => {
-												setActiveUser({ name: 'Elena Rostova', email: 'elena.siu@claimpilot.ai', role: 'SIU Lead Auditor', avatar: 'ER' });
-												setView('dashboard');
-												setActiveTab('siu');
-											}}
-											style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '6px 8px', fontSize: 11, fontWeight: 600, color: '#334155', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 4 }}
-										>
-											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-											SIU Auditor
-										</button>
-										<button
-											onClick={() => {
-												setActiveUser({ name: 'David Vance', email: 'david.pe@engineering.com', role: 'Licensed PE Engineer', avatar: 'DV' });
-												setView('dashboard');
-												setActiveTab('scheduling');
-											}}
-											style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '6px 8px', fontSize: 11, fontWeight: 600, color: '#334155', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 4 }}
-										>
-											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-											PE Forensic Eng.
-										</button>
-										<button
-											onClick={() => {
-												setActiveUser({ name: 'Marcus Vance', email: 'claimant@vance.io', role: 'Policyholder Claimant', avatar: 'MV' });
-												setView('dashboard');
-												setActiveTab('public_tracker');
-											}}
-											style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '6px 8px', fontSize: 11, fontWeight: 600, color: '#334155', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 4 }}
-										>
-											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-											Policyholder
-										</button>
-									</div>
+								<div style={{ marginBottom: 14 }}>
+									<label style={{ display: 'block', fontSize: 10.5, fontWeight: 800, color: '#475569', letterSpacing: '0.5px', marginBottom: 6 }}>PASSWORD</label>
+									<input
+										type="password"
+										value={authPassword}
+										onChange={(e) => setAuthPassword(e.target.value)}
+										style={{
+											width: '100%',
+											background: '#f8fafc',
+											border: '1px solid #e2e8f0',
+											borderRadius: 10,
+											padding: '11px 12px',
+											fontFamily: 'Inter, sans-serif',
+											fontSize: 13,
+											color: '#0f172a',
+											outline: 'none',
+										}}
+										required
+									/>
 								</div>
-							</div>
+
+								<button
+									type="submit"
+									style={{
+										width: '100%',
+										backgroundColor: '#dc2626',
+										color: '#ffffff',
+										border: 'none',
+										borderRadius: 10,
+										padding: '13px 16px',
+										fontSize: 14,
+										fontWeight: 700,
+										cursor: 'pointer',
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center',
+										gap: 8,
+										boxShadow: '0 4px 14px rgba(220, 38, 38, 0.35)',
+										marginTop: 18,
+									}}
+								>
+									Sign In to Dashboard &rarr;
+								</button>
+							</form>
 						</div>
 					</div>
-				</div>
+				)}
+
+				{/* LEARN MORE MODAL */}
+				{isLearnMoreModalOpen && (
+					<div
+						style={{
+							position: 'fixed',
+							top: 0,
+							left: 0,
+							right: 0,
+							bottom: 0,
+							backgroundColor: 'rgba(15, 23, 42, 0.65)',
+							backdropFilter: 'blur(8px)',
+							zIndex: 1000,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							padding: 20,
+						}}
+						onClick={() => setIsLearnMoreModalOpen(false)}
+					>
+						<div
+							style={{
+								backgroundColor: '#ffffff',
+								borderRadius: 22,
+								width: '100%',
+								maxWidth: 640,
+								padding: '36px 32px',
+								boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.3)',
+								position: 'relative',
+								maxHeight: '90vh',
+								overflowY: 'auto',
+							}}
+							onClick={(e) => e.stopPropagation()}
+						>
+							<button
+								onClick={() => setIsLearnMoreModalOpen(false)}
+								style={{
+									position: 'absolute',
+									top: 18,
+									right: 18,
+									background: '#f1f5f9',
+									border: 'none',
+									borderRadius: '50%',
+									width: 32,
+									height: 32,
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									color: '#64748b',
+									cursor: 'pointer',
+								}}
+							>
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+									<line x1="18" y1="6" x2="6" y2="18"></line>
+									<line x1="6" y1="6" x2="18" y2="18"></line>
+								</svg>
+							</button>
+
+							<div style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: '#2563eb', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '4px 10px', borderRadius: 6, letterSpacing: '0.5px', marginBottom: 12 }}>
+								PLATFORM ARCHITECTURE
+							</div>
+							<h2 style={{ fontSize: 24, fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px', marginBottom: 8 }}>
+								Intelligent P&amp;C Claims Automation
+							</h2>
+							<p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.55, marginBottom: 24 }}>
+								ClaimVertex accelerates Property &amp; Casualty claim operations by combining 9 deterministic AI pipelines with real-time SIU fraud prevention.
+							</p>
+
+							<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 24 }}>
+								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
+									<div style={{ fontSize: 24, marginBottom: 8 }}>⚡</div>
+									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Straight-Through Processing</div>
+									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>Sub-second auto-payout authorizations for low-risk claims under $10k.</div>
+								</div>
+								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
+									<div style={{ fontSize: 24, marginBottom: 8 }}>🔍</div>
+									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>6-Vector SIU Fraud Matrix</div>
+									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>EXIF tampering, duplicate contractor receipts, and regional rate inflation checks.</div>
+								</div>
+								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
+									<div style={{ fontSize: 24, marginBottom: 8 }}>🎙️</div>
+									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>PE Forensic Dispatch</div>
+									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>Automated voice and calendar scheduling for licensed structural engineers.</div>
+								</div>
+								<div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16 }}>
+									<div style={{ fontSize: 24, marginBottom: 8 }}>💬</div>
+									<div style={{ fontSize: 13.5, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Multi-Persona RAG Copilot</div>
+									<div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>Citation-backed policy QA with semantic retrieval from Qdrant vector store.</div>
+								</div>
+							</div>
+
+							<button
+								onClick={() => {
+									setIsLearnMoreModalOpen(false);
+									setIsLoginModalOpen(true);
+								}}
+								style={{
+									width: '100%',
+									backgroundColor: '#0d3a58',
+									color: '#ffffff',
+									border: 'none',
+									borderRadius: 10,
+									padding: '14px 20px',
+									fontSize: 14,
+									fontWeight: 700,
+									cursor: 'pointer',
+									boxShadow: '0 4px 14px rgba(13, 58, 88, 0.3)',
+								}}
+							>
+								Launch Command Center (Sign In) &rarr;
+							</button>
+						</div>
+					</div>
+				)}
 			</div>
 		);
 	}
