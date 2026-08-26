@@ -1,12 +1,76 @@
-.rocketride/
+# =============================================================================
+# ClaimVertex Enterprise Git Ignore Configuration
+# =============================================================================
+
+# Environment Variables & Secrets (CRITICAL: Never commit credentials)
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.pfx
+
+# Python Artifacts & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
 .venv/
 venv/
-__pycache__/
-*.pyc
-.claude/
-data/
+ENV/
+env/
+
+# Node.js & Frontend Bundles
 node_modules/
-dist/
-*.vsix
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+apps/**/dist/
+apps/**/node_modules/
+.rsbuild/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDE, OS & Editor Temp Files
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local Temporary Data & Runtime Storage
+data/
+*.log
+.rocketride/
+.claude/
+brain/
+scratch/
