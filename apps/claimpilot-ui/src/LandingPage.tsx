@@ -11,11 +11,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   return (
     <div style={styles.root}>
 
-      {/* ── AMBIENT FLOATING BACKGROUND ORBS (Landing UI only) ── */}
-      <div className="landing-bg-orb landing-orb-1" />
-      <div className="landing-bg-orb landing-orb-2" />
-      <div className="landing-bg-orb landing-orb-3" />
-
       {/* ── TOP NAVBAR (Edge-to-Edge Touching Corners) ── */}
       <header style={styles.navbar}>
         <div style={styles.navLeft}>
@@ -31,18 +26,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </header>
 
-      {/* ── HERO STAGE WITH AMBIENT BACKGROUND & FLOATING MICRO-BADGES ── */}
+      {/* ── MAIN HERO STAGE ── */}
       <main style={styles.hero}>
 
         {/* Left Column: Headlines & Call to Actions */}
         <div style={styles.heroLeft}>
           <div style={styles.badge}>
-            <span style={styles.badgePulseDot} className="pulse-indicator" />
             AI-POWERED P&amp;C INSURANCE
           </div>
 
           <h1 style={styles.heroHeading}>
-            Transforming Claims from Manual Workflows to <span style={styles.headingGradient}>Intelligent Decisions</span>
+            Transforming Claims from Manual Workflows to Intelligent Decisions
           </h1>
 
           <p style={styles.heroSub}>
@@ -63,79 +57,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </div>
         </div>
 
-        {/* Right Column: High-Res Hero Illustration with Ambient Glow & Floating Chips */}
+        {/* Right Column: Clean Static High-Res Hero Graphic */}
         <div style={styles.heroRight}>
           <div style={styles.imageContainer}>
-            
-            {/* Ambient Multi-Layer Glow Behind Illustration */}
-            <div style={styles.ambientAura} className="ambient-aura" />
-            <div style={styles.ambientAuraTeal} />
-
-            {/* Floating Live Badge 1 (Top Right) */}
-            <div style={styles.chipSTP} className="chip-stp">
-              <span style={styles.chipDotGreen} className="pulse-indicator" />
-              <div>
-                <div style={styles.chipTitle}>⚡ STP &lt; 0.9s</div>
-                <div style={styles.chipSub}>Instant Auto-Disbursement</div>
-              </div>
-            </div>
-
-            {/* Floating Live Badge 2 (Bottom Left) */}
-            <div style={styles.chipSIU} className="chip-siu">
-              <span style={styles.chipIcon}>🛡️</span>
-              <div>
-                <div style={styles.chipTitle}>SIU Clean • 14/100</div>
-                <div style={styles.chipSub}>6-Vector Risk Passed</div>
-              </div>
-            </div>
-
-            {/* Floating Live Badge 3 (Top Left) */}
-            <div style={styles.chipOCR} className="chip-ocr">
-              <span style={styles.chipIcon}>📄</span>
-              <span style={styles.chipOcrText}>OCR Accuracy <strong>99.4%</strong></span>
-            </div>
-
-            {/* High-Resolution Hero Sticker Illustration */}
             <img
               src={heroScannerImg}
               alt="Claim Document & Smartphone Scanner"
               style={styles.heroImage}
-              className="hero-main-img"
             />
-
           </div>
         </div>
 
       </main>
 
-      {/* ── 3 EXECUTIVE FEATURE PILLAR CARDS ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20, maxWidth: 1280, margin: '10px auto 36px', padding: '0 48px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 2 }}>
+      {/* ── 3 FORMAL ENTERPRISE PILLAR CARDS ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20, maxWidth: 1280, margin: '16px auto 36px', padding: '0 48px', width: '100%', boxSizing: 'border-box' }}>
         {/* Pillar 1 */}
-        <div style={{ background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(12px)', border: '1px solid rgba(17, 75, 95, 0.12)', borderRadius: 14, padding: '20px 22px', boxShadow: '0 4px 20px rgba(17, 75, 95, 0.05)', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: 20 }}>⚡</span>
-            <span style={{ fontSize: 10.5, fontWeight: 800, color: '#114b5f', background: 'rgba(17,75,95,0.08)', padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace' }}>&lt; 0.9s LATENCY</span>
-          </div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#0d1f2d' }}>Autonomous STP Payouts</div>
-          <div style={{ fontSize: 12.5, color: '#64748b', lineHeight: 1.5 }}>Sub-second deterministic coverage validation and immediate electronic check disbursement for qualified clean claims.</div>
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '20px 22px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>Autonomous STP Engine</div>
+          <div style={{ fontSize: 12.5, color: '#475569', lineHeight: 1.55 }}>Sub-second deterministic coverage validation and immediate electronic check disbursement for qualified clean claims.</div>
         </div>
         {/* Pillar 2 */}
-        <div style={{ background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(12px)', border: '1px solid rgba(17, 75, 95, 0.12)', borderRadius: 14, padding: '20px 22px', boxShadow: '0 4px 20px rgba(17, 75, 95, 0.05)', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: 20 }}>🛡️</span>
-            <span style={{ fontSize: 10.5, fontWeight: 800, color: '#114b5f', background: 'rgba(17,75,95,0.08)', padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace' }}>6-VECTOR SCAN</span>
-          </div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#0d1f2d' }}>Forensic SIU Fraud Matrix</div>
-          <div style={{ fontSize: 12.5, color: '#64748b', lineHeight: 1.5 }}>Multi-carrier duplicate contractor billing detection, NOAA Doppler weather validation, and EXIF metadata tampering audit.</div>
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '20px 22px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>Forensic SIU Fraud Matrix</div>
+          <div style={{ fontSize: 12.5, color: '#475569', lineHeight: 1.55 }}>Multi-carrier duplicate contractor billing detection, NOAA Doppler weather validation, and EXIF metadata tampering audit.</div>
         </div>
         {/* Pillar 3 */}
-        <div style={{ background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(12px)', border: '1px solid rgba(17, 75, 95, 0.12)', borderRadius: 14, padding: '20px 22px', boxShadow: '0 4px 20px rgba(17, 75, 95, 0.05)', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: 20 }}>🎙️</span>
-            <span style={{ fontSize: 10.5, fontWeight: 800, color: '#114b5f', background: 'rgba(17,75,95,0.08)', padding: '3px 8px', borderRadius: 12, fontFamily: 'monospace' }}>VOICE TELEPHONY</span>
-          </div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#0d1f2d' }}>Forensic PE Dispatch</div>
-          <div style={{ fontSize: 12.5, color: '#64748b', lineHeight: 1.5 }}>Autonomous AI voice telephony scheduling with policyholders and calendar reservation for licensed structural engineers.</div>
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '20px 22px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>Forensic PE Dispatch</div>
+          <div style={{ fontSize: 12.5, color: '#475569', lineHeight: 1.55 }}>Automated AI voice telephony scheduling with policyholders and calendar reservation for licensed structural engineers.</div>
         </div>
       </div>
 
@@ -338,122 +288,27 @@ const styles: Record<string, React.CSSProperties> = {
   // Hero Right Illustration & Ambient Atmosphere
   heroRight: {
     flex: '1 1 440px',
-    maxWidth: 520,
+    maxWidth: 500,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     minWidth: 300,
-    position: 'relative',
   },
   imageContainer: {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '30px 20px',
     width: '100%',
-  },
-  ambientAura: {
-    position: 'absolute',
-    width: 320,
-    height: 320,
-    borderRadius: '50%',
-    background: 'radial-gradient(circle, rgba(160, 229, 113, 0.35) 0%, rgba(56, 189, 248, 0.2) 50%, transparent 75%)',
-    filter: 'blur(35px)',
-    zIndex: 0,
-    pointerEvents: 'none',
-  },
-  ambientAuraTeal: {
-    position: 'absolute',
-    width: 260,
-    height: 260,
-    borderRadius: '50%',
-    background: 'radial-gradient(circle, rgba(17, 75, 95, 0.2) 0%, transparent 70%)',
-    filter: 'blur(45px)',
-    zIndex: 0,
-    pointerEvents: 'none',
   },
   heroImage: {
     maxWidth: '100%',
-    width: 390,
+    width: 400,
     height: 'auto',
     display: 'block',
     objectFit: 'contain',
-    filter: 'drop-shadow(0 20px 35px rgba(17, 75, 95, 0.2)) drop-shadow(0 6px 14px rgba(0,0,0,0.1))',
+    filter: 'drop-shadow(0 15px 30px rgba(17, 75, 95, 0.12)) drop-shadow(0 4px 10px rgba(0,0,0,0.06))',
     userSelect: 'none',
-    zIndex: 2,
-    position: 'relative',
-  },
-
-  // Floating Micro-Badges
-  chipSTP: {
-    position: 'absolute',
-    top: 18,
-    right: 0,
-    backgroundColor: '#ffffff',
-    border: '1px solid rgba(34, 197, 94, 0.3)',
-    borderRadius: 12,
-    padding: '8px 14px',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(34, 197, 94, 0.15)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 8,
-    zIndex: 4,
-    backdropFilter: 'blur(8px)',
-  },
-  chipDotGreen: {
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    backgroundColor: '#22c55e',
-    boxShadow: '0 0 8px #22c55e',
-  },
-  chipTitle: {
-    fontSize: 12,
-    fontWeight: 800,
-    color: '#0f172a',
-    letterSpacing: '-0.2px',
-  },
-  chipSub: {
-    fontSize: 10,
-    color: '#16a34a',
-    fontWeight: 600,
-  },
-  chipSIU: {
-    position: 'absolute',
-    bottom: 22,
-    left: -10,
-    backgroundColor: '#0b1329',
-    border: '1px solid #1e3a5f',
-    borderRadius: 12,
-    padding: '8px 14px',
-    boxShadow: '0 10px 28px rgba(0, 0, 0, 0.25)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 8,
-    zIndex: 4,
-    color: '#ffffff',
-  },
-  chipIcon: {
-    fontSize: 16,
-  },
-  chipOCR: {
-    position: 'absolute',
-    top: 40,
-    left: -12,
-    backgroundColor: '#ffffff',
-    border: '1px solid #e2e8f0',
-    borderRadius: 10,
-    padding: '6px 12px',
-    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.08)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
-    zIndex: 4,
-  },
-  chipOcrText: {
-    fontSize: 11,
-    color: '#334155',
   },
 
   // Dark Black Footer Bar (Touching corners 100% full width)
