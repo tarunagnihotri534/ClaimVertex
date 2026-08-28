@@ -1,20 +1,20 @@
 <div align="center">
 
-  <img src="static/logo.svg" alt="ClaimVertex Logo" width="100" height="100" />
+  <img src="static/logo.svg" alt="ClaimVertex Logo" width="90" height="90" />
 
   # 🛡️ ClaimVertex
-  ### Enterprise AI Property & Casualty Insurance Claims & SIU Fraud Engine
+  ### Enterprise AI Property & Casualty Claims & Forensic SIU Fraud Engine
 
   <p align="center">
     <strong>Autonomous Straight-Through Processing (STP) • 6-Vector Forensic SIU Fraud Matrix • Citation Traceability</strong>
   </p>
 
   <p align="center">
+    <a href="https://claim-pilot-orcin.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-ClaimVertex_Cloud-10b981?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" /></a>
     <a href="https://fastapi.tiangolo.com"><img src="https://img.shields.io/badge/Backend-FastAPI_0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" /></a>
     <a href="https://react.dev"><img src="https://img.shields.io/badge/Frontend-React_18_%2B_TypeScript-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" /></a>
     <a href="https://rsbuild.dev"><img src="https://img.shields.io/badge/Bundler-Rsbuild_2.0-F59E0B?style=for-the-badge&logo=webpack&logoColor=white" alt="Rsbuild" /></a>
     <a href="https://qdrant.tech"><img src="https://img.shields.io/badge/Vector_DB-Qdrant-DC2626?style=for-the-badge&logo=qdrant&logoColor=white" alt="Qdrant" /></a>
-    <a href="https://claim-pilot-orcin.vercel.app"><img src="https://img.shields.io/badge/Deployment-Vercel_Live-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-3B82F6?style=for-the-badge" alt="MIT License" /></a>
   </p>
 
@@ -22,10 +22,12 @@
     <a href="#-executive-summary">Executive Summary</a> •
     <a href="#-system-architecture">System Architecture</a> •
     <a href="#-the-9-ai-pipelines--functioning">The 9 AI Pipelines</a> •
+    <a href="#-the-6-vector-siu-fraud-matrix">SIU Fraud Matrix</a> •
     <a href="#-core-platform-capabilities">Core Capabilities</a> •
     <a href="#-repository-structure">Repository Structure</a> •
     <a href="#-quick-start--execution">Quick Start</a> •
-    <a href="#-license">License</a>
+    <a href="#-api-reference">API Reference</a> •
+    <a href="#-security--compliance">Security</a>
   </p>
 
 </div>
@@ -34,18 +36,18 @@
 
 ## 🌟 Executive Summary
 
-**ClaimVertex** is an autonomous, load-bearing Property & Casualty (P&C) claims intelligence platform built to eliminate administrative bottlenecks, slash Straight-Through Processing (STP) payout latency to under 0.9 seconds, and protect insurance carriers against syndicated fraud.
+**ClaimVertex** is an autonomous, load-bearing Property & Casualty (P&C) claims intelligence platform built to eliminate insurance administrative bottlenecks, slash Straight-Through Processing (STP) payout latency to under 0.9 seconds, and protect insurance carriers against syndicated and opportunistic fraud.
 
-By orchestrating **9 deterministic declarative AI pipelines** (`.pipe` DAGs), ClaimVertex ingests unstructured proof-of-loss documentation, strips sensitive Personal Identifiable Information (PII), validates policy schedules (RCV, ACV, Depreciation, Deductibles), indexes semantic vectors into Qdrant, and runs a **6-Vector Forensic Fraud Matrix** before automatically disbursing funds or escalating to senior human adjusters.
+By orchestrating **9 deterministic declarative AI pipelines** (`.pipe` DAGs), ClaimVertex ingests unstructured proof-of-loss documentation, strips sensitive Personal Identifiable Information (PII), validates policy schedules (RCV, ACV, Depreciation, Deductibles), indexes semantic vectors into Qdrant, and runs a **6-Vector Forensic Fraud Matrix** before automatically disbursing funds or escalating high-exposure files to senior human adjusters.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                               ClaimVertex Value Metrics                                │
+│                               ClaimVertex Performance Metrics                          │
 ├──────────────────────────────┬────────────────────────────┬────────────────────────────┤
 │   ⚡ Payout Authorization    │   🛡️ SIU Fraud Accuracy    │   📄 Token OCR Precision   │
 │         < 0.9 Seconds        │      6-Vector Matrix       │            99.4%           │
 ├──────────────────────────────┼────────────────────────────┼────────────────────────────┤
-│   🔄 Auto-Approval Rate      │   🔒 PII Security Stripping│   ⚖️ Legal & SOC-2 Audit   │
+│   🔄 Auto-Approval Rate      │   🔒 PII Security Masking  │   ⚖️ Legal & SOC-2 Audit   │
 │          66.7% STP           │     Real-Time Redaction    │     Immutable SHA-256      │
 └──────────────────────────────┴────────────────────────────┴────────────────────────────┘
 ```
@@ -102,38 +104,58 @@ Every pipeline in ClaimVertex is defined as an immutable, declarative DAG schema
 
 | # | Pipeline Schema | Role & Functioning | Primary Components | Trigger |
 |---|---|---|---|---|
-| **1** | [`ingestion.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/ingestion.pipe) | **Document Ingestion & PII Redaction**: Ingests contractor estimates, extracts OCR tokens, masks claimant PII (SSN, phone, address), chunks text, and indexes dense vectors into Qdrant. | `webhook`, `parse`, `anonymize_text`, `preprocessor_langchain`, `embedding_openai`, `qdrant` | Webhook |
-| **2** | [`claim_analysis.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/claim_analysis.pipe) | **Autonomous Damage & STP Evaluation**: Evaluates incident description against policy limits, calculates RCV, ACV, Depreciation, and deductible to determine STP auto-approval. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
-| **3** | [`claim_chat.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/claim_chat.pipe) | **Multi-Persona RAG Policy Copilot**: Semantic document retrieval answering questions with forensic evidence citations across Senior Adjuster, SIU Investigator, and Engineer personas. | `chat`, `embedding_openai`, `qdrant`, `prompt`, `llm_openai`, `response_answers` | Chat Stream |
-| **4** | [`siu_dashboard.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/siu_dashboard.pipe) | **6-Vector Forensic Fraud Matrix**: Analyzes metadata anomalies, policy inception proximity, contractor license validity, Doppler weather correlation, and loss history. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
-| **5** | [`benchmark_explorer.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/benchmark_explorer.pipe) | **Regional Cost Benchmark Explorer**: Cross-references contractor labor and material unit rates against regional Xactimate cost schedules (Dallas, Miami, Los Angeles, Chicago, Atlanta). | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
-| **6** | [`inspection_scheduling.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/inspection_scheduling.pipe) | **Voice Telephony & PE Booking**: Automates AI voice calls with policyholders to lock calendar inspection slots for certified Forensic Structural Engineers. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
-| **7** | [`claim_status.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/claim_status.pipe) | **Public Claimant Tracking Portal**: Sanitizes claim data and exposes real-time 4-stage tracking (*Intake &rarr; Verification &rarr; Scope Review &rarr; Payout*) without internal SIU risk flags. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
-| **8** | [`adjuster_queue.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/adjuster_queue.pipe) | **Adjuster Priority Workload Queue**: Ranks escalated claims using the priority formula: `Score = (Age × 1.5) + (Exposure / 5000) + (SIU Risk × 0.8)`. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
-| **9** | [`feedback_loop.pipe`](file:///c:/Users/darkt/OneDrive/Documents/Desktop/ClaimPilot/feedback_loop.pipe) | **Model Drift & Calibration Monitor**: Tracks human adjuster overrides vs AI recommendations, logging precision drift and triggering retraining if variance exceeds 5.0%. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+| **1** | [`ingestion.pipe`](ingestion.pipe) | **Document Ingestion & PII Redaction**: Ingests contractor estimates, extracts OCR tokens, masks claimant PII (SSN, phone, address), chunks text, and indexes dense vectors into Qdrant. | `webhook`, `parse`, `anonymize_text`, `preprocessor_langchain`, `embedding_openai`, `qdrant` | Webhook |
+| **2** | [`claim_analysis.pipe`](claim_analysis.pipe) | **Autonomous Damage & STP Evaluation**: Evaluates incident description against policy limits, calculates RCV, ACV, Depreciation, and deductible to determine STP auto-approval. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+| **3** | [`claim_chat.pipe`](claim_chat.pipe) | **Multi-Persona RAG Policy Copilot**: Semantic document retrieval answering questions with forensic evidence citations across Senior Adjuster, SIU Investigator, and Engineer personas. | `chat`, `embedding_openai`, `qdrant`, `prompt`, `llm_openai`, `response_answers` | Chat Stream |
+| **4** | [`siu_dashboard.pipe`](siu_dashboard.pipe) | **6-Vector Forensic Fraud Matrix**: Analyzes metadata anomalies, policy inception proximity, contractor license validity, Doppler weather correlation, and loss history. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+| **5** | [`benchmark_explorer.pipe`](benchmark_explorer.pipe) | **Regional Cost Benchmark Explorer**: Cross-references contractor labor and material unit rates against regional Xactimate cost schedules (Dallas, Miami, Los Angeles, Chicago, Atlanta). | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+| **6** | [`inspection_scheduling.pipe`](inspection_scheduling.pipe) | **Voice Telephony & PE Booking**: Automates AI voice calls with policyholders to lock calendar inspection slots for certified Forensic Structural Engineers. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+| **7** | [`claim_status.pipe`](claim_status.pipe) | **Public Claimant Tracking Portal**: Sanitizes claim data and exposes real-time 4-stage tracking (*Intake &rarr; Verification &rarr; Scope Review &rarr; Payout*) without internal SIU risk flags. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+| **8** | [`adjuster_queue.pipe`](adjuster_queue.pipe) | **Adjuster Priority Workload Queue**: Ranks escalated claims using the priority formula: `Score = (Age × 1.5) + (Exposure / 5000) + (SIU Risk × 0.8)`. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+| **9** | [`feedback_loop.pipe`](feedback_loop.pipe) | **Model Drift & Calibration Monitor**: Tracks human adjuster overrides vs AI recommendations, logging precision drift and triggering retraining if variance exceeds 5.0%. | `webhook`, `parse`, `llm_openai`, `response_answers` | Webhook |
+
+> For a complete structural and component-level breakdown of all pipeline stages, review [explain.md](explain.md).
 
 ---
 
-## 🔍 Deep Dive: The 6-Vector SIU Fraud Matrix
+## 🔍 The 6-Vector SIU Fraud Matrix
 
-The Special Investigation Unit (SIU) module executes 6 parallel anomaly detection algorithms on every claim:
+The Special Investigation Unit (SIU) module executes 6 parallel anomaly detection algorithms on every claim to uncover fraud rings and inflated loss scopes:
 
-1. **Vector 1: Policy Inception Proximity**: Detects sudden coverage limit spikes or endorsements bound immediately before loss date.
-2. **Vector 2: Regional Benchmark Variance**: Flags contractor labor and material charges exceeding regional averages by > 25%.
-3. **Vector 3: Contractor Licensure & TIN Verification**: Validates corporate registration dates and master license status against state registries.
-4. **Vector 4: Doppler Weather Correlation**: Validates hail, wind, and lightning claims against NOAA Doppler radar ground station records.
-5. **Vector 5: Loss History & ISO ClaimSearch**: Checks for repeated loss filings, duplicate invoices, and cross-carrier claim patterns.
-6. **Vector 6: Circumstantial Timing & Origin**: Flags overnight unattended fires, commercial lease expirations, and suspicious reporting delays.
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                   6-VECTOR FORENSIC MATRIX                                      │
+├────────────────────────────────┬────────────────────────────────────────────────────────────────┤
+│ Vector 1: Policy Proximity     │ Identifies sudden coverage limit spikes or endorsements added  │
+│                                │ immediately prior to the date of loss.                         │
+├────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Vector 2: Cost Benchmark Delta │ Flags labor, equipment, and material line items exceeding      │
+│                                │ regional standard rate schedules by > 25%.                     │
+├────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Vector 3: Licensure & Entity   │ Verifies contractor TIN, corporate incorporation age, and      │
+│                                │ active master trade licenses against state registries.         │
+├────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Vector 4: Weather Correlation  │ Verifies hail, wind, and lightning event validity using NOAA    │
+│                                │ Doppler radar ground station archival data.                    │
+├────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Vector 5: Loss History (ISO)   │ Cross-references national databases for duplicate invoices and │
+│                                │ prior claims filed on the same risk address across carriers.   │
+├────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Vector 6: Origin & Timing      │ Analyzes loss timing, unattended fire origins, commercial      │
+│                                │ lease expirations, and delayed reporting indicators.           │
+└────────────────────────────────┴────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## 💻 Core Platform Capabilities
 
-- **Figma-Crafted Zero-Margin Landing Experience**: Features a high-resolution Retina sticker illustration, subtle ambient background glow, floating live micro-badges, and a deep pitch-black footer.
-- **Enterprise Executive Login Portal**: Monochromatic corporate authentication supporting email/password credentials with show/hide toggle and Single Sign-On (SAML 2.0).
-- **Line-Item Forensic Citation Viewer**: Every assessment item includes clickable legal attribution links tracing back to specific invoice pages and policy endorsement sections.
+- **Figma-Crafted Hero Landing Experience**: Features high-resolution Retina sticker illustration, subtle ambient background glow, floating live micro-badges, and responsive pillar cards.
+- **Enterprise Executive Login Portal**: Monochromatic corporate authentication supporting email/password credentials with show/hide password toggle and Single Sign-On (SAML 2.0).
+- **Line-Item Forensic Citation Viewer**: Every assessment item includes clickable legal attribution links tracing back to specific contractor invoice pages and policy endorsement sections.
 - **Dynamic Straight-Through Processing (STP) Controls**: Interactive sliders to adjust auto-approval payout thresholds ($1k–$50k) and maximum permissible fraud risk scores (10%–80%) in real time.
 - **Unified Neutral Corporate Styling**: Monochromatic slate palette (`#0f172a`, `#475569`, `#f8fafc`), reserving red (`#dc2626` / `#b91c1c`) **strictly** for warnings, security alerts, and high-risk SIU escalations.
+- **Dual Presentation Frontends**: Choose between the zero-build standalone HTML5/JS single-page console (`static/index.html`) or the modern React 18 + TypeScript + Rsbuild application (`apps/claimpilot-ui`).
 
 ---
 
@@ -141,8 +163,8 @@ The Special Investigation Unit (SIU) module executes 6 parallel anomaly detectio
 
 ```text
 ClaimVertex/
-├── .gitignore                  # Security-hardened git ignore configuration
-├── env.example                 # Sanitized environment template
+├── .gitignore                  # Git ignore rules
+├── env.example                 # Sanitized environment configuration template
 ├── requirements.txt            # Python backend dependencies
 ├── vercel.json                 # Vercel serverless cloud deployment config
 ├── LICENSE                     # MIT Open-Source License
@@ -170,8 +192,8 @@ ClaimVertex/
 │
 ├── apps/
 │   └── claimpilot-ui/          # React 18 + TypeScript + Rsbuild Command Center UI
-│       ├── package.json        # Frontend package manifest ("claimvertex-ui")
-│       ├── rsbuild.config.mts  # Rsbuild compiler & Module Federation config
+│       ├── package.json        # Frontend package manifest
+│       ├── rsbuild.config.mts  # Rsbuild compiler & bundling configuration
 │       ├── src/
 │       │   ├── App.tsx         # Enterprise command center & tabbed assessment engine
 │       │   ├── LandingPage.tsx # Figma 1:1 landing stage with ambient animations
@@ -193,6 +215,7 @@ ClaimVertex/
 ## ⚡ Quick Start & Execution
 
 ### 1. Clone & Setup Environment
+
 ```bash
 git clone https://github.com/tarunagnihotri534/ClaimVertex.git
 cd ClaimVertex
@@ -207,7 +230,9 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configure Environment (Optional)
-ClaimVertex runs 100% autonomously out of the box. Optional parameters can be defined in `.env` (copied from `env.example`):
+
+ClaimVertex runs 100% autonomously out of the box in standalone mode. Optional external integrations can be defined in `.env` (copied from `env.example`):
+
 ```env
 CLAIMVERTEX_URI=http://127.0.0.1:8000
 OPENAI_API_KEY=your-openai-api-key-here
@@ -216,21 +241,23 @@ QDRANT_PORT=6333
 ```
 
 ### 3. Run Diagnostic Verification
+
 Verify that all 9 declarative pipeline schemas, FastAPI endpoints, and dependencies are 100% compliant:
+
 ```bash
 python check.py
 ```
 
 ### 4. Launch the Application
 
-#### Option A: FastAPI Web GUI (Standalone Mode)
+#### Option A: Standalone Web GUI (FastAPI + Embedded UI)
 ```bash
 python run_gui.py
 # Or double-click run_gui.bat on Windows
 ```
 Access the command center at **[http://127.0.0.1:8000](http://127.0.0.1:8000)**.
 
-#### Option B: React 18 + Rsbuild Frontend
+#### Option B: Modern React 18 + Rsbuild Frontend
 ```bash
 cd apps/claimpilot-ui
 npm install
@@ -242,6 +269,24 @@ Access the interactive React application at **[http://localhost:3000](http://loc
 ```bash
 python main.py
 ```
+
+---
+
+## 📡 API Reference
+
+ClaimVertex exposes modular REST API endpoints for seamless integration with carrier Core Claim Systems (Guidewire ClaimCenter, Duck Creek, Sapiens):
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/claims` | Retrieve list of all loaded claims with financial summaries |
+| `GET` | `/api/claim/{claim_id}` | Retrieve comprehensive dossier, citations, and risk scores |
+| `POST` | `/api/analyze-claim` | Execute STP pipeline analysis against damage descriptions |
+| `POST` | `/api/chat` | Query the multi-persona RAG Copilot with citation synthesis |
+| `POST` | `/api/siu/audit` | Trigger 6-Vector Forensic Fraud Matrix assessment |
+| `POST` | `/api/schedule-inspection`| Trigger AI Voice Telephony & PE dispatch booking |
+| `GET` | `/api/benchmarks` | Query regional Xactimate labor and material unit rates |
+| `GET` | `/api/adjuster-queue` | Fetch prioritized adjuster workload queue |
+| `POST` | `/api/feedback/override` | Log human adjuster decisions to track model calibration |
 
 ---
 
@@ -258,9 +303,10 @@ python main.py
 ## 🔒 Security & Compliance
 
 - **Zero Credential Leaks**: `.env` and sensitive API keys are strictly excluded from source control.
-- **Automated PII Redaction**: Claimant names, SSNs, phone numbers, and addresses are masked before vectorization.
-- **Cryptographic Audit Log**: Every adjuster override and payout authorization generates an immutable, timestamped audit entry.
-- **Enterprise RBAC**: Segregates policyholder views from internal SIU fraud scoring matrices.
+- **Automated PII Redaction**: Claimant names, SSNs, phone numbers, and addresses are masked in real time before vectorization.
+- **Cryptographic Audit Log**: Every adjuster override and payout authorization generates an immutable, timestamped SHA-256 audit entry.
+- **Enterprise RBAC**: Segregates public claimant tracking views from internal SIU fraud scoring matrices.
+- **Deterministic Pipeline Schemas**: Zero hallucinated workflows; all operations execute through verified `.pipe` DAG contracts.
 
 ---
 
